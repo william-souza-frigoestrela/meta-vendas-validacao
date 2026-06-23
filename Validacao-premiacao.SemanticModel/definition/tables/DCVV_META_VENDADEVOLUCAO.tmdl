@@ -1,0 +1,136 @@
+table DCVV_META_VENDADEVOLUCAO
+	lineageTag: ffe1a5c1-53ca-4fff-a9df-a0fdaa82357f
+
+	column ANOMES
+		dataType: string
+		lineageTag: 0b37fba9-6776-4f9d-a831-fb28fc18e406
+		summarizeBy: none
+		sourceColumn: ANOMES
+
+		annotation SummarizationSetBy = Automatic
+
+	column DATA
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: fe7eb4f5-6928-4a61-b301-fd036aafd453
+		summarizeBy: none
+		sourceColumn: DATA
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQCLIENTE
+		dataType: string
+		lineageTag: 76a4a616-5daa-46ef-a2d6-d7ea68da0a98
+		summarizeBy: none
+		sourceColumn: SEQCLIENTE
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQVENDEDOR
+		dataType: string
+		lineageTag: 80575530-016a-44b8-8a9a-153fe386db09
+		summarizeBy: none
+		sourceColumn: SEQVENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQPRODUTO
+		dataType: string
+		lineageTag: 3612836c-e3bd-4d0f-a3a3-cca52189d87e
+		summarizeBy: none
+		sourceColumn: SEQPRODUTO
+
+		annotation SummarizationSetBy = Automatic
+
+	column GRUPOPROD
+		dataType: string
+		lineageTag: a9968175-cf47-4553-8f35-a1bbe715c585
+		summarizeBy: none
+		sourceColumn: GRUPOPROD
+
+		annotation SummarizationSetBy = Automatic
+
+	column QTDVENDA
+		dataType: double
+		lineageTag: 3e1811d0-cffd-4eb1-95b8-e45b8b5f4ea0
+		summarizeBy: sum
+		sourceColumn: QTDVENDA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PESOVENDA
+		dataType: double
+		lineageTag: aef41ba7-5634-4876-9920-08a8bd47aa42
+		summarizeBy: sum
+		sourceColumn: PESOVENDA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VLRVENDA
+		dataType: double
+		lineageTag: 9f010a21-d94a-4831-b5fb-40eeb116d7c1
+		summarizeBy: sum
+		sourceColumn: VLRVENDA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column QTDDEVOLUCAO
+		dataType: double
+		lineageTag: e1759eed-b50f-4095-b72a-ba34b69c6162
+		summarizeBy: sum
+		sourceColumn: QTDDEVOLUCAO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PESODEVOLUCAO
+		dataType: double
+		lineageTag: d399fab9-b6ba-4522-b605-71fd74046d64
+		summarizeBy: sum
+		sourceColumn: PESODEVOLUCAO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VLRDEVOLUCAO
+		dataType: double
+		lineageTag: a597d558-f3f3-404c-b8ff-0d8d263c0e48
+		summarizeBy: sum
+		sourceColumn: VLRDEVOLUCAO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DTAATIVACAO
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9b16d49e-76ad-4174-b50f-0976e947520e
+		summarizeBy: none
+		sourceColumn: DTAATIVACAO
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DCVV_META_VENDADEVOLUCAO = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true]),
+				    DATAVALE = Fonte{[Schema="DATAVALE"]}[Data],
+				    DCVV_META_VENDADEVOLUCAO1 = DATAVALE{[Name="DCVV_META_VENDADEVOLUCAO"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(DCVV_META_VENDADEVOLUCAO1,{{"SEQCLIENTE", type text}, {"SEQVENDEDOR", type text}, {"SEQPRODUTO", type text}, {"GRUPOPROD", type text}, {"ANOMES", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Exception
+

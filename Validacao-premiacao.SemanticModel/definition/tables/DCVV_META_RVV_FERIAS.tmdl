@@ -1,0 +1,99 @@
+table DCVV_META_RVV_FERIAS
+	lineageTag: 817b7b2d-7bc8-42dc-8ab8-8bcf5a9b9470
+
+	column SEQCLIENTE
+		dataType: string
+		lineageTag: 211137f2-cfc1-4108-8694-1e92eab9c640
+		summarizeBy: none
+		sourceColumn: SEQCLIENTE
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQVENDEDOR
+		dataType: string
+		lineageTag: ab1f45af-7645-493d-a3c6-230a3a2ea3aa
+		summarizeBy: none
+		sourceColumn: SEQVENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column ANOMES
+		dataType: string
+		lineageTag: 3c974d53-4847-4ffa-ae3e-76f5e56d2778
+		summarizeBy: none
+		sourceColumn: ANOMES
+
+		annotation SummarizationSetBy = Automatic
+
+	column MES_ATIVACAO
+		dataType: string
+		lineageTag: 487cd0cf-6bd4-4867-9e01-40c111f7bdbc
+		summarizeBy: none
+		sourceColumn: MES_ATIVACAO
+
+		annotation SummarizationSetBy = Automatic
+
+	column SALDO_MES_2
+		dataType: double
+		lineageTag: c3cd2e50-6db1-4119-b58c-20b4d4801d99
+		summarizeBy: sum
+		sourceColumn: SALDO_MES_2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SALDO_MES_1
+		dataType: double
+		lineageTag: a63ee1ed-d593-4d49-8f66-ac2e077646bf
+		summarizeBy: sum
+		sourceColumn: SALDO_MES_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SALDO_MES_ATUAL
+		dataType: double
+		lineageTag: c91d9900-49b1-472d-b1cc-e2b52ea979fe
+		summarizeBy: sum
+		sourceColumn: SALDO_MES_ATUAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CONTAGEM
+		dataType: double
+		lineageTag: 833abd8f-97f0-412f-a1c3-7afe3f5a94b5
+		summarizeBy: sum
+		sourceColumn: CONTAGEM
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DTAPEDIDO
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: bcf9bce4-15f9-42c8-ad9f-bb1e12d69e30
+		summarizeBy: none
+		sourceColumn: DTAPEDIDO
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DCVV_META_RVV_FERIAS = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true]),
+				    DATAVALE = Fonte{[Schema="DATAVALE"]}[Data],
+				    DCVV_META_RVV_FERIAS1 = DATAVALE{[Name="DCVV_META_RVV_FERIAS"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(DCVV_META_RVV_FERIAS1,{{"SEQCLIENTE", type text},{"ANOMES", type text}, {"SEQVENDEDOR", type text}, {"MES_ATIVACAO", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

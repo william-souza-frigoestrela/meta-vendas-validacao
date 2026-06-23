@@ -1,0 +1,126 @@
+table FPBI_RESULTADOMETA
+	lineageTag: 60b3e5d5-9470-42e2-aa7b-d5315c0ce0d4
+
+	column SEQPESSOA
+		dataType: string
+		lineageTag: 3a71cbb8-3e39-4f8c-9223-23fa2b034c98
+		summarizeBy: none
+		sourceColumn: SEQPESSOA
+
+		annotation SummarizationSetBy = Automatic
+
+	column NROEMPRESA
+		dataType: string
+		lineageTag: b9afbed6-f3d0-4d37-94df-ee2b3f62044c
+		summarizeBy: none
+		sourceColumn: NROEMPRESA
+
+		annotation SummarizationSetBy = Automatic
+
+	column MATRICULA
+		dataType: string
+		lineageTag: 8d052691-28f0-4408-aa2a-e6e03de21bb8
+		summarizeBy: none
+		sourceColumn: MATRICULA
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUS
+		dataType: string
+		lineageTag: ddfb38db-a85d-4ce8-9d94-b234c1413b7a
+		summarizeBy: none
+		sourceColumn: STATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	column NOMERAZAO
+		dataType: string
+		lineageTag: 3404d278-13ef-4bcd-957f-49305df081bf
+		summarizeBy: none
+		sourceColumn: NOMERAZAO
+
+		annotation SummarizationSetBy = Automatic
+
+	column DTAFINAL
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6a1d57be-333a-4915-a08d-5ee521468f6d
+		summarizeBy: none
+		sourceColumn: DTAFINAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CATEGORIA
+		dataType: string
+		lineageTag: c36a0fc1-7058-4bd4-9221-77c7cf804110
+		summarizeBy: none
+		sourceColumn: CATEGORIA
+
+		annotation SummarizationSetBy = Automatic
+
+	column RESULMETA
+		dataType: double
+		lineageTag: c5a431c0-c585-4f83-b1f8-7ef30d94a40d
+		summarizeBy: sum
+		sourceColumn: RESULMETA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TETO
+		dataType: double
+		lineageTag: 37e71bb4-f976-4c75-b1cb-16343d7634a8
+		summarizeBy: sum
+		sourceColumn: TETO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RESULTETO
+		dataType: double
+		lineageTag: f196f04d-aa67-4290-8613-b52c239fe534
+		summarizeBy: sum
+		sourceColumn: RESULTETO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DTABASE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8cd6b95a-a757-4996-8bcb-b74c08f168a5
+		summarizeBy: none
+		sourceColumn: DTABASE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DESCRICAO
+		dataType: string
+		lineageTag: 530f5c18-f0cb-4e94-97d6-20a521459c58
+		summarizeBy: none
+		sourceColumn: DESCRICAO
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FPBI_RESULTADOMETA = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true]),
+				    DATAVALE = Fonte{[Schema="DATAVALE"]}[Data],
+				    FPBI_RESULTADOMETA1 = DATAVALE{[Name="FPBI_RESULTADOMETA"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(FPBI_RESULTADOMETA1,{{"SEQPESSOA", type text}, {"NROEMPRESA", type text}, {"DTABASE", type date}, {"DTAFINAL", type date}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

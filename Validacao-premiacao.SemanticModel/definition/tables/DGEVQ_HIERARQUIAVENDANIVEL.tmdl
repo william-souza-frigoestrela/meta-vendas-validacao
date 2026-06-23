@@ -1,0 +1,219 @@
+table DGEVQ_HIERARQUIAVENDANIVEL
+	lineageTag: 7bdac27c-b971-4ff9-be8c-e458efc3312f
+
+	column DTAFINAL
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 67d6879c-d4ed-4f60-847c-4efcbcf9a3f5
+		summarizeBy: none
+		sourceColumn: DTAFINAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column MESANO
+		dataType: string
+		lineageTag: 50a48aa8-f696-490d-bbaf-fcaf23512249
+		summarizeBy: none
+		sourceColumn: MESANO
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQVENDEDOR
+		dataType: string
+		lineageTag: e3096e70-94e7-412e-8402-4ef5c41f0419
+		summarizeBy: none
+		sourceColumn: SEQVENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column VENDEDOR
+		dataType: string
+		lineageTag: 96e86ff6-5f0f-4133-b357-c22863b511e1
+		summarizeBy: none
+		sourceColumn: VENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column CODVENDEDORCAT
+		dataType: string
+		lineageTag: e520a127-4b56-4bb7-810b-51f49ded21f5
+		summarizeBy: none
+		sourceColumn: CODVENDEDORCAT
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUSVENDEDOR
+		dataType: string
+		lineageTag: 38e2d9a2-88ad-4ca8-9ce4-c0341f857b56
+		summarizeBy: none
+		sourceColumn: STATUSVENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQSUPERVISOR
+		dataType: string
+		lineageTag: 6f6ee3e6-ff9c-4a1a-9e93-58df9076cee5
+		summarizeBy: none
+		sourceColumn: SEQSUPERVISOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SUPERVISOR
+		dataType: string
+		lineageTag: 6c0c8c57-d46b-4289-a78a-cc1adc932935
+		summarizeBy: none
+		sourceColumn: SUPERVISOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUSSUPERVISOR
+		dataType: string
+		lineageTag: d4911bf8-5141-4b0c-935b-7ff4b37ce5da
+		summarizeBy: none
+		sourceColumn: STATUSSUPERVISOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQGERENTEVENDA
+		dataType: string
+		lineageTag: 980592e6-7bf1-43dd-9e07-37465560246b
+		summarizeBy: none
+		sourceColumn: SEQGERENTEVENDA
+
+		annotation SummarizationSetBy = Automatic
+
+	column GERENTEVENDA
+		dataType: string
+		lineageTag: 9e133c04-4b7f-46a2-894c-1c13194ca870
+		summarizeBy: none
+		sourceColumn: GERENTEVENDA
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUSGERENTEVENDAS
+		dataType: string
+		lineageTag: df64b9fe-16ac-4aac-8f50-09702a2923e9
+		summarizeBy: none
+		sourceColumn: STATUSGERENTEVENDAS
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQGERENTEREGIONAL
+		dataType: double
+		lineageTag: 6d39f844-43f7-4641-b85b-bdecdf3c518a
+		summarizeBy: sum
+		sourceColumn: SEQGERENTEREGIONAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GERENTEREGIONAL
+		dataType: string
+		lineageTag: c99ffb38-5e13-4736-98c1-e5a40ed03629
+		summarizeBy: none
+		sourceColumn: GERENTEREGIONAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUSGERENTEREGIONAL
+		dataType: string
+		lineageTag: 1cb49dd0-e4f0-4cb8-b41f-04af549b1ddf
+		summarizeBy: none
+		sourceColumn: STATUSGERENTEREGIONAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQGERENTECOMERCIAL
+		dataType: double
+		lineageTag: ec67cb67-3df9-4b4b-880c-4b169fbe6525
+		summarizeBy: sum
+		sourceColumn: SEQGERENTECOMERCIAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GERENTECOMERCIAL
+		dataType: string
+		lineageTag: 9caa8dab-02d1-40d0-9e53-8e97f7513bfd
+		summarizeBy: none
+		sourceColumn: GERENTECOMERCIAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUSGERENTECOMERCIAL
+		dataType: string
+		lineageTag: 3c958b8e-78d8-4e21-ad5e-e8f64ebd27b3
+		summarizeBy: none
+		sourceColumn: STATUSGERENTECOMERCIAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQGERENTENACIONAL
+		dataType: double
+		lineageTag: 509ae00b-121a-42a1-81b3-1accb5a8802b
+		summarizeBy: sum
+		sourceColumn: SEQGERENTENACIONAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GERENTENACIONAL
+		dataType: string
+		lineageTag: 0ac13f2a-ed98-449e-a337-4a5a5b54942f
+		summarizeBy: none
+		sourceColumn: GERENTENACIONAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUSGERENTENACIONAL
+		dataType: string
+		lineageTag: 2b7d3b6e-87a0-4b81-9f09-1df5c2d242fd
+		summarizeBy: none
+		sourceColumn: STATUSGERENTENACIONAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQDIRETORCOMERCIAL
+		dataType: double
+		lineageTag: 648ce0a1-bcb7-463f-8dff-6bd401ab6580
+		summarizeBy: sum
+		sourceColumn: SEQDIRETORCOMERCIAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DIRETORCOMERCIAL
+		dataType: string
+		lineageTag: 8208b783-b90c-4e47-a136-f2881e8f9ae5
+		summarizeBy: none
+		sourceColumn: DIRETORCOMERCIAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUSDIRETORCOMERCIAL
+		dataType: string
+		lineageTag: 2e0243ec-9c77-4d04-b053-c5247fb8d986
+		summarizeBy: none
+		sourceColumn: STATUSDIRETORCOMERCIAL
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DGEVQ_HIERARQUIAVENDANIVEL = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("datavale", [HierarchicalNavigation=true]),
+				    DATAVALE = Fonte{[Schema="DATAVALE"]}[Data],
+				    DGEVQ_HIERARQUIAVENDANIVEL1 = DATAVALE{[Name="DGEVQ_HIERARQUIAVENDANIVEL"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(DGEVQ_HIERARQUIAVENDANIVEL1,{{"SEQVENDEDOR", type text}, {"SEQSUPERVISOR", type text}, {"SEQGERENTEVENDA", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

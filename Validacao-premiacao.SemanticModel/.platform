@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Validacao-premiacao"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f4d9f424-3589-4964-8857-799d94952303"
+  }
+}

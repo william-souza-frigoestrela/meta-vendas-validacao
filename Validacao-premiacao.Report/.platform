@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Validacao-premiacao"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "c35e0ab0-8617-44bd-a230-a5cf82737749"
+  }
+}

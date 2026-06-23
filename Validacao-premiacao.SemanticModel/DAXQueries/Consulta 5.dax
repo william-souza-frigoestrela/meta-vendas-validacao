@@ -1,0 +1,74 @@
+
+EVALUATE
+FILTER(
+    DCVV_META_VENDADEVOLUCAOMIX,
+    DCVV_META_VENDADEVOLUCAOMIX[SEQVENDEDOR] = "278511" &&
+    DCVV_META_VENDADEVOLUCAOMIX[ANOMES] = 202605
+)
+
+
+
+EVALUATE
+FILTER(
+    DISTINCT(FPBI_ESTRELA_METAS[Meta]),
+    FPBI_ESTRELA_METAS[Meta] <> BLANK()
+)
+
+
+
+
+EVALUATE
+ADDCOLUMNS(
+    FILTER(
+        FPBI_ESTRELA_METAS,
+        FPBI_ESTRELA_METAS[ANOMES] = "202605" &&
+        FPBI_ESTRELA_METAS[SEQVENDEDOR] = "278511"
+    ),
+
+    "Meta Valor", FPBI_ESTRELA_METAS[Meta]
+)
+
+
+
+EVALUATE
+ADDCOLUMNS(
+    FILTER(
+        FPBI_ESTRELA_METAS,
+        FPBI_ESTRELA_METAS[ANOMES] = "202605" &&
+        FPBI_ESTRELA_METAS[SEQVENDEDOR] = "278511"
+    ),
+
+    "Meta Atual", FPBI_ESTRELA_METAS[Meta],
+
+    "Comparação Exata",
+    IF(
+        FPBI_ESTRELA_METAS[Meta] = "Faturamento total",
+        "OK",
+        "NÃO BATE"
+    )
+)
+
+
+
+
+EVALUATE
+ADDCOLUMNS(
+    FILTER(
+        FPBI_ESTRELA_METAS,
+        FPBI_ESTRELA_METAS[ANOMES] = "202605" &&
+        FPBI_ESTRELA_METAS[SEQVENDEDOR] = "278511"
+    ),
+
+    "Meta Original", FPBI_ESTRELA_METAS[Meta],
+    "Meta Normalizada", TRIM(UPPER(FPBI_ESTRELA_METAS[Meta])),
+
+    "Comparação",
+    IF(
+        TRIM(UPPER(FPBI_ESTRELA_METAS[Meta])) = "FATURAMENTO TOTAL",
+        "OK",
+        "ERRO"
+    )
+)
+
+
+

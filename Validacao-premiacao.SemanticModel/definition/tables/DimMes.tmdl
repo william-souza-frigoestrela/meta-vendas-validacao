@@ -1,0 +1,64 @@
+table DimMes
+	lineageTag: 7d1d2c92-1b96-4549-96d1-3d464df25432
+
+	column Ano2
+		formatString: 0
+		lineageTag: 56097878-2954-41a2-b788-098a146d967e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: dCalendario[Ano2]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mês num'
+		formatString: 0
+		lineageTag: 9fe57644-01f7-4948-b539-88ac85466eaa
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: dCalendario[Mês num]
+
+		annotation SummarizationSetBy = Automatic
+
+	column AnoMes
+		lineageTag: 48aae2c8-bea6-4608-b3ee-01aaddc6edb0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [AnoMes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column InicioMes
+		formatString: General Date
+		lineageTag: 4ebf0a1c-98ad-4c20-979b-28cd06abb9e8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [InicioMes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column FimMes
+		formatString: General Date
+		lineageTag: 3040f08c-f426-461d-ae38-d1d2effb6f86
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [FimMes]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimMes = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS(
+				    SUMMARIZE(
+				        DCalendario,
+				        DCalendario[Ano2],
+				        DCalendario[Mês num]
+				    ),
+				    "AnoMes", FORMAT(DATE(DCalendario[Ano2], DCalendario[Mês num], 1), "YYYYMM"),
+				    "InicioMes", CALCULATE(MIN(DCalendario[Date])),
+				    "FimMes", CALCULATE(MAX(DCalendario[Date]))
+				)
+
+	annotation PBI_Id = 4a4eeb60c64d4b47a280ed673f7295d1
+

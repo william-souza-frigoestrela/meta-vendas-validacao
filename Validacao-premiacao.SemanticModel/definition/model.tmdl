@@ -1,0 +1,33 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["fTotvs","DCV_VENDEDORHIERARQUIANIVEL","FPBI_ESTRELA_METAS","DCVV_META_VENDADEVOLUCAO","DCVV_META_VENDADEVOLUCAOCOMERCIAL","DGEVQ_HIERARQUIAVENDANIVEL","DCVV_META_VENDADEVOLUCAOMIXRENTAVEL","DCVV_META_VENDADEVOLUCAOMIX","produtosMIXRENTAVEL","mixDiversos","DCVV_META_RVV","DCVV_META_RVV_FERIAS","FPBI_RESULTADOMETA"]
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+
+ref table fTotvs
+ref table DCV_VENDEDORHIERARQUIANIVEL
+ref table FPBI_ESTRELA_METAS
+ref table DCVV_META_VENDADEVOLUCAO
+ref table DCVV_META_VENDADEVOLUCAOCOMERCIAL
+ref table DGEVQ_HIERARQUIAVENDANIVEL
+ref table DCVV_META_VENDADEVOLUCAOMIXRENTAVEL
+ref table DCVV_META_VENDADEVOLUCAOMIX
+ref table produtosMIXRENTAVEL
+ref table mixDiversos
+ref table DCVV_META_RVV
+ref table DCVV_META_RVV_FERIAS
+ref table dCalendario
+ref table DimMes
+ref table Medidas
+ref table FPBI_RESULTADOMETA
+
+ref cultureInfo pt-BR
+

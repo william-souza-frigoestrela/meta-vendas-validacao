@@ -1,0 +1,68 @@
+table produtosMIXRENTAVEL
+	lineageTag: b614173c-963d-4b60-a4f7-003529e2cc96
+
+	column SEQVENDEDOR
+		dataType: string
+		lineageTag: fcbd376e-2383-4c9d-a5ce-bbee2877d347
+		summarizeBy: none
+		sourceColumn: SEQVENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQPRODUTO
+		dataType: string
+		lineageTag: aac161d9-7ef0-419a-85c0-8a7e59fe95c3
+		summarizeBy: none
+		sourceColumn: SEQPRODUTO
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQMETA
+		dataType: int64
+		formatString: 0
+		lineageTag: eee3d186-154e-4f6a-bc8a-9bf92cf43143
+		summarizeBy: sum
+		sourceColumn: SEQMETA
+
+		annotation SummarizationSetBy = Automatic
+
+	column META
+		dataType: string
+		lineageTag: 3eecff67-576b-404e-b24c-4d7c3f2b1be2
+		summarizeBy: none
+		sourceColumn: META
+
+		annotation SummarizationSetBy = Automatic
+
+	column ANOMES
+		dataType: string
+		lineageTag: 45f9dc5c-7f59-4d2a-ae4f-8a0934ea608e
+		summarizeBy: none
+		sourceColumn: ANOMES
+
+		annotation SummarizationSetBy = Automatic
+
+	column DTAVALIDADE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ec7c4c1d-c533-4b59-8d3f-2c724a6acc6d
+		summarizeBy: none
+		sourceColumn: DTAVALIDADE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition produtosMIXRENTAVEL = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("datavale", [HierarchicalNavigation=true, Query="SELECT pmv.CodLink2 as SeqVendedor,#(lf)       pmv.CodLink as SeqProduto,#(lf)       pm.SeqParamMeta as SeqMeta,#(lf)       'MIX RENTÁVEL'as META,#(lf)       TO_CHAR(pmp.DtaValidade, 'YYYYMM') AS Anomes,#(lf)       pmp.DtaValidade#(lf)  FROM DGE_PARAMMETA pm, DGE_PARAMMETAPLANTA pmp, DGE_PARAMMETAVALOR pmv#(lf)WHERE pmv.SeqParamMetaPlanta = pmp.SeqParamMetaPlanta#(lf)   AND pmp.SeqParamMeta = pm.SeqParamMeta#(lf)   AND pmp.DtaValidade >= '01-JAN-2025'#(lf)   AND pm.SeqParamMeta = 22#(lf)"]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"DTAVALIDADE", type date},{"SEQPRODUTO", type text}, {"SEQVENDEDOR", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

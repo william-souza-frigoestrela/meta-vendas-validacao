@@ -1,0 +1,875 @@
+table Medidas
+	lineageTag: 58ea3b43-413c-4420-9ccd-d824d0f7dfae
+
+	measure 'Meta valor' =
+			SUM(FPBI_ESTRELA_METAS[VLRMETA])
+			
+			/*
+			var seqmeta = SELECTEDVALUE(FPBI_ESTRELA_METAS[SEQMETA])
+			RETURN
+			if (seqmeta=17,
+			    SELECTEDVALUE(FPBI_ESTRELA_METAS[VLRMETA])*0.1,SELECTEDVALUE(FPBI_ESTRELA_METAS[VLRMETA])
+			)*/
+		displayFolder: Metas
+		lineageTag: 02b5adfb-a7dc-4417-8839-e179dfa697c6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Peso bovino' = ```
+			
+			var venda= 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[PESOVENDA]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="1"
+			    )
+			
+			var devolucao = 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[PESODEVOLUCAO]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="1")
+			
+			
+			RETURN
+			venda-devolucao
+			```
+		displayFolder: Resultado realizado
+		lineageTag: 41b80801-a8a8-41fd-8777-c9d37e126c4a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Resultado = ```
+			
+			SWITCH(
+			    SELECTEDVALUE(FPBI_ESTRELA_METAS[Meta]),
+			
+			    "Peso bovino",
+			        [Peso bovino],
+			
+			    "Peso suinos",
+			        [Peso suino],
+			
+			    "Peso industrializados",
+			        [Peso industrializado],
+			
+			    "Peso total",
+			        [Peso total],
+			
+			    "Faturamento Suinos",
+			        [Faturamento suino],
+			
+			    "Faturamento bovinos",
+			        [Faturamento bovino],
+			
+			    "Faturamento industrializados",
+			        [Faturamento industrializados],
+			
+			    "Faturamento total",
+			        [Faturamento total],
+			
+			    "Itens totais",
+			        [Itens totais],
+			
+			    "% Devolução",
+			        [% Devolucao Exibicao],
+			
+			    "MIX BOVINO",
+			        [Peso Mix],
+			
+			    "MIX SUINO",
+			        [Peso Mix],
+			
+			    "MIX INDUSTRIALIZADOS",
+			        [Peso Mix],
+			
+			    "POSITIVAÇÃO",
+			        [Positivação],
+			
+			    "RECORRÊNCIA POSITIVAÇÃO",
+			        [Recorrencia positivacao],
+			
+			    "MIX RENTÁVEL",
+			        [Peso Mix Rentável],
+			
+			
+			    BLANK()
+			)
+			
+			```
+		displayFolder: Resultado realizado
+		lineageTag: 2b043924-9086-4163-a6cb-38c8fdd79098
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Peso suino' = ```
+			
+			var venda= 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[PESOVENDA]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="3"
+			    )
+			
+			var devolucao = 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[PESODEVOLUCAO]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="3")
+			
+			
+			RETURN
+			venda-devolucao
+			```
+		displayFolder: Resultado realizado
+		lineageTag: 2061d4d6-399c-444e-b961-9fc897fec454
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Peso industrializado' = ```
+			
+			var venda= 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[PESOVENDA]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="2"
+			    )
+			
+			var devolucao = 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[PESODEVOLUCAO]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="2")
+			
+			
+			RETURN
+			venda-devolucao
+			```
+		displayFolder: Resultado realizado
+		lineageTag: 8c385eef-8736-4679-912e-3127073ec1d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Peso total' = ```
+			
+			var venda= 
+			    
+			        SUM(DCVV_META_VENDADEVOLUCAO[PESOVENDA])
+			        
+			    
+			
+			var devolucao = 
+			    
+			        SUM(DCVV_META_VENDADEVOLUCAO[PESODEVOLUCAO])
+			        
+			
+			
+			RETURN
+			venda-devolucao
+			```
+		displayFolder: Resultado realizado
+		lineageTag: b294adba-c6dc-45d4-9952-c24aefa6e42d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Faturamento bovino' = ```
+			
+			var venda= 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[VLRVENDA]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="1"
+			    )
+			
+			var devolucao = 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[VLRDEVOLUCAO]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="1")
+			
+			
+			RETURN
+			venda-devolucao
+			```
+		displayFolder: Resultado realizado
+		lineageTag: 2c93e7e0-55b7-4fce-9721-ee2c2defce3c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Faturamento suino' = ```
+			
+			var venda= 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[VLRVENDA]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="3"
+			    )
+			
+			var devolucao = 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[VLRDEVOLUCAO]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="3")
+			
+			
+			RETURN
+			venda-devolucao
+			```
+		displayFolder: Resultado realizado
+		lineageTag: 50f0a19c-7d98-44b0-8f09-e64989efbe3a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Faturamento industrializados' = ```
+			
+			var venda= 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[VLRVENDA]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="2"
+			    )
+			
+			var devolucao = 
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAO[VLRDEVOLUCAO]),
+			        DCVV_META_VENDADEVOLUCAO[GRUPOPROD]="2")
+			
+			
+			RETURN
+			venda-devolucao
+			```
+		displayFolder: Resultado realizado
+		lineageTag: 2f198d03-9d6f-4dac-b3cb-06e823e532d1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Faturamento total' = ```
+			
+			var venda= 
+			
+			        SUM(DCVV_META_VENDADEVOLUCAO[VLRVENDA])
+			
+			
+			
+			var devolucao = 
+			
+			        SUM(DCVV_META_VENDADEVOLUCAO[VLRDEVOLUCAO])
+			
+			
+			
+			RETURN
+			venda-devolucao
+			```
+		displayFolder: Resultado realizado
+		lineageTag: 6f130248-ac8b-4596-bfa7-64d66e98dd54
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Itens totais' = ```
+			
+			VAR ProdutosValidos =
+			    FILTER(
+			        ADDCOLUMNS(
+			            SUMMARIZE(
+			                DCVV_META_VENDADEVOLUCAO,
+			                DCVV_META_VENDADEVOLUCAO[SEQCLIENTE],
+			                DCVV_META_VENDADEVOLUCAO[SEQPRODUTO]
+			            ),
+			            "NetPeso",
+			            CALCULATE(
+			                SUM(DCVV_META_VENDADEVOLUCAO[PESOVENDA]) -
+			                SUM(DCVV_META_VENDADEVOLUCAO[PESODEVOLUCAO])
+			            )
+			        ),
+			        [NetPeso] > 0   -- << troca por VLRVENDA - VLRDEVOLUCAO se for valor
+			    )
+			RETURN
+			COUNTROWS(ProdutosValidos)
+			
+			```
+		formatString: 0
+		displayFolder: Resultado realizado
+		lineageTag: 8300ea62-8d60-482f-a5fe-d0dd87023f0b
+
+	measure '% Devolucao' = ```
+			
+			
+			var pesovenda = 
+			    sum(DCVV_META_VENDADEVOLUCAOCOMERCIAL[PESOVENDA])
+			
+			var pesodevolucao = 
+			    SUM(DCVV_META_VENDADEVOLUCAOCOMERCIAL[PESODEVOLUCAO])
+			
+			
+			RETURN
+			
+			
+			DIVIDE(pesodevolucao,pesovenda,0)
+			```
+		formatString: 0.0000
+		displayFolder: Resultado realizado
+		lineageTag: 9f7173e0-9e3f-42b4-ab57-806c8d5dea15
+
+	measure '% Devolucao Exibicao' = FORMAT([% Devolucao], "0.00%")
+		displayFolder: Resultado realizado
+		lineageTag: b642657c-6eea-4d01-81a4-8f75adc98a8b
+
+	measure 'Peso Mix' =
+			
+			VAR MetaAtual      = SELECTEDVALUE(FPBI_ESTRELA_METAS[META])
+			VAR DtaFimPeriodo  = SELECTEDVALUE(FPBI_ESTRELA_METAS[DTAVALIDADE])
+			
+			-- Calcula início da quinzena a partir da DTAVALIDADE da meta
+			VAR DtaInicioPeriodo =
+			    IF(
+			        DAY(DtaFimPeriodo) <= 15,
+			        DATE(YEAR(DtaFimPeriodo), MONTH(DtaFimPeriodo), 1),   -- 1ª quinzena: dia 1
+			        DATE(YEAR(DtaFimPeriodo), MONTH(DtaFimPeriodo), 16)   -- 2ª quinzena: dia 16
+			    )
+			
+			-- Produtos válidos para esta meta + vendedor + quinzena exata
+			-- (filtro de vendedor já propagado via relacionamento mixDiversos → DCV_VENDEDORHIERARQUIANIVEL)
+			VAR ProdutosMix =
+			    SELECTCOLUMNS(
+			        FILTER(
+			            mixDiversos,
+			            mixDiversos[META]        = MetaAtual      &&   -- MIX BOVINO / SUINO / etc
+			            mixDiversos[DTAVALIDADE] = DtaFimPeriodo        -- quinzena exata
+			        ),
+			        "PROD", mixDiversos[SEQPRODUTO]
+			    )
+			
+			RETURN
+			IF(
+			    NOT ISBLANK(DtaFimPeriodo) && NOT ISBLANK(MetaAtual),
+			    CALCULATE(
+			        SUMX(
+			            DCVV_META_VENDADEVOLUCAOMIX,
+			            DCVV_META_VENDADEVOLUCAOMIX[PESOVENDA] -
+			            DCVV_META_VENDADEVOLUCAOMIX[PESODEVOLUCAO]
+			        ),
+			        -- Filtra pelo período exato da quinzena
+			        DCVV_META_VENDADEVOLUCAOMIX[DTAEMISSAO] >= DtaInicioPeriodo,
+			        DCVV_META_VENDADEVOLUCAOMIX[DTAEMISSAO] <= DtaFimPeriodo,
+			        -- Filtra pelos produtos do mix desta quinzena
+			        TREATAS(ProdutosMix, DCVV_META_VENDADEVOLUCAOMIX[SEQPRODUTO])
+			    )
+			)
+		displayFolder: Resultado realizado
+		lineageTag: cacbc86f-9b33-4c6c-b1ee-3ddb28677956
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Realizado peso total' =
+			
+			DIVIDE([Peso total],[Meta valor],0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: % Realizado
+		lineageTag: 7fd9b62b-ae2b-415a-b367-644eb6af43a5
+
+	measure '% Realizado devolucao' =
+			
+			DIVIDE([Meta valor],[% Devolucao],999)
+		displayFolder: % Realizado
+		lineageTag: 082ba3be-bdf0-4f28-ae63-0700f1a3a4b6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Realizado faturamento bovinos' =
+			
+			DIVIDE([Faturamento bovino],[Meta valor],0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: % Realizado
+		lineageTag: 7d464d80-0edb-493c-a2d5-fa900782d465
+
+	measure '% Realizado faturamento suinos' =
+			
+			DIVIDE([Faturamento suino],[Meta valor],0)
+		displayFolder: % Realizado
+		lineageTag: b105b266-4125-4a8f-b90e-98ae36887218
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Realizado faturamento industrializados' =
+			
+			DIVIDE([Faturamento industrializados],[Meta valor],0)
+		displayFolder: % Realizado
+		lineageTag: d2803252-b86f-45b3-84c4-7b6242f4c856
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Realizado faturamento total' =
+			
+			DIVIDE([Faturamento total],[Meta valor],0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: % Realizado
+		lineageTag: 52b3c650-4cc3-4aba-9d2f-357267ff7a7f
+
+	measure '% Realizado itens totais' =
+			
+			DIVIDE([Itens totais],[Meta valor],0)
+		displayFolder: % Realizado
+		lineageTag: 51552078-0800-4af4-b84d-9164308781fe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Realizado mix' =
+			
+			DIVIDE([Peso Mix],[Meta valor],0)
+		displayFolder: % Realizado
+		lineageTag: d4d743f6-a36c-4837-bcb5-4644caa08073
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Realizado peso bovino' =
+			
+			DIVIDE([Peso bovino],[Meta valor],0)
+		displayFolder: % Realizado
+		lineageTag: e49fc224-585d-4b3d-ac98-ebcd0e6fa63a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Realizado peso suino' =
+			
+			DIVIDE([Peso suino],[Meta valor],0)
+		displayFolder: % Realizado
+		lineageTag: 3ab646c9-e1d6-43ff-be70-3fedd0d43a4a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Realizado peso industrializados' =
+			
+			DIVIDE([Peso industrializado],[Meta valor],0)
+		displayFolder: % Realizado
+		lineageTag: fdab39b0-74cf-4846-a872-0b5dc5baf26c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Realizado' = ```
+			
+			SWITCH(
+			    SELECTEDVALUE(FPBI_ESTRELA_METAS[Meta]),
+			
+			    "Peso bovino",
+			        [% Realizado peso bovino],
+			
+			    "Peso suinos",
+			        [% Realizado peso suino],
+			
+			    "Peso industrializados",
+			        [% Realizado peso industrializados],
+			
+			    "Peso total",
+			        [% Realizado peso total],
+			
+			    "Faturamento Suinos",
+			        [% Realizado faturamento suinos],
+			
+			    "Faturamento bovinos",
+			        [% Realizado faturamento bovinos],
+			
+			    "Faturamento industrializados",
+			        [% Realizado faturamento industrializados],
+			
+			    "Faturamento total",
+			        [% Realizado faturamento total],
+			
+			    "Itens totais",
+			        [% Realizado itens totais],
+			
+			    "% Devolução",
+			        [% Realizado devolucao],
+			
+			    "MIX BOVINO",
+			        [% Realizado mix],
+			
+			    "MIX SUINO",
+			        [% Realizado mix],
+			
+			    "MIX INDUSTRIALIZADOS",
+			        [% Realizado mix],
+			
+			    "RECORRÊNCIA POSITIVAÇÃO",
+			        [% Realizado recorrecnia positivacao],
+			
+			    "POSITIVAÇÃO",
+			        [% Realizado positivacao],
+			
+			    "MIX RENTÁVEL",
+			        [% Realizado mix rentavel],
+			
+			    BLANK()
+			)
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: % Realizado
+		lineageTag: c1dbd111-a5d0-4e0d-86b1-4f8cd4119146
+
+	measure 'Salario vendedor' =
+			
+			SELECTEDVALUE(fTotvs[VLRSALARIO])
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: f210c8a2-b6cf-4cde-b12c-e22ca998ccc6
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure Bonificação = ```
+			
+			var seqnivel = SELECTEDVALUE(DCV_VENDEDORHIERARQUIANIVEL[SEQNIVEL])
+			var varejo_sul = seqnivel in {"31","37"}
+			
+			var base_percent_devolucao =  
+			    IF(varejo_sul,[Salario vendedor]*0.01,[Salario vendedor]*0.04)
+			
+			var base_percent_peso_total=
+			    IF(varejo_sul,[Salario vendedor]*0.04,[Salario vendedor]*0.03)
+			
+			var base_percent_faturmanto_total = 
+			    IF(varejo_sul,[Salario vendedor]*0.04,[Salario vendedor]*0.03)
+			
+			var base_percent_peso_suino = 
+			    IF(varejo_sul,[Salario vendedor]*0.08,[Salario vendedor]*0.05)
+			
+			var base_percent_peso_industrializados = 
+			    IF(varejo_sul,[Salario vendedor]*0.15,[Salario vendedor]*0.1)
+			
+			var base_percent_faturamento_suino = 
+			    IF(varejo_sul,[Salario vendedor]*0.06,[Salario vendedor]*0.05)
+			
+			var base_percent_mix_suino = 
+			    if(varejo_sul,[Salario vendedor]*0.025,[Salario vendedor]*0.02)
+			
+			var base_percent_recorrecnia_positivacao = 
+			    if(varejo_sul,[Salario vendedor]*0.1,[Salario vendedor]*0.05)
+			
+			RETURN
+			
+			SWITCH(
+			    SELECTEDVALUE(FPBI_ESTRELA_METAS[Meta]),
+			
+			        "Peso bovino",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado peso bovino] <0.70 ,0,
+			                [% Realizado peso bovino] >=0.70 && [% Realizado peso bovino] < 0.80, ([Salario vendedor]*0.05)*0.2,
+			                [% Realizado peso bovino] >=0.80 && [% Realizado peso bovino] < 0.90, ([Salario vendedor]*0.05)*0.4,
+			                [% Realizado peso bovino] >=0.90 && [% Realizado peso bovino] < 1, ([Salario vendedor]*0.05)*0.75,
+			                [% Realizado peso bovino] >=1 && [% Realizado peso bovino] < 1.05, ([Salario vendedor]*0.05)*1,
+			                [% Realizado peso bovino] >=1 && [% Realizado peso bovino] < 1.05, ([Salario vendedor]*0.05)*1,
+			                [% Realizado peso bovino] >=1.05 && [% Realizado peso bovino] < 1.10, ([Salario vendedor]*0.05)*1.10,
+			                [% Realizado peso bovino] >=1.10 && [% Realizado peso bovino] < 1.15, ([Salario vendedor]*0.05)*1.15,
+			                ([Salario vendedor]*0.05)*1.20
+			            ),
+			
+			        "Peso suinos",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado peso suino] <0.70 ,0,
+			                [% Realizado peso suino] >=0.70 && [% Realizado peso suino] < 0.80, (base_percent_peso_suino)*0.2,
+			                [% Realizado peso suino] >=0.80 && [% Realizado peso suino] < 0.90, (base_percent_peso_suino)*0.4,
+			                [% Realizado peso suino] >=0.90 && [% Realizado peso suino] < 1, (base_percent_peso_suino)*0.75,
+			                [% Realizado peso suino] >=1 && [% Realizado peso suino] < 1.05, (base_percent_peso_suino)*1,
+			                [% Realizado peso suino] >=1.05 && [% Realizado peso suino] < 1.10, (base_percent_peso_suino*0.05)*1.10,
+			                [% Realizado peso suino] >=1.10 && [% Realizado peso suino] < 1.15, (base_percent_peso_suino*0.05)*1.15,
+			                (base_percent_peso_suino)*1.20
+			            ),
+			
+			        "Peso industrializados",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado peso industrializados] <0.70 ,0,
+			                [% Realizado peso industrializados] >=0.70 && [% Realizado peso industrializados] < 0.80, (base_percent_peso_industrializados)*0.2,
+			                [% Realizado peso industrializados] >=0.80 && [% Realizado peso industrializados] < 0.90, (base_percent_peso_industrializados)*0.4,
+			                [% Realizado peso industrializados] >=0.90 && [% Realizado peso industrializados] < 1, (base_percent_peso_industrializados)*0.75,
+			                [% Realizado peso industrializados] >=1 && [% Realizado peso industrializados] < 1.05, (base_percent_peso_industrializados)*1,
+			                [% Realizado peso industrializados] >=1.05 && [% Realizado peso industrializados] < 1.10, (base_percent_peso_industrializados)*1.10,
+			                [% Realizado peso industrializados] >=1.10 && [% Realizado peso industrializados] < 1.15, (base_percent_peso_industrializados)*1.15,
+			                (base_percent_peso_industrializados)*1.20
+			            ),
+			
+			        "Peso total",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado peso total] <0.70 ,0,
+			                [% Realizado peso total] >=0.70 && [% Realizado peso total] < 0.80, (base_percent_peso_total)*0.2,
+			                [% Realizado peso total] >=0.80 && [% Realizado peso total] < 0.90, (base_percent_peso_total)*0.4,
+			                [% Realizado peso total] >=0.90 && [% Realizado peso total] < 1, (base_percent_peso_total)*0.75,
+			                [% Realizado peso total] >=1 && [% Realizado peso total] < 1.05, (base_percent_peso_total)*1,
+			                [% Realizado peso total] >=1.05 && [% Realizado peso total] < 1.10, (base_percent_peso_total)*1.10,
+			                [% Realizado peso total] >=1.10 && [% Realizado peso total] < 1.15, (base_percent_peso_total)*1.15,
+			                (base_percent_peso_total)*1.20
+			            ),
+			
+			        "Faturamento Suinos",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado faturamento suinos] <0.70 ,0,
+			                [% Realizado faturamento suinos] >=0.70 && [% Realizado faturamento suinos] < 0.80, (base_percent_faturamento_suino)*0.2,
+			                [% Realizado faturamento suinos] >=0.80 && [% Realizado faturamento suinos] < 0.90, (base_percent_faturamento_suino)*0.4,
+			                [% Realizado faturamento suinos] >=0.90 && [% Realizado faturamento suinos] < 1, (base_percent_faturamento_suino)*0.75,
+			                [% Realizado faturamento suinos] >=1 && [% Realizado faturamento suinos] < 1.05, (base_percent_faturamento_suino)*1,
+			                [% Realizado faturamento suinos] >=1.05 && [% Realizado faturamento suinos] < 1.10, (base_percent_faturamento_suino)*1.10,
+			                [% Realizado faturamento suinos] >=1.10 && [% Realizado faturamento suinos] < 1.15, (base_percent_faturamento_suino)*1.15,
+			                (base_percent_faturamento_suino)*1.20
+			            ),
+			
+			        "Faturamento bovinos",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado faturamento bovinos] <0.70 ,0,
+			                [% Realizado faturamento bovinos] >=0.70 && [% Realizado faturamento bovinos] < 0.80, ([Salario vendedor]*0.05)*0.2,
+			                [% Realizado faturamento bovinos] >=0.80 && [% Realizado faturamento bovinos] < 0.90, ([Salario vendedor]*0.05)*0.4,
+			                [% Realizado faturamento bovinos] >=0.90 && [% Realizado faturamento bovinos] < 1, ([Salario vendedor]*0.05)*0.75,
+			                [% Realizado faturamento bovinos] >=1 && [% Realizado faturamento bovinos] < 1.05, ([Salario vendedor]*0.05)*1,
+			                [% Realizado faturamento bovinos] >=1.05 && [% Realizado faturamento bovinos] < 1.10, ([Salario vendedor]*0.05)*1.10,
+			                [% Realizado faturamento bovinos] >=1.10 && [% Realizado faturamento bovinos] < 1.15, ([Salario vendedor]*0.05)*1.15,
+			                ([Salario vendedor]*0.05)*1.20
+			            ),
+			
+			        "Faturamento industrializados",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado faturamento industrializados] <0.70 ,0,
+			                [% Realizado faturamento industrializados] >=0.70 && [% Realizado faturamento industrializados] < 0.80, ([Salario vendedor]*0.12)*0.2,
+			                [% Realizado faturamento industrializados] >=0.80 && [% Realizado faturamento industrializados] < 0.90, ([Salario vendedor]*0.12)*0.4,
+			                [% Realizado faturamento industrializados] >=0.90 && [% Realizado faturamento industrializados] < 1, ([Salario vendedor]*0.12)*0.75,
+			                [% Realizado faturamento industrializados] >=1 && [% Realizado faturamento industrializados] < 1.05, ([Salario vendedor]*0.12)*1,
+			                [% Realizado faturamento industrializados] >=1.05 && [% Realizado faturamento industrializados] < 1.10, ([Salario vendedor]*0.12)*1.10,
+			                [% Realizado faturamento industrializados] >=1.10 && [% Realizado faturamento industrializados] < 1.15, ([Salario vendedor]*0.12)*1.15,
+			                ([Salario vendedor]*0.12)*1.20
+			            ),
+			
+			        "FATURAMENTO TOTAL",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado faturamento total] <0.70 ,0,
+			                [% Realizado faturamento total] >=0.70 && [% Realizado faturamento total] < 0.80, (base_percent_faturmanto_total)*0.2,
+			                [% Realizado faturamento total] >=0.80 && [% Realizado faturamento total] < 0.90, (base_percent_faturmanto_total)*0.4,
+			                [% Realizado faturamento total] >=0.90 && [% Realizado faturamento total] < 1, (base_percent_faturmanto_total)*0.75,
+			                [% Realizado faturamento total] >=1 && [% Realizado faturamento total] < 1.05, (base_percent_faturmanto_total)*1,
+			                [% Realizado faturamento total] >=1.05 && [% Realizado faturamento total] < 1.10, (base_percent_faturmanto_total)*1.10,
+			                [% Realizado faturamento total] >=1.10 && [% Realizado faturamento total] < 1.15, (base_percent_faturmanto_total)*1.15,
+			                (base_percent_faturmanto_total)*1.20
+			            ),
+			
+			        "Itens totais",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado itens totais] <0.70 ,0,
+			                [% Realizado itens totais] >=0.70 && [% Realizado itens totais] < 0.80, ([Salario vendedor]*0.08)*0.2,
+			                [% Realizado itens totais] >=0.80 && [% Realizado itens totais] < 0.90, ([Salario vendedor]*0.08)*0.4,
+			                [% Realizado itens totais] >=0.90 && [% Realizado itens totais] < 1, ([Salario vendedor]*0.08)*0.75,
+			                [% Realizado itens totais] >=1 && [% Realizado itens totais] < 1.05, ([Salario vendedor]*0.08)*1,
+			                [% Realizado itens totais] >=1.05 && [% Realizado itens totais] < 1.10, ([Salario vendedor]*0.08)*1.10,
+			                [% Realizado itens totais] >=1.10 && [% Realizado itens totais] < 1.15, ([Salario vendedor]*0.08)*1.15,
+			                ([Salario vendedor]*0.08)*1.20
+			            ),
+			
+			
+			        "% Devolução",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado devolucao] <0.70 ,0,
+			                [% Realizado devolucao] >=0.70 && [% Realizado devolucao] < 0.80, (base_percent_devolucao)*0.2,
+			                [% Realizado devolucao] >=0.80 && [% Realizado devolucao] < 0.90, (base_percent_devolucao)*0.4,
+			                [% Realizado devolucao] >=0.90 && [% Realizado devolucao] < 1, (base_percent_devolucao)*0.75,
+			                [% Realizado devolucao] >=1 && [% Realizado devolucao] < 1.05, (base_percent_devolucao)*1,
+			                [% Realizado devolucao] >=1.05 && [% Realizado devolucao] < 1.10, (base_percent_devolucao)*1.10,
+			                [% Realizado devolucao] >=1.10 && [% Realizado devolucao] < 1.15, (base_percent_devolucao)*1.15,
+			                (base_percent_devolucao)*1.20
+			            ),
+			
+			        "MIX BOVINO",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado mix] <0.70 ,0,
+			                [% Realizado mix] >=0.70 && [% Realizado mix] < 0.80, ([Salario vendedor]*0.02)*0.2,
+			                [% Realizado mix] >=0.80 && [% Realizado mix] < 0.90, ([Salario vendedor]*0.02)*0.4,
+			                [% Realizado mix] >=0.90 && [% Realizado mix] < 1, ([Salario vendedor]*0.02)*0.75,
+			                [% Realizado mix] >=1 && [% Realizado mix] < 1.05, ([Salario vendedor]*0.02)*1,
+			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.15, ([Salario vendedor]*0.02)*1.10,
+			                [% Realizado mix] >=1.10 && [% Realizado mix] < 1.15, ([Salario vendedor]*0.02)*1.15,
+			                ([Salario vendedor]*0.02)*1.20
+			            ),
+			
+			        "MIX SUINO",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado mix] <0.70 ,0,
+			                [% Realizado mix] >=0.70 && [% Realizado mix] < 0.80, (base_percent_mix_suino)*0.2,
+			                [% Realizado mix] >=0.80 && [% Realizado mix] < 0.90, (base_percent_mix_suino)*0.4,
+			                [% Realizado mix] >=0.90 && [% Realizado mix] < 1, (base_percent_mix_suino)*0.75,
+			                [% Realizado mix] >=1 && [% Realizado mix] < 1.05, (base_percent_mix_suino)*1,
+			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.10, (base_percent_mix_suino)*1.10,
+			                [% Realizado mix] >=1.10 && [% Realizado mix] < 1.15, (base_percent_mix_suino)*1.15,
+			                (base_percent_mix_suino)*1.20
+			            ),
+			
+			        "MIX INDUSTRIALIZADOS",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado mix] <0.70 ,0,
+			                [% Realizado mix] >=0.70 && [% Realizado mix] < 0.80, ([Salario vendedor]*0.05)*0.2,
+			                [% Realizado mix] >=0.80 && [% Realizado mix] < 0.90, ([Salario vendedor]*0.05)*0.4,
+			                [% Realizado mix] >=0.90 && [% Realizado mix] < 1, ([Salario vendedor]*0.05)*0.75,
+			                [% Realizado mix] >=1 && [% Realizado mix] < 1.05, ([Salario vendedor]*0.05)*1,
+			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.10, ([Salario vendedor]*0.05)*1.10,
+			                [% Realizado mix] >=1.10 && [% Realizado mix] < 1.15, ([Salario vendedor]*0.05)*1.15,
+			                ([Salario vendedor]*0.05)*1.20
+			            ),
+			
+			        "RECORRÊNCIA POSITIVAÇÃO",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado recorrecnia positivacao] <0.70 ,0,
+			                [% Realizado recorrecnia positivacao] >=0.70 && [% Realizado recorrecnia positivacao] < 0.80, (base_percent_recorrecnia_positivacao)*0.2,
+			                [% Realizado recorrecnia positivacao] >=0.80 && [% Realizado recorrecnia positivacao] < 0.90, (base_percent_recorrecnia_positivacao)*0.4,
+			                [% Realizado recorrecnia positivacao] >=0.90 && [% Realizado recorrecnia positivacao] < 1, (base_percent_recorrecnia_positivacao)*0.75,
+			                [% Realizado recorrecnia positivacao] >=1 && [% Realizado recorrecnia positivacao] < 1.05, (base_percent_recorrecnia_positivacao)*1,
+			                [% Realizado recorrecnia positivacao] >=1.05 && [% Realizado recorrecnia positivacao] < 1.10, (base_percent_recorrecnia_positivacao)*1.10,
+			                [% Realizado recorrecnia positivacao] >=1.10 && [% Realizado recorrecnia positivacao] < 1.15, (base_percent_recorrecnia_positivacao)*1.15,
+			                (base_percent_recorrecnia_positivacao)*1.20
+			            ),
+			
+			        "POSITIVAÇÃO",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado positivacao] <0.70 ,0,
+			                [% Realizado positivacao] >=0.70 && [% Realizado positivacao] < 0.80, ([Salario vendedor]*0.12)*0.2,
+			                [% Realizado positivacao] >=0.80 && [% Realizado positivacao] < 0.90, ([Salario vendedor]*0.12)*0.4,
+			                [% Realizado positivacao] >=0.90 && [% Realizado positivacao] < 1, ([Salario vendedor]*0.12)*0.75,
+			                [% Realizado positivacao] >=1 && [% Realizado positivacao] < 1.05, ([Salario vendedor]*0.12)*1,
+			                [% Realizado positivacao] >=1.05 && [% Realizado positivacao] < 1.10, ([Salario vendedor]*0.12)*1.10,
+			                [% Realizado positivacao] >=1.10 && [% Realizado positivacao] < 1.15, ([Salario vendedor]*0.12)*1.15,
+			                ([Salario vendedor]*0.12)*1.20
+			            ),
+			
+			        "MIX RENTÁVEL",
+			            SWITCH(
+			                TRUE(),
+			                [% Realizado mix rentavel] <0.70 ,0,
+			                [% Realizado mix rentavel] >=0.70 && [% Realizado mix rentavel] < 0.80, ([Salario vendedor]*0.05)*0.2,
+			                [% Realizado mix rentavel] >=0.80 && [% Realizado mix rentavel] < 0.90, ([Salario vendedor]*0.05)*0.4,
+			                [% Realizado mix rentavel] >=0.90 && [% Realizado mix rentavel] < 1, ([Salario vendedor]*0.05)*0.75,
+			                [% Realizado mix rentavel] >=1 && [% Realizado mix rentavel] < 1.05, ([Salario vendedor]*0.05)*1,
+			                [% Realizado mix rentavel] >=1.05 && [% Realizado mix rentavel] < 1.10, ([Salario vendedor]*0.05)*1.10,
+			                [% Realizado mix rentavel] >=1.10 && [% Realizado mix rentavel] < 1.15, ([Salario vendedor]*0.05)*1.15,
+			                ([Salario vendedor]*0.05)*1.20
+			            ),
+			
+			
+			        BLANK()
+			)
+			```
+		lineageTag: 5431dde3-4ff5-4d53-aeb0-69c2d237e625
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Positivação =
+			
+			VAR ClientesSaldo =
+			    ADDCOLUMNS(
+			        SUMMARIZE(
+			            DCVV_META_VENDADEVOLUCAO,
+			            DCVV_META_VENDADEVOLUCAO[SEQCLIENTE]
+			        ),
+			        "NetPeso",
+			        CALCULATE(
+			            SUM(DCVV_META_VENDADEVOLUCAO[PESOVENDA]) -
+			            SUM(DCVV_META_VENDADEVOLUCAO[PESODEVOLUCAO])
+			        )
+			    )
+			RETURN
+			COUNTROWS(FILTER(ClientesSaldo, [NetPeso] > 0))
+		formatString: 0
+		displayFolder: Resultado realizado
+		lineageTag: a423648d-c244-4382-b738-a85a8dc6e2d6
+
+	measure 'Recorrencia positivacao' = ```
+			
+			CALCULATE(
+			
+			    DISTINCTCOUNT(DCVV_META_RVV_FERIAS[SEQCLIENTE]),
+			    DCVV_META_RVV_FERIAS[CONTAGEM] > 0,
+			    REMOVEFILTERS(DimMes)
+			    
+			)
+			```
+		formatString: 0
+		displayFolder: Resultado realizado
+		lineageTag: d888adb6-3588-489f-8a81-572f187d3322
+
+	measure '% Realizado recorrecnia positivacao' =
+			
+			DIVIDE([Recorrencia positivacao],[Meta valor],0)
+		displayFolder: % Realizado
+		lineageTag: a97f528a-eb55-4224-84b4-5666a1d8f06f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Realizado positivacao' =
+			
+			DIVIDE([Positivação],[Meta valor],0)
+		displayFolder: % Realizado
+		lineageTag: c88058ed-4fdd-4288-8838-4f85864b304a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Peso Mix Rentável' =
+			
+			VAR AnoMesAtual = SELECTEDVALUE(DimMes[AnoMes])
+			
+			-- Remove filtro de data (cadeia problemática) mas mantém filtro de vendedor
+			VAR ProdutosMix =
+			    SELECTCOLUMNS(
+			        CALCULATETABLE(
+			            produtosMIXRENTAVEL,
+			            REMOVEFILTERS(dCalendario),                  -- remove dependência da cadeia de data
+			            produtosMIXRENTAVEL[ANOMES] = AnoMesAtual   -- filtra mês diretamente
+			        ),
+			        "PROD", produtosMIXRENTAVEL[SEQPRODUTO]
+			    )
+			
+			RETURN
+			IF(
+			    NOT ISEMPTY(ProdutosMix),
+			    CALCULATE(
+			        SUM(DCVV_META_VENDADEVOLUCAOMIXRENTAVEL[PESOVENDA]) -
+			        SUM(DCVV_META_VENDADEVOLUCAOMIXRENTAVEL[PESODEVOLUCAO]),
+			        TREATAS(ProdutosMix, DCVV_META_VENDADEVOLUCAOMIXRENTAVEL[SEQPRODUTO])
+			    )
+			)
+		displayFolder: Resultado realizado
+		lineageTag: 51e0faf2-4997-4c34-9dbc-459d9f588e18
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Realizado mix rentavel' =
+			
+			DIVIDE([Peso Mix Rentável],[Meta valor],0)
+		displayFolder: % Realizado
+		lineageTag: 4370c896-729a-4fe5-9020-fd7e2b97d766
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bonificação Total' = ```
+			
+			SUMX(
+			    VALUES(FPBI_ESTRELA_METAS[Meta Display]),
+			    [Bonificação]
+			)
+			
+			```
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: ee058adc-ba88-4125-8b2e-ea2fbf7d2162
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: 81f283ba-9aa8-4548-b137-bf1250f901f0
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Medidas = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 23fad4c2a88b413f97da0f65ecf517df
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

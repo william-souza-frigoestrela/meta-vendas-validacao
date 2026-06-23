@@ -1,0 +1,281 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 988.79357699999923,
+            "y": 1240.0927000000001
+          },
+          "nodeIndex": "DCV_VENDEDORHIERARQUIANIVEL",
+          "nodeLineageTag": "4aabc1af-2dfe-473b-a2dc-591ff6a3631a",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 14,
+          "expandedHeight": 200
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 538.55454400000019
+          },
+          "nodeIndex": "DCVV_META_RVV",
+          "nodeLineageTag": "f96be3ad-71a0-42d9-9601-ad9e66851174",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 4,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 5.3146830000000023,
+            "y": 338.59659000000005
+          },
+          "nodeIndex": "DCVV_META_RVV_FERIAS",
+          "nodeLineageTag": "817b7b2d-7bc8-42dc-8ab8-8bcf5a9b9470",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 5,
+          "expandedHeight": 296
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 145.26800200000002
+          },
+          "nodeIndex": "DCVV_META_VENDADEVOLUCAO",
+          "nodeLineageTag": "ffe1a5c1-53ca-4fff-a9df-a0fdaa82357f",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 6,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "DCVV_META_VENDADEVOLUCAOCOMERCIAL",
+          "nodeLineageTag": "3a84bf29-1a27-4cbe-bb7f-34c02d2ece77",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 11,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 391.94437999999974,
+            "y": 0
+          },
+          "nodeIndex": "DCVV_META_VENDADEVOLUCAOMIX",
+          "nodeLineageTag": "91023bc4-b09a-4099-9829-5e8174c5f1d4",
+          "size": {
+            "height": 128,
+            "width": 319.03492800000004
+          },
+          "zIndex": 12,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 762.75086899999985,
+            "y": 0
+          },
+          "nodeIndex": "DCVV_META_VENDADEVOLUCAOMIXRENTAVEL",
+          "nodeLineageTag": "26465191-7bce-4bea-928e-88cfe868d63b",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 7,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 1438.26585,
+            "y": 322.42410200000018
+          },
+          "nodeIndex": "DGEVQ_HIERARQUIAVENDANIVEL",
+          "nodeLineageTag": "7bdac27c-b971-4ff9-be8c-e458efc3312f",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 9,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 1458.3032610000002,
+            "y": 487.17927499999996
+          },
+          "nodeIndex": "FPBI_ESTRELA_METAS",
+          "nodeLineageTag": "18490ef0-67a2-4d9e-b9e2-0719ab033f2f",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 13,
+          "expandedHeight": 224
+        },
+        {
+          "location": {
+            "x": 1111.6275449999996,
+            "y": 0
+          },
+          "nodeIndex": "mixDiversos",
+          "nodeLineageTag": "5f7cbc9e-17e6-46f6-8596-17a420010087",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 15,
+          "expandedHeight": 272
+        },
+        {
+          "location": {
+            "x": 1452.3174969999998,
+            "y": 0
+          },
+          "nodeIndex": "produtosMIXRENTAVEL",
+          "nodeLineageTag": "b614173c-963d-4b60-a4f7-003529e2cc96",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 8,
+          "expandedHeight": 224
+        },
+        {
+          "location": {
+            "x": 663.65353399999958,
+            "y": 1213.1208410000002
+          },
+          "nodeIndex": "dCalendario",
+          "nodeLineageTag": "b8bfb78c-c880-45ff-8192-e8e8c8883a06",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 10,
+          "expandedHeight": 200
+        },
+        {
+          "location": {
+            "x": 1442.2384250637517,
+            "y": 169.879904
+          },
+          "nodeIndex": "fTotvs",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 3,
+          "expandedHeight": 152
+        },
+        {
+          "location": {
+            "x": 356.27147799999938,
+            "y": 1239.0390665000004
+          },
+          "nodeIndex": "DimMes",
+          "nodeLineageTag": "7d1d2c92-1b96-4549-96d1-3d464df25432",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 2,
+          "expandedHeight": 200
+        },
+        {
+          "location": {
+            "x": 1784.1496439999996,
+            "y": 0
+          },
+          "nodeIndex": "Medidas",
+          "nodeLineageTag": "58ea3b43-413c-4420-9ccd-d824d0f7dfae",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 2089.9980631189687,
+            "y": 407.27277712834046
+          },
+          "nodeIndex": "DGE_META_PESOINDICADOR",
+          "nodeLineageTag": "0f6dc32c-566e-449c-9b55-fe0712a0c606",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2352.1496439999996,
+            "y": 522.04635000000007
+          },
+          "nodeIndex": "FI_VENDEDOR",
+          "nodeLineageTag": "44518673-fba2-4c59-a5cc-675d84f68a18",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2920.1496439999996,
+            "y": 596.04635000000007
+          },
+          "nodeIndex": "pHierarquia",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1466.2072140819982,
+            "y": 645.19198503419
+          },
+          "nodeIndex": "FPBI_RESULTADOMETA",
+          "nodeLineageTag": "60b3e5d5-9470-42e2-aa7b-d5315c0ce0d4",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas as tabelas",
+      "zoomValue": 50.346892102823205,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas as tabelas",
+  "defaultDiagram": "Todas as tabelas"
+}

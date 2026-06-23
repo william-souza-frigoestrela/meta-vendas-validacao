@@ -1,0 +1,99 @@
+table DCV_VENDEDORHIERARQUIANIVEL
+	lineageTag: 4aabc1af-2dfe-473b-a2dc-591ff6a3631a
+
+	column DTAFINAL
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 247c28c5-ffdf-4842-8419-edd17e55a1a6
+		summarizeBy: none
+		sourceColumn: DTAFINAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQPESSOANIVEL
+		dataType: string
+		lineageTag: aae5652f-e2ac-4a75-bcdd-bed085682686
+		summarizeBy: none
+		sourceColumn: SEQPESSOANIVEL
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQPESSOA
+		dataType: string
+		lineageTag: 2c66e592-6466-4542-803f-e8719e46cad9
+		summarizeBy: none
+		sourceColumn: SEQPESSOA
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQNIVEL
+		dataType: string
+		lineageTag: b201ba2f-8e18-4d52-9dc5-d19a69c4b30b
+		summarizeBy: none
+		sourceColumn: SEQNIVEL
+
+		annotation SummarizationSetBy = Automatic
+
+	column CODVENDEDORCAT
+		dataType: string
+		lineageTag: 4c62d326-6869-4f7a-b21b-933a12bcac98
+		summarizeBy: none
+		sourceColumn: CODVENDEDORCAT
+
+		annotation SummarizationSetBy = Automatic
+
+	column RN
+		dataType: double
+		lineageTag: 69da476e-57ba-4c4f-924e-f5c26bba872b
+		summarizeBy: sum
+		sourceColumn: RN
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VENDEDOR
+		dataType: string
+		lineageTag: f1875d9c-4827-4341-a2fd-ec6f2c4f9f0d
+		summarizeBy: none
+		sourceColumn: VENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUSVENDEDOR
+		dataType: string
+		lineageTag: 6eeeb8a6-458b-45bb-ba6b-6a9747009594
+		summarizeBy: none
+		sourceColumn: STATUSVENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SUPERVISOR
+		dataType: string
+		lineageTag: bb4061c3-29af-48e5-a497-c01ef96b1419
+		summarizeBy: none
+		sourceColumn: SUPERVISOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column GERENTEVENDA
+		dataType: string
+		lineageTag: 4da6854a-c96d-4074-85e2-403983119f14
+		summarizeBy: none
+		sourceColumn: GERENTEVENDA
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DCV_VENDEDORHIERARQUIANIVEL = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("datavale", [HierarchicalNavigation=true, Query="WITH BASE AS (#(lf)    SELECT #(lf)        t.*,#(lf)        ROW_NUMBER() OVER (#(lf)            PARTITION BY t.seqpessoa #(lf)            ORDER BY t.dtafinal DESC#(lf)        ) AS rn#(lf)    FROM DCV_VENDEDORHIERARQUIANIVEL t#(lf)    WHERE t.dtafinal >= TRUNC(ADD_MONTHS(SYSDATE, -1), 'MM')#(lf)      AND t.dtafinal <  TRUNC(SYSDATE, 'MM')#(lf)),#(lf)#(lf)HIERARQUIA AS (#(lf)    SELECT #(lf)        h.*,#(lf)        ROW_NUMBER() OVER (#(lf)            PARTITION BY h.seqvendedor#(lf)            ORDER BY h.dtafinal DESC   #(lf)        ) AS rn_h#(lf)    FROM DGEVQ_HIERARQUIAVENDANIVEL h#(lf))#(lf)#(lf)SELECT #(lf)    b.*,#(lf)    h.vendedor,#(lf)    h.statusvendedor,#(lf)    h.supervisor,#(lf)    h.gerentevenda#(lf)FROM BASE b#(lf)LEFT JOIN HIERARQUIA h#(lf)    ON h.seqvendedor = b.seqpessoa#(lf)   AND h.rn_h = 1#(lf)WHERE b.rn = 1"]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"SEQPESSOANIVEL", type text}, {"SEQPESSOA", type text}, {"SEQNIVEL", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,90 @@
+table mixDiversos
+	lineageTag: 5f7cbc9e-17e6-46f6-8596-17a420010087
+
+	column DATAINICIO
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a9e73db6-5ced-44d7-ad0c-df702b760301
+		summarizeBy: none
+		sourceColumn: DATAINICIO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ANOMES
+		dataType: string
+		lineageTag: a9c8a436-de15-4ad1-aeb8-e91e47d91847
+		summarizeBy: none
+		sourceColumn: ANOMES
+
+		annotation SummarizationSetBy = Automatic
+
+	column DTAVALIDADE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 09cf49d2-1171-4275-9578-52a200e80878
+		summarizeBy: none
+		sourceColumn: DTAVALIDADE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column SEQPARAMMETA
+		dataType: int64
+		formatString: 0
+		lineageTag: c0adbc65-5508-4d16-8042-3139e16301f8
+		summarizeBy: sum
+		sourceColumn: SEQPARAMMETA
+
+		annotation SummarizationSetBy = Automatic
+
+	column META
+		dataType: string
+		lineageTag: 19e8d921-ba82-4119-a74b-92d3972d0545
+		summarizeBy: none
+		sourceColumn: META
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQVENDEDOR
+		dataType: string
+		lineageTag: 3dec4545-6339-4f3a-91b2-216a28540718
+		summarizeBy: none
+		sourceColumn: SEQVENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQPRODUTO
+		dataType: string
+		lineageTag: e26ae041-66b0-4beb-bbca-2669210c2350
+		summarizeBy: none
+		sourceColumn: SEQPRODUTO
+
+		annotation SummarizationSetBy = Automatic
+
+	column VALOR
+		dataType: double
+		lineageTag: 84332d47-8724-4fac-a1a8-811f3141f56d
+		summarizeBy: sum
+		sourceColumn: VALOR
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition mixDiversos = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("datavale", [HierarchicalNavigation=true, Query=" SELECT X.DATAINICIO + 1 AS DATAINICIO,#(lf)        TO_CHAR(X.DTAVALIDADE, 'YYYYMM') AS ANOMES,#(lf)        X.DTAVALIDADE,#(lf)        X.SEQPARAMMETA,#(lf)        'MIX BOVINO' AS META,#(lf)        PMV.CODLINK2 AS SEQVENDEDOR,#(lf)        PMV.CODLINK AS SEQPRODUTO,#(lf)        PMV.VALOR#(lf)   FROM (SELECT Y.*, PMP.SEQPARAMMETAPLANTA#(lf)           FROM (SELECT COALESCE(LAG(U.DTAVALIDADE)#(lf)                                 OVER(ORDER BY U.DTAVALIDADE),#(lf)                                 U.DTAVALIDADE) AS DATAINICIO,#(lf)                        U.*#(lf)                   FROM (SELECT DISTINCT PMP.DTAVALIDADE, PMP.SeqParamMeta#(lf)                           FROM DGE_PARAMMETAPLANTA PMP#(lf)                          WHERE PMP.SeqParamMeta = 29) u) y#(lf)           LEFT JOIN DGE_PARAMMETAPLANTA PMP#(lf)             ON Y.DTAVALIDADE = PMP.DTAVALIDADE#(lf)            AND Y.SEQPARAMMETA = PMP.SEQPARAMMETA) X#(lf)   LEFT JOIN DGE_PARAMMETAVALOR PMV#(lf)     ON X.SEQPARAMMETAPLANTA = PMV.SEQPARAMMETAPLANTA#(lf)     #(lf)     union#(lf)     #(lf)     #(lf)      SELECT X.DATAINICIO + 1 AS DATAINICIO,#(lf)        TO_CHAR(X.DTAVALIDADE, 'YYYYMM') AS ANOMES,#(lf)        X.DTAVALIDADE,#(lf)        X.SEQPARAMMETA,#(lf)        'MIX SUINO' AS META,#(lf)        PMV.CODLINK2 AS SEQVENDEDOR,#(lf)        PMV.CODLINK AS SEQPRODUTO,#(lf)        PMV.VALOR#(lf)   FROM (SELECT Y.*, PMP.SEQPARAMMETAPLANTA#(lf)           FROM (SELECT COALESCE(LAG(U.DTAVALIDADE)#(lf)                                 OVER(ORDER BY U.DTAVALIDADE),#(lf)                                 U.DTAVALIDADE) AS DATAINICIO,#(lf)                        U.*#(lf)                   FROM (SELECT DISTINCT PMP.DTAVALIDADE, PMP.SeqParamMeta#(lf)                           FROM DGE_PARAMMETAPLANTA PMP#(lf)                          WHERE PMP.SeqParamMeta = 30) u) y#(lf)           LEFT JOIN DGE_PARAMMETAPLANTA PMP#(lf)             ON Y.DTAVALIDADE = PMP.DTAVALIDADE#(lf)            AND Y.SEQPARAMMETA = PMP.SEQPARAMMETA) X#(lf)   LEFT JOIN DGE_PARAMMETAVALOR PMV#(lf)     ON X.SEQPARAMMETAPLANTA = PMV.SEQPARAMMETAPLANTA#(lf)     #(lf)     #(lf)     union#(lf)     #(lf)     #(lf)      SELECT X.DATAINICIO + 1 AS DATAINICIO,#(lf)        TO_CHAR(X.DTAVALIDADE, 'YYYYMM') AS ANOMES,#(lf)        X.DTAVALIDADE,#(lf)        X.SEQPARAMMETA,#(lf)        'MIX INDUSTRIALIZADOS' AS META,#(lf)        PMV.CODLINK2 AS SEQVENDEDOR,#(lf)        PMV.CODLINK AS SEQPRODUTO,#(lf)        PMV.VALOR#(lf)   FROM (SELECT Y.*, PMP.SEQPARAMMETAPLANTA#(lf)           FROM (SELECT COALESCE(LAG(U.DTAVALIDADE)#(lf)                                 OVER(ORDER BY U.DTAVALIDADE),#(lf)                                 U.DTAVALIDADE) AS DATAINICIO,#(lf)                        U.*#(lf)                   FROM (SELECT DISTINCT PMP.DTAVALIDADE, PMP.SeqParamMeta#(lf)                           FROM DGE_PARAMMETAPLANTA PMP#(lf)                          WHERE PMP.SeqParamMeta = 31) u) y#(lf)           LEFT JOIN DGE_PARAMMETAPLANTA PMP#(lf)             ON Y.DTAVALIDADE = PMP.DTAVALIDADE#(lf)            AND Y.SEQPARAMMETA = PMP.SEQPARAMMETA) X#(lf)   LEFT JOIN DGE_PARAMMETAVALOR PMV#(lf)     ON X.SEQPARAMMETAPLANTA = PMV.SEQPARAMMETAPLANTA#(lf)  #(lf)  "]),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(Fonte,{{"DATAINICIO", type date}, {"DTAVALIDADE", type date}}),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Tipo Alterado1",{{"DTAVALIDADE", type date},{"SEQVENDEDOR", type text}, {"SEQPRODUTO", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

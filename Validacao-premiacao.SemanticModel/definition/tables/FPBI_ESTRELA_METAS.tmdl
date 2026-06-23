@@ -1,0 +1,106 @@
+table FPBI_ESTRELA_METAS
+	lineageTag: 18490ef0-67a2-4d9e-b9e2-0719ab033f2f
+
+	column SEQVENDEDOR
+		dataType: string
+		lineageTag: b4026c9e-c08d-4b5c-8874-7dd4ae649b15
+		summarizeBy: none
+		sourceColumn: SEQVENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQMETA
+		dataType: double
+		lineageTag: ca82a1f3-50fb-49e5-a12d-4d4626289e6a
+		summarizeBy: sum
+		sourceColumn: SEQMETA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column META
+		dataType: string
+		lineageTag: 96aae6a6-773a-44e2-a878-1a696b3f562d
+		summarizeBy: none
+		sourceColumn: META
+
+		annotation SummarizationSetBy = Automatic
+
+	column ANOMES
+		dataType: string
+		lineageTag: 9957e531-2995-4848-bb00-19a54210d072
+		summarizeBy: none
+		sourceColumn: ANOMES
+
+		annotation SummarizationSetBy = Automatic
+
+	column DTAVALIDADE
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1c71115d-7817-4008-8bee-4865ce40d1b7
+		summarizeBy: none
+		sourceColumn: DTAVALIDADE
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Meta Display' =
+			
+			VAR NomeMeta = FPBI_ESTRELA_METAS[META]
+			VAR Dia = DAY(FPBI_ESTRELA_METAS[DTAVALIDADE])
+			
+			RETURN
+			IF(
+			    NomeMeta IN {
+			        "MIX BOVINO",
+			        "MIX SUINO",
+			        "MIX INDUSTRIALIZADOS"
+			    },
+			    NomeMeta & " - " &
+			        IF(Dia <= 15, "1ª Quinzena", "2ª Quinzena"),
+			    NomeMeta
+			)
+		lineageTag: b889dc60-5978-46b1-bdf2-a9faf5f8dfcb
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column VLRMETA
+		dataType: double
+		lineageTag: 0be0af0d-b533-4524-a63f-89c059eb4d28
+		summarizeBy: sum
+		sourceColumn: VLRMETA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition FPBI_ESTRELA_METAS = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("datavale", [HierarchicalNavigation=true]),
+				    DATAVALE = Fonte{[Schema="DATAVALE"]}[Data],
+				    FPBI_ESTRELA_METAS1 = DATAVALE{[Name="FPBI_ESTRELA_METAS"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(FPBI_ESTRELA_METAS1,{{"SEQVENDEDOR", type text}}),
+				
+				    #"Coluna Ajustada" =
+				        Table.AddColumn(
+				            #"Tipo Alterado",
+				            "VLRMETA_Ajustado",
+				            each if [SEQMETA] = 17 then [VLRMETA] * 0.1 else [VLRMETA],
+				            type number
+				        ),
+				
+				    #"Remove Antiga" =
+				        Table.RemoveColumns(#"Coluna Ajustada", {"VLRMETA"}),
+				
+				    #"Renomeia Nova" =
+				        Table.RenameColumns(#"Remove Antiga", {{"VLRMETA_Ajustado", "VLRMETA"}})
+				in
+				    #"Renomeia Nova"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

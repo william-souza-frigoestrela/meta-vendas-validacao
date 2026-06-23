@@ -1,0 +1,80 @@
+table fTotvs
+	lineageTag: 638f4dcc-f221-4ec2-871f-83ac95a299c8
+
+	column SEQPESSOADTV
+		dataType: string
+		lineageTag: efe0676a-9af6-4311-a8f3-46dbd17a6c84
+		summarizeBy: none
+		sourceColumn: SEQPESSOADTV
+
+		annotation SummarizationSetBy = Automatic
+
+	column DATAMES
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9fc57f50-86bb-4ae0-a351-bea3351abdcb
+		summarizeBy: none
+		sourceColumn: DATAMES
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column VLRSALARIO
+		dataType: double
+		lineageTag: dceaf90d-dfd2-45f2-9ff8-6247deb1ed80
+		summarizeBy: sum
+		sourceColumn: VLRSALARIO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VENDEDOR
+		dataType: string
+		lineageTag: bcb066bd-53d8-4951-8688-9346a4c2d047
+		summarizeBy: none
+		sourceColumn: VENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUSVENDEDOR
+		dataType: string
+		lineageTag: b935e2a0-13af-4221-a5ac-3ea7766b0105
+		summarizeBy: none
+		sourceColumn: STATUSVENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SUPERVISOR
+		dataType: string
+		lineageTag: ec1ebb7d-d5b0-4694-b4b9-6759275651f8
+		summarizeBy: none
+		sourceColumn: SUPERVISOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column GERENTEVENDA
+		dataType: string
+		lineageTag: b2af5697-a25a-450d-b1c3-dd19e125852a
+		summarizeBy: none
+		sourceColumn: GERENTEVENDA
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fTotvs = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("datavale", [HierarchicalNavigation=true, Query="#(lf)WITH CALENDARIO AS (#(lf)    SELECT #(lf)        ADD_MONTHS(DATE '2026-01-01', LEVEL - 1) AS DataMes#(lf)    FROM dual#(lf)    CONNECT BY LEVEL <= MONTHS_BETWEEN(TRUNC(SYSDATE, 'MM'), DATE '2026-01-01')#(lf)),#(lf)#(lf)BASE AS (#(lf)    SELECT #(lf)        p.SeqPessoaDTV,#(lf)        s.DataDeReferencia,#(lf)        s.Salario#(lf)    FROM EST_DeparaPessoa@RM p#(lf)    JOIN PFunc@RM f #(lf)        ON p.CodColigada = f.CodColigada#(lf)       AND p.Chapa = f.Chapa#(lf)    JOIN PfhstSal@RM s #(lf)        ON s.Chapa = f.Chapa#(lf)       AND s.CodColigada = f.CodColigada#(lf)    WHERE s.DataDeReferencia < TRUNC(SYSDATE, 'MM')#(lf)),#(lf)#(lf)RANKED AS (#(lf)    SELECT#(lf)        c.DataMes,#(lf)        b.SeqPessoaDTV,#(lf)        b.Salario,#(lf)        ROW_NUMBER() OVER (#(lf)            PARTITION BY b.SeqPessoaDTV, c.DataMes#(lf)            ORDER BY b.DataDeReferencia DESC#(lf)        ) AS RN#(lf)    FROM CALENDARIO c#(lf)    JOIN BASE b#(lf)        ON b.DataDeReferencia <= LAST_DAY(c.DataMes)#(lf))#(lf)#(lf)SELECT#(lf)    SeqPessoaDTV,#(lf)    LAST_DAY(DataMes) AS DataMes,#(lf)    Salario AS VlrSalario#(lf)FROM RANKED#(lf)WHERE RN = 1#(lf)"]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"SEQPESSOADTV", type text}}),
+				    #"Linhas Classificadas" = Table.Sort(#"Tipo Alterado",{{"SEQPESSOADTV", Order.Ascending}}),
+				    #"Consultas Mescladas" = Table.NestedJoin(#"Linhas Classificadas", {"SEQPESSOADTV"}, DCV_VENDEDORHIERARQUIANIVEL, {"SEQPESSOA"}, "DCV_VENDEDORHIERARQUIANIVEL", JoinKind.LeftOuter),
+				    #"DCV_VENDEDORHIERARQUIANIVEL Expandido" = Table.ExpandTableColumn(#"Consultas Mescladas", "DCV_VENDEDORHIERARQUIANIVEL", {"VENDEDOR", "STATUSVENDEDOR", "SUPERVISOR", "GERENTEVENDA"}, {"VENDEDOR", "STATUSVENDEDOR", "SUPERVISOR", "GERENTEVENDA"})
+				in
+				    #"DCV_VENDEDORHIERARQUIANIVEL Expandido"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

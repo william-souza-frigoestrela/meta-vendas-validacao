@@ -1,0 +1,96 @@
+relationship 1284a0f7-9401-b420-477c-7921ed4a082c
+	fromColumn: DCVV_META_VENDADEVOLUCAOMIXRENTAVEL.SEQVENDEDOR
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship ca95ff3f-f11d-2c1e-2133-0f23dacc4ce6
+	fromColumn: DCVV_META_VENDADEVOLUCAOMIX.SEQVENDEDOR
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship ba9b62cd-7ce4-771e-3540-25cd71dd56e9
+	fromColumn: DCVV_META_VENDADEVOLUCAOCOMERCIAL.SEQVENDEDOR
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship 80e2bb7e-3a76-89b1-17d8-43c8700f124a
+	fromColumn: DCVV_META_VENDADEVOLUCAO.SEQVENDEDOR
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship e3d60b9c-0583-e44f-d56c-8b68bc1a56f8
+	fromColumn: DCVV_META_RVV_FERIAS.SEQVENDEDOR
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship cd271b02-b19b-7335-2137-759d80c2c76f
+	fromColumn: DCVV_META_RVV.SEQVENDEDOR
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship c007f655-2b00-d99d-6f16-1b426a837a40
+	fromColumn: FPBI_ESTRELA_METAS.SEQVENDEDOR
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship 22070f29-9a9e-056d-262b-0d35add5a570
+	fromColumn: mixDiversos.SEQVENDEDOR
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship 9baa6ccc-433e-3d68-d477-84e91ee89b3a
+	fromColumn: produtosMIXRENTAVEL.SEQVENDEDOR
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship 0eedb44a-4dbd-2b09-84b1-ac0027c5e96d
+	fromColumn: fTotvs.SEQPESSOADTV
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship 8fc4debd-4d96-ccde-1728-a5d592b53dc0
+	fromColumn: DGEVQ_HIERARQUIAVENDANIVEL.SEQVENDEDOR
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship 0948a8e7-75d8-f649-3fcd-49330af78908
+	fromColumn: DCVV_META_RVV.DATA
+	toColumn: dCalendario.Date
+
+relationship f05135ad-e22a-a62a-cd79-ac8e8a644c70
+	fromColumn: DCVV_META_VENDADEVOLUCAO.DATA
+	toColumn: dCalendario.Date
+
+relationship 69588add-9033-d56b-ba1b-d1a06b750133
+	fromColumn: DGEVQ_HIERARQUIAVENDANIVEL.DTAFINAL
+	toColumn: dCalendario.Date
+
+relationship 8713dd0c-5c87-6098-70a0-846e2f0b32ab
+	fromColumn: fTotvs.DATAMES
+	toColumn: dCalendario.Date
+
+relationship ad2fae81-a54c-f28d-aea2-bb3b368884e3
+	fromColumn: dCalendario.Anomês
+	toColumn: DimMes.AnoMes
+
+relationship 39d74760-ccd6-6823-70cc-824373b382df
+	fromColumn: DCVV_META_RVV_FERIAS.ANOMES
+	toColumn: DimMes.AnoMes
+
+relationship 74183bb9-eabd-812d-ef73-e1d7544c8896
+	fromColumn: DCVV_META_VENDADEVOLUCAOCOMERCIAL.ANOMES
+	toColumn: DimMes.AnoMes
+
+relationship ea039fe9-ff29-b10c-2c2e-a001903b93a9
+	fromColumn: DCVV_META_VENDADEVOLUCAOMIXRENTAVEL.ANOMES
+	toColumn: DimMes.AnoMes
+
+relationship fcbedf30-d01e-03b2-18e4-e193d7970a28
+	fromColumn: FPBI_ESTRELA_METAS.ANOMES
+	toColumn: DimMes.AnoMes
+
+relationship 53754418-c195-a138-8575-5c05cb900772
+	fromColumn: DCVV_META_VENDADEVOLUCAOMIX.ANOMES
+	toColumn: DimMes.AnoMes
+
+relationship aaf348e6-3b34-1dd4-8e1d-fe8b6821acb4
+	fromColumn: mixDiversos.ANOMES
+	toColumn: DimMes.AnoMes
+
+relationship fa54652c-3295-4209-a5f5-cfde51dc1b1a
+	fromColumn: produtosMIXRENTAVEL.SEQVENDEDOR
+	toColumn: DimMes.AnoMes
+
+relationship AutoDetected_f035bb91-334f-488d-960c-2441554f6bc7
+	fromColumn: FPBI_RESULTADOMETA.SEQPESSOA
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+

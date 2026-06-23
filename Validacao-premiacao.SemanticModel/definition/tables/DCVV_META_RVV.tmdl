@@ -1,0 +1,109 @@
+table DCVV_META_RVV
+	lineageTag: f96be3ad-71a0-42d9-9601-ad9e66851174
+
+	column SEQCLIENTE
+		dataType: string
+		lineageTag: 74e599bc-1c82-41ed-9603-3736d2e6c4eb
+		summarizeBy: none
+		sourceColumn: SEQCLIENTE
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQVENDEDOR
+		dataType: string
+		lineageTag: 61eed837-094f-436f-ac50-7d2a6db625f1
+		summarizeBy: none
+		sourceColumn: SEQVENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column DATA
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3857e5e3-1705-432e-bfee-c556403a227d
+		summarizeBy: none
+		sourceColumn: DATA
+
+		annotation SummarizationSetBy = Automatic
+
+	column ANOMES
+		dataType: string
+		lineageTag: aa70cd40-a634-491b-917c-2377051f7408
+		summarizeBy: none
+		sourceColumn: ANOMES
+
+		annotation SummarizationSetBy = Automatic
+
+	column MESANO
+		dataType: string
+		lineageTag: 19cf1331-e856-4f87-b4e9-3caa48deed7e
+		summarizeBy: none
+		sourceColumn: MESANO
+
+		annotation SummarizationSetBy = Automatic
+
+	column MES_ATIVACAO
+		dataType: double
+		lineageTag: f89df1ed-ffcb-414c-a1c4-04c041fef015
+		summarizeBy: sum
+		sourceColumn: MES_ATIVACAO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SALDO_MES_2
+		dataType: double
+		lineageTag: fe540025-a996-4fa3-be34-d980b81fee41
+		summarizeBy: sum
+		sourceColumn: SALDO_MES_2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SALDO_MES_1
+		dataType: double
+		lineageTag: ebe14acf-18ad-49d2-a86a-98b8828d7a33
+		summarizeBy: sum
+		sourceColumn: SALDO_MES_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SALDO_MES_ATUAL
+		dataType: double
+		lineageTag: 4c3079d3-63d4-4732-b141-e6b0c5775aac
+		summarizeBy: sum
+		sourceColumn: SALDO_MES_ATUAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CONTAGEM
+		dataType: double
+		lineageTag: 85fd0ae9-cce9-4065-9bb8-b13719beb9ea
+		summarizeBy: sum
+		sourceColumn: CONTAGEM
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition DCVV_META_RVV = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true]),
+				    DATAVALE = Fonte{[Schema="DATAVALE"]}[Data],
+				    DCVV_META_RVV1 = DATAVALE{[Name="DCVV_META_RVV"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(DCVV_META_RVV1,{{"SEQCLIENTE", type text}, {"SEQVENDEDOR", type text}, {"ANOMES", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

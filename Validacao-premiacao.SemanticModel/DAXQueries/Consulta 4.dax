@@ -1,0 +1,34 @@
+
+EVALUATE
+
+vAR VendedorAtual = "278511"
+VAR MetaAtual = "MIX BOVINO"
+
+RETURN
+ROW(
+    "Peso Mix Bovino",
+    SUMX(
+        FILTER(
+            DCVV_META_VENDADEVOLUCAOMIX,
+
+            DCVV_META_VENDADEVOLUCAOMIX[SEQVENDEDOR] = VendedorAtual &&
+
+            -- ✅ filtro por produto do mix + meta
+            DCVV_META_VENDADEVOLUCAOMIX[SEQPRODUTO] IN
+                SELECTCOLUMNS(
+                    FILTER(
+                        mixdiversos,
+                        mixdiversos[META] = MetaAtual &&     -- ✅ AQUI está o ponto
+                        mixdiversos[SEQVENDEDOR] = VendedorAtual &&
+                        DCVV_META_VENDADEVOLUCAOMIX[DTAEMISSAO] >= mixdiversos[DATAINICIO] &&
+                        DCVV_META_VENDADEVOLUCAOMIX[DTAEMISSAO] <= mixdiversos[DTAVALIDADE]
+                    ),
+                    "PROD", mixdiversos[SEQPRODUTO]
+                )
+        ),
+
+        DCVV_META_VENDADEVOLUCAOMIX[PESOVENDA] -
+        DCVV_META_VENDADEVOLUCAOMIX[PESODEVOLUCAO]
+    )
+)
+
