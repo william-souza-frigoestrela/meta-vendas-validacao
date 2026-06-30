@@ -14,10 +14,6 @@ relationship 80e2bb7e-3a76-89b1-17d8-43c8700f124a
 	fromColumn: DCVV_META_VENDADEVOLUCAO.SEQVENDEDOR
 	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
 
-relationship e3d60b9c-0583-e44f-d56c-8b68bc1a56f8
-	fromColumn: DCVV_META_RVV_FERIAS.SEQVENDEDOR
-	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
-
 relationship cd271b02-b19b-7335-2137-759d80c2c76f
 	fromColumn: DCVV_META_RVV.SEQVENDEDOR
 	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
@@ -62,10 +58,6 @@ relationship ad2fae81-a54c-f28d-aea2-bb3b368884e3
 	fromColumn: dCalendario.Anomês
 	toColumn: DimMes.AnoMes
 
-relationship 39d74760-ccd6-6823-70cc-824373b382df
-	fromColumn: DCVV_META_RVV_FERIAS.ANOMES
-	toColumn: DimMes.AnoMes
-
 relationship 74183bb9-eabd-812d-ef73-e1d7544c8896
 	fromColumn: DCVV_META_VENDADEVOLUCAOCOMERCIAL.ANOMES
 	toColumn: DimMes.AnoMes
@@ -92,5 +84,9 @@ relationship fa54652c-3295-4209-a5f5-cfde51dc1b1a
 
 relationship AutoDetected_f035bb91-334f-488d-960c-2441554f6bc7
 	fromColumn: FPBI_RESULTADOMETA.SEQPESSOA
+	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
+
+relationship e58448dc-9025-f8e4-68ff-0edac999a3a1
+	fromColumn: DCVV_META_RVV_FERIAS2.VENDEDOROFC
 	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
 
