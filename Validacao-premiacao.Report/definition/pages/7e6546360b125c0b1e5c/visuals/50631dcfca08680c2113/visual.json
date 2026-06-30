@@ -100,7 +100,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'ALFREDO DOS REIS FILHO'"
+                                "Value": "'RONALDO MADEIRA'"
                               }
                             }
                           ]
@@ -137,7 +137,7 @@
                         },
                         "Right": {
                           "Literal": {
-                            "Value": "'alfre'"
+                            "Value": "'ronaldo ma'"
                           }
                         }
                       }

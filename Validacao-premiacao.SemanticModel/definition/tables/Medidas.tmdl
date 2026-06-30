@@ -1,15 +1,11 @@
 table Medidas
 	lineageTag: 58ea3b43-413c-4420-9ccd-d824d0f7dfae
 
-	measure 'Meta valor' =
+	measure 'Meta valor' = ```
 			SUM(FPBI_ESTRELA_METAS[VLRMETA])
 			
-			/*
-			var seqmeta = SELECTEDVALUE(FPBI_ESTRELA_METAS[SEQMETA])
-			RETURN
-			if (seqmeta=17,
-			    SELECTEDVALUE(FPBI_ESTRELA_METAS[VLRMETA])*0.1,SELECTEDVALUE(FPBI_ESTRELA_METAS[VLRMETA])
-			)*/
+			
+			```
 		displayFolder: Metas
 		lineageTag: 02b5adfb-a7dc-4417-8839-e179dfa697c6
 
@@ -70,7 +66,7 @@ table Medidas
 			        [Itens totais],
 			
 			    "% Devolução",
-			        [% Devolucao Exibicao],
+			        [% devolucao teste],
 			
 			    "MIX BOVINO",
 			        [Peso Mix],
@@ -283,23 +279,19 @@ table Medidas
 	measure '% Devolucao' = ```
 			
 			
-			var pesovenda = 
-			    sum(DCVV_META_VENDADEVOLUCAOCOMERCIAL[PESOVENDA])
+			var pesovenda = sum(DCVV_META_VENDADEVOLUCAOCOMERCIAL[PESOVENDA])
 			
-			var pesodevolucao = 
-			    SUM(DCVV_META_VENDADEVOLUCAOCOMERCIAL[PESODEVOLUCAO])
-			
+			var pesodevol = sum(DCVV_META_VENDADEVOLUCAOCOMERCIAL[PESODEVOLUCAO])
 			
 			RETURN
+			DIVIDE(pesodevol,pesovenda)
 			
-			
-			DIVIDE(pesodevolucao,pesovenda,0)
 			```
 		formatString: 0.0000
 		displayFolder: Resultado realizado
 		lineageTag: 9f7173e0-9e3f-42b4-ab57-806c8d5dea15
 
-	measure '% Devolucao Exibicao' = FORMAT([% Devolucao], "0.00%")
+	measure '% Devolucao Exibicao' = FORMAT([% devolucao teste], "0.00%")
 		displayFolder: Resultado realizado
 		lineageTag: b642657c-6eea-4d01-81a4-8f75adc98a8b
 
@@ -358,7 +350,7 @@ table Medidas
 
 	measure '% Realizado devolucao' =
 			
-			DIVIDE([Meta valor],[% Devolucao],999)
+			DIVIDE([Meta valor],[% devolucao teste],999)
 		displayFolder: % Realizado
 		lineageTag: 082ba3be-bdf0-4f28-ae63-0700f1a3a4b6
 
@@ -660,7 +652,7 @@ table Medidas
 			            SWITCH(
 			                TRUE(),
 			                [% Realizado devolucao] <0.70 ,0,
-			                [% Realizado devolucao] >=0.70 && [% Realizado devolucao] < 0.80, (base_percent_devolucao)*0.2,
+			                [% Realizado devolucao] >=0.70 && [% Realizado devolucao]< 0.80, (base_percent_devolucao)*0.2,
 			                [% Realizado devolucao] >=0.80 && [% Realizado devolucao] < 0.90, (base_percent_devolucao)*0.4,
 			                [% Realizado devolucao] >=0.90 && [% Realizado devolucao] < 1, (base_percent_devolucao)*0.75,
 			                [% Realizado devolucao] >=1 && [% Realizado devolucao] < 1.05, (base_percent_devolucao)*1,
@@ -677,7 +669,7 @@ table Medidas
 			                [% Realizado mix] >=0.80 && [% Realizado mix] < 0.90, ([Salario vendedor]*0.02)*0.4,
 			                [% Realizado mix] >=0.90 && [% Realizado mix] < 1, ([Salario vendedor]*0.02)*0.75,
 			                [% Realizado mix] >=1 && [% Realizado mix] < 1.05, ([Salario vendedor]*0.02)*1,
-			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.15, ([Salario vendedor]*0.02)*1.10,
+			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.10, ([Salario vendedor]*0.02)*1.10,
 			                [% Realizado mix] >=1.10 && [% Realizado mix] < 1.15, ([Salario vendedor]*0.02)*1.15,
 			                ([Salario vendedor]*0.02)*1.20
 			            ),
@@ -854,6 +846,21 @@ table Medidas
 		lineageTag: ee058adc-ba88-4125-8b2e-ea2fbf7d2162
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% devolucao teste' = ```
+			
+			
+			var pesovenda = sum(DCVV_META_VENDADEVOLUCAOCOMERCIAL[PESOVENDA])
+			
+			var pesodevol = sum(DCVV_META_VENDADEVOLUCAOCOMERCIAL[PESODEVOLUCAO])
+			
+			RETURN
+			DIVIDE(pesodevol,pesovenda)*100
+			
+			
+			```
+		formatString: 0.00000
+		lineageTag: db84ab3d-af4d-4aec-9667-5e39ebb34b6d
 
 	column Column
 		isHidden

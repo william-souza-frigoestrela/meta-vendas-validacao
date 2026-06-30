@@ -88,7 +88,7 @@ table FPBI_ESTRELA_METAS
 				        Table.AddColumn(
 				            #"Tipo Alterado",
 				            "VLRMETA_Ajustado",
-				            each if [SEQMETA] = 17 then [VLRMETA] * 0.1 else [VLRMETA],
+				            each if [SEQMETA] = 17 then [VLRMETA] * 1 else [VLRMETA],
 				            type number
 				        ),
 				
