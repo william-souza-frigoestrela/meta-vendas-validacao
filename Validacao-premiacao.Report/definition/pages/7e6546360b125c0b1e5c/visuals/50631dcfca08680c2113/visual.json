@@ -100,7 +100,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'RONALDO MADEIRA'"
+                                "Value": "'CARLOS AUGUSTO ARVATI DORO'"
                               }
                             }
                           ]
@@ -137,7 +137,7 @@
                         },
                         "Right": {
                           "Literal": {
-                            "Value": "'ronaldo ma'"
+                            "Value": "'carlos'"
                           }
                         }
                       }

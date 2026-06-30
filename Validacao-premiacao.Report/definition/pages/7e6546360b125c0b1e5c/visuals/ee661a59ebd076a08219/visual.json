@@ -98,13 +98,13 @@
         "sort": [
           {
             "field": {
-              "Measure": {
+              "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Medidas"
+                    "Entity": "FPBI_ESTRELA_METAS"
                   }
                 },
-                "Property": "Resultado"
+                "Property": "Meta Display"
               }
             },
             "direction": "Ascending"
