@@ -746,6 +746,16 @@ cultureInfo pt-BR
 			            },
 			            "Weight": 0.485
 			          }
+			        },
+			        {
+			          "META": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -5312,19 +5322,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Fornecedor"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "FORNECEDOR": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "medidas.spend_cy": {
 			      "Definition": {
@@ -5333,19 +5331,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Spend CY"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          ".": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "medidas.spend_ly_format": {
 			      "Definition": {
@@ -5354,19 +5340,7 @@ cultureInfo pt-BR
 			          "ConceptualProperty": "Spend LY format"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Spend LY": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    }
 			  },
 			  "Relationships": {
