@@ -75,6 +75,54 @@ table FPBI_ESTRELA_METAS
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column VENDEDOR
+		dataType: string
+		lineageTag: 4ad46c00-0cf0-4384-b7b9-3fd22bf4cbe6
+		summarizeBy: none
+		sourceColumn: VENDEDOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQSUPERVISOR
+		dataType: string
+		lineageTag: b9087d5c-6936-4aa5-95bc-e91bd2888c4c
+		summarizeBy: none
+		sourceColumn: SEQSUPERVISOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SUPERVISOR
+		dataType: string
+		lineageTag: 63edf14e-779f-41a0-a42d-8077b742670b
+		summarizeBy: none
+		sourceColumn: SUPERVISOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQGERENTEVENDA
+		dataType: string
+		lineageTag: e9384451-f89c-4148-a744-b0634fe02e1b
+		summarizeBy: none
+		sourceColumn: SEQGERENTEVENDA
+
+		annotation SummarizationSetBy = Automatic
+
+	column GERENTEVENDA
+		dataType: string
+		lineageTag: 727af08a-649d-423c-9974-249b023700f9
+		summarizeBy: none
+		sourceColumn: GERENTEVENDA
+
+		annotation SummarizationSetBy = Automatic
+
+	column seqvendedor-seqmeta-anomes-dtavalidade
+		dataType: string
+		lineageTag: 0cfc7b82-4c85-4d20-96ea-06a013af9f00
+		summarizeBy: none
+		sourceColumn: seqvendedor-seqmeta-anomes-dtavalidade
+
+		annotation SummarizationSetBy = Automatic
+
 	partition FPBI_ESTRELA_METAS = m
 		mode: import
 		source =
@@ -96,9 +144,13 @@ table FPBI_ESTRELA_METAS
 				        Table.RemoveColumns(#"Coluna Ajustada", {"VLRMETA"}),
 				
 				    #"Renomeia Nova" =
-				        Table.RenameColumns(#"Remove Antiga", {{"VLRMETA_Ajustado", "VLRMETA"}})
+				        Table.RenameColumns(#"Remove Antiga", {{"VLRMETA_Ajustado", "VLRMETA"}}),
+				    #"Consultas Mescladas" = Table.NestedJoin(#"Renomeia Nova", {"SEQVENDEDOR"}, DGEVQ_HIERARQUIAVENDANIVEL, {"SEQVENDEDOR"}, "DGEVQ_HIERARQUIAVENDANIVEL", JoinKind.LeftOuter),
+				    #"DGEVQ_HIERARQUIAVENDANIVEL Expandido" = Table.ExpandTableColumn(#"Consultas Mescladas", "DGEVQ_HIERARQUIAVENDANIVEL", {"VENDEDOR", "SEQSUPERVISOR", "SUPERVISOR", "SEQGERENTEVENDA", "GERENTEVENDA"}, {"VENDEDOR", "SEQSUPERVISOR", "SUPERVISOR", "SEQGERENTEVENDA", "GERENTEVENDA"}),
+				    #"Coluna Mesclada Inserida" = Table.AddColumn(#"DGEVQ_HIERARQUIAVENDANIVEL Expandido", "seqvendedor-seqmeta-anomes-dtavalidade", each Text.Combine({[SEQVENDEDOR], Text.From([SEQMETA], "pt-BR"), [ANOMES], Text.From([DTAVALIDADE], "pt-BR")}, "-"), type text),
+				    #"Duplicatas Removidas" = Table.Distinct(#"Coluna Mesclada Inserida", {"seqvendedor-seqmeta-anomes-dtavalidade"})
 				in
-				    #"Renomeia Nova"
+				    #"Duplicatas Removidas"
 
 	annotation PBI_NavigationStepName = Navegação
 

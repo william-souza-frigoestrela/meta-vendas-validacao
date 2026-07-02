@@ -1,0 +1,74 @@
+table DCVV_META_RVV_FERIAS2
+	lineageTag: 62f85202-7f2d-48ed-b0e3-218780abc133
+
+	column SEQCLIENTE
+		dataType: string
+		lineageTag: 1fb7103b-97e9-4069-a26b-3fe1e9bd69bd
+		summarizeBy: none
+		sourceColumn: SEQCLIENTE
+
+		annotation SummarizationSetBy = Automatic
+
+	column VENDEDOROFC
+		dataType: string
+		lineageTag: 525ae53d-95c9-4d8a-8c3e-483d06574a8a
+		summarizeBy: none
+		sourceColumn: VENDEDOROFC
+
+		annotation SummarizationSetBy = Automatic
+
+	column SALDOMESRETRASADO
+		dataType: double
+		lineageTag: 8b86b84b-9814-4f10-9956-4ad789e601f5
+		summarizeBy: sum
+		sourceColumn: SALDOMESRETRASADO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SALDOMESPASSADO
+		dataType: double
+		lineageTag: 5b9a32c0-658f-4aff-854d-70e82e1ac24e
+		summarizeBy: sum
+		sourceColumn: SALDOMESPASSADO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SALDOMESATUAL
+		dataType: double
+		lineageTag: e5362439-9403-4511-a72a-29f2ce513f39
+		summarizeBy: sum
+		sourceColumn: SALDOMESATUAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CONTAGEM
+		dataType: double
+		lineageTag: 5601e1b8-9312-4b50-863d-aa9b7f8d49c1
+		summarizeBy: sum
+		sourceColumn: CONTAGEM
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition DCVV_META_RVV_FERIAS2 = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true]),
+				    DATAVALE = Fonte{[Schema="DATAVALE"]}[Data],
+				    DCVV_META_RVV_FERIAS1 = DATAVALE{[Name="DCVV_META_RVV_FERIAS2"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(DCVV_META_RVV_FERIAS1,{{"SEQCLIENTE", type text}, {"VENDEDOROFC", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
