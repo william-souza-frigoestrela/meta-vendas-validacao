@@ -1,0 +1,111 @@
+table dPessoaHierarquia
+	lineageTag: 0396773a-59f4-43a3-acb8-ff19bdc19ea1
+
+	column SEQPESSOA
+		dataType: string
+		lineageTag: 9042ef06-5a0e-4c31-945c-b79a791fb620
+		summarizeBy: none
+		sourceColumn: SEQPESSOA
+
+		annotation SummarizationSetBy = Automatic
+
+	column NOME
+		dataType: string
+		lineageTag: e8b19edc-8241-4f29-afea-9a138efb732e
+		summarizeBy: none
+		sourceColumn: NOME
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUS
+		dataType: string
+		lineageTag: 992807f8-1d41-4757-9ca8-ad2bf0874664
+		summarizeBy: none
+		sourceColumn: STATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	column NIVEL
+		dataType: string
+		lineageTag: 2ff278e2-0569-43bb-bafc-698838e3575b
+		summarizeBy: none
+		sourceColumn: NIVEL
+
+		annotation SummarizationSetBy = Automatic
+
+	column NIVEL_ORDEM
+		dataType: int64
+		formatString: 0
+		lineageTag: 02379858-b66f-47fc-8074-4529f96f83cb
+		summarizeBy: sum
+		sourceColumn: NIVEL_ORDEM
+
+		annotation SummarizationSetBy = Automatic
+
+	column ID_PESSOA_NIVEL
+		dataType: string
+		lineageTag: 9a78dd75-c9a0-4770-9f3b-f80b1c8e2a74
+		summarizeBy: none
+		sourceColumn: ID_PESSOA_NIVEL
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dPessoaHierarquia = m
+		mode: import
+		source =
+				let
+				    // 1. Base deduplicada: 1 linha por vendedor, registro mais recente
+				    Origem = DGEVQ_HIERARQUIAVENDANIVEL,
+				    Agrupado = Table.Group(Origem, {"SEQVENDEDOR"}, {
+				        {"UltimoRegistro", each Table.LastN(Table.Sort(_, {{"DTAFINAL", Order.Ascending}}), 1), type table}
+				    }),
+				    Base = Table.ExpandTableColumn(Agrupado, "UltimoRegistro",
+				        {"VENDEDOR","STATUSVENDEDOR","SEQSUPERVISOR","SUPERVISOR","STATUSSUPERVISOR",
+				         "SEQGERENTEVENDA","GERENTEVENDA","STATUSGERENTEVENDAS"}),
+				
+				    // 2. Extrai os 3 papéis já padronizados (SEQPESSOA / NOME / STATUS / NIVEL / NIVEL_ORDEM)
+				    Vendedores = Table.RenameColumns(
+				        Table.SelectColumns(Base, {"SEQVENDEDOR","VENDEDOR","STATUSVENDEDOR"}),
+				        {{"SEQVENDEDOR","SEQPESSOA"}, {"VENDEDOR","NOME"}, {"STATUSVENDEDOR","STATUS"}}
+				    ),
+				    VendedoresCompleto = Table.AddColumn(
+				        Table.AddColumn(Vendedores, "NIVEL", each "Vendedor", type text),
+				        "NIVEL_ORDEM", each 1, Int64.Type
+				    ),
+				
+				    Supervisores = Table.RenameColumns(
+				        Table.SelectColumns(Base, {"SEQSUPERVISOR","SUPERVISOR","STATUSSUPERVISOR"}),
+				        {{"SEQSUPERVISOR","SEQPESSOA"}, {"SUPERVISOR","NOME"}, {"STATUSSUPERVISOR","STATUS"}}
+				    ),
+				    SupervisoresCompleto = Table.AddColumn(
+				        Table.AddColumn(Supervisores, "NIVEL", each "Supervisor", type text),
+				        "NIVEL_ORDEM", each 2, Int64.Type
+				    ),
+				
+				    Gerentes = Table.RenameColumns(
+				        Table.SelectColumns(Base, {"SEQGERENTEVENDA","GERENTEVENDA","STATUSGERENTEVENDAS"}),
+				        {{"SEQGERENTEVENDA","SEQPESSOA"}, {"GERENTEVENDA","NOME"}, {"STATUSGERENTEVENDAS","STATUS"}}
+				    ),
+				    GerentesCompleto = Table.AddColumn(
+				        Table.AddColumn(Gerentes, "NIVEL", each "Gerente", type text),
+				        "NIVEL_ORDEM", each 3, Int64.Type
+				    ),
+				
+				    // 3. Une os 3 papéis, remove nulos e duplicados
+				 Uniao = Table.Combine({VendedoresCompleto, SupervisoresCompleto, GerentesCompleto}),
+				    TiposAjustados = Table.TransformColumnTypes(Uniao, {
+				        {"SEQPESSOA", type text}, {"NOME", type text}, {"STATUS", type text},
+				        {"NIVEL", type text}, {"NIVEL_ORDEM", Int64.Type}
+				    }),
+				    SemNulos = Table.SelectRows(TiposAjustados, each [SEQPESSOA] <> null and [SEQPESSOA] <> ""),
+				    Final = Table.Distinct(SemNulos, {"SEQPESSOA", "NIVEL"}),
+				
+				    // chave surrogate única da tabela — usada em relacionamentos "1" quando necessário
+				    ComChave = Table.AddColumn(Final, "ID_PESSOA_NIVEL", each Text.Combine({[SEQPESSOA], [NIVEL]}, "|"), type text)
+				in
+				    ComChave
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

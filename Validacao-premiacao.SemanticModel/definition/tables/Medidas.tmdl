@@ -2,8 +2,16 @@ table Medidas
 	lineageTag: 58ea3b43-413c-4420-9ccd-d824d0f7dfae
 
 	measure 'Meta valor' = ```
-			SUM(FPBI_ESTRELA_METAS[VLRMETA])
 			
+			VAR MetaAtual =
+			    SELECTEDVALUE(FPBI_ESTRELA_METAS[Meta Display])
+			
+			RETURN
+			IF(
+			    MetaAtual = "% Devolução",
+			    max(FPBI_ESTRELA_METAS[VLRMETA]),
+			    SUM(FPBI_ESTRELA_METAS[VLRMETA])
+			)
 			
 			```
 		displayFolder: Metas
@@ -489,7 +497,39 @@ table Medidas
 
 	measure 'Salario vendedor' =
 			
-			SELECTEDVALUE(fTotvs[VLRSALARIO])
+			--SELECTEDVALUE(fTotvs[VLRSALARIO])
+			
+			
+			VAR VendedorSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[VENDEDOR] )
+			VAR SupervisorSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[SUPERVISOR] )
+			VAR GerenteSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[GERENTEVENDA] )
+			
+			VAR NomeAlvo = COALESCE ( VendedorSel, SupervisorSel, GerenteSel )
+			
+			VAR NivelAlvo =
+			    SWITCH (
+			        TRUE (),
+			        NOT ISBLANK ( VendedorSel ), "Vendedor",
+			        NOT ISBLANK ( SupervisorSel ), "Supervisor",
+			        NOT ISBLANK ( GerenteSel ), "Gerente",
+			        BLANK ()
+			    )
+			
+			VAR SeqPessoaAlvo =
+			    CALCULATE (
+			        SELECTEDVALUE ( dPessoaHierarquia[SEQPESSOA] ),
+			        REMOVEFILTERS ( dPessoaHierarquia ),
+			        dPessoaHierarquia[NOME] = NomeAlvo,
+			        dPessoaHierarquia[NIVEL] = NivelAlvo
+			    )
+			
+			RETURN
+			CALCULATE (
+			    SELECTEDVALUE ( fTotvs[VLRSALARIO] ),
+			    REMOVEFILTERS ( DCV_VENDEDORHIERARQUIANIVEL ),
+			    REMOVEFILTERS ( dPessoaHierarquia ),
+			    fTotvs[SEQPESSOADTV] = SeqPessoaAlvo
+			)
 		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		lineageTag: f210c8a2-b6cf-4cde-b12c-e22ca998ccc6
 

@@ -90,3 +90,8 @@ relationship e58448dc-9025-f8e4-68ff-0edac999a3a1
 	fromColumn: DCVV_META_RVV_FERIAS2.VENDEDOROFC
 	toColumn: DCV_VENDEDORHIERARQUIANIVEL.SEQPESSOA
 
+relationship 7c3197a3-cb5e-37ab-4e6d-f2663df75c08
+	toCardinality: many
+	fromColumn: fTotvs.SEQPESSOADTV
+	toColumn: dPessoaHierarquia.SEQPESSOA
+

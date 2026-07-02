@@ -132,5 +132,5 @@ table DCVV_META_VENDADEVOLUCAO
 
 	annotation PBI_NavigationStepName = Navegação
 
-	annotation PBI_ResultType = Exception
+	annotation PBI_ResultType = Table
 
