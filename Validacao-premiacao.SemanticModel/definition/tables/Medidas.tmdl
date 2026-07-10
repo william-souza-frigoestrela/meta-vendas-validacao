@@ -495,10 +495,9 @@ table Medidas
 		displayFolder: % Realizado
 		lineageTag: c1dbd111-a5d0-4e0d-86b1-4f8cd4119146
 
-	measure 'Salario vendedor' =
+	measure 'Salario vendedor' = ```
 			
 			--SELECTEDVALUE(fTotvs[VLRSALARIO])
-			
 			
 			VAR VendedorSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[VENDEDOR] )
 			VAR SupervisorSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[SUPERVISOR] )
@@ -523,13 +522,29 @@ table Medidas
 			        dPessoaHierarquia[NIVEL] = NivelAlvo
 			    )
 			
+			
+			VAR SalarioBase =
+			    CALCULATE(
+			        SELECTEDVALUE(fTotvs[VLRSALARIO]),
+			        REMOVEFILTERS(DCV_VENDEDORHIERARQUIANIVEL),
+			        REMOVEFILTERS(dPessoaHierarquia),
+			        fTotvs[SEQPESSOADTV] = SeqPessoaAlvo
+			    )
+			
+			VAR PercentualNivel =
+			    SWITCH(
+			        NivelAlvo,
+			        "Vendedor", 1,
+			        "Supervisor", 0.8,
+			        "Gerente", 0.6,
+			        0
+			    )
+			
+			
 			RETURN
-			CALCULATE (
-			    SELECTEDVALUE ( fTotvs[VLRSALARIO] ),
-			    REMOVEFILTERS ( DCV_VENDEDORHIERARQUIANIVEL ),
-			    REMOVEFILTERS ( dPessoaHierarquia ),
-			    fTotvs[SEQPESSOADTV] = SeqPessoaAlvo
-			)
+			 SalarioBase * PercentualNivel
+			
+			```
 		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		lineageTag: f210c8a2-b6cf-4cde-b12c-e22ca998ccc6
 
@@ -537,8 +552,8 @@ table Medidas
 
 	measure Bonificação = ```
 			
-			var seqnivel = SELECTEDVALUE(DCV_VENDEDORHIERARQUIANIVEL[SEQNIVEL])
-			var varejo_sul = seqnivel in {"31","37"}
+			
+			var varejo_sul = SELECTEDVALUE(DCV_VENDEDORHIERARQUIANIVEL[SEQNIVEL]) in {"31","37"}
 			
 			var base_percent_devolucao =  
 			    IF(varejo_sul,[Salario vendedor]*0.01,[Salario vendedor]*0.04)
@@ -797,8 +812,8 @@ table Medidas
 			        ),
 			        "NetPeso",
 			        CALCULATE(
-			            SUM(DCVV_META_VENDADEVOLUCAO[PESOVENDA]) -
-			            SUM(DCVV_META_VENDADEVOLUCAO[PESODEVOLUCAO])
+			            SUM(DCVV_META_VENDADEVOLUCAO[VLRVENDA]) -
+			            SUM(DCVV_META_VENDADEVOLUCAO[VLRDEVOLUCAO])
 			        )
 			    )
 			RETURN
