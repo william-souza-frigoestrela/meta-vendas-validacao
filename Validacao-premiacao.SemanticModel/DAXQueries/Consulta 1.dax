@@ -1,24 +1,46 @@
+
+
+EVALUATE
+SUMMARIZE(
+    FILTER(
+        DCVV_META_RVV_FERIAS2,
+        DCVV_META_RVV_FERIAS2[VENDEDOROFC] = "114268"
+            && DCVV_META_RVV_FERIAS2[CONTAGEM] > 0
+    ),
+    DCVV_META_RVV_FERIAS2[SEQCLIENTE]
+)
+
+
+
+
+
 EVALUATE
 FILTER(
-    ADDCOLUMNS(
-        SUMMARIZE(
-            FILTER(
-                DCVV_META_VENDADEVOLUCAO,
-                DCVV_META_VENDADEVOLUCAO[ANOMES] = "202605" &&
-                DCVV_META_VENDADEVOLUCAO[SEQVENDEDOR] = "298987"
-            ),
-            DCVV_META_VENDADEVOLUCAO[SEQCLIENTE]
-        ),
-        "ValorLiquido",
-            CALCULATE(
-                SUM(DCVV_META_VENDADEVOLUCAO[VALOR])
-            ),
-        "PesoLiquido",
-            CALCULATE(
-                SUM(DCVV_META_VENDADEVOLUCAO[PESOVENDA]) -
-                SUM(DCVV_META_VENDADEVOLUCAO[PESODEVOLUCAO])
-            )
+    SUMMARIZE(
+        DCVV_META_RVV_FERIAS2,
+        DCVV_META_RVV_FERIAS2[SEQCLIENTE],
+        "QtdVendedores",
+        DISTINCTCOUNT(DCVV_META_RVV_FERIAS2[VENDEDOROFC])
     ),
-    [ValorLiquido] <= 0 &&
-    [PesoLiquido] > 0
+    [QtdVendedores] > 1
 )
+
+
+
+EVALUATE
+FILTER(
+    SUMMARIZE(
+        DCVV_META_RVV_FERIAS2,
+        DCVV_META_RVV_FERIAS2[SEQCLIENTE],
+        "QtdVendedores",
+        DISTINCTCOUNT(DCVV_META_RVV_FERIAS2[VENDEDOROFC])
+    ),
+    [QtdVendedores] > 1
+        &&
+    CALCULATE(
+        COUNTROWS(DCVV_META_RVV_FERIAS2),
+        DCVV_META_RVV_FERIAS2[VENDEDOROFC] = "114268"
+    ) > 0
+)
+
+

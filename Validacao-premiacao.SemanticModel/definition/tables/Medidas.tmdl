@@ -824,13 +824,28 @@ table Medidas
 
 	measure 'Recorrencia positivacao' = ```
 			
-			CALCULATE(
-			
+			/*CALCULATE(
 			    DISTINCTCOUNT(DCVV_META_RVV_FERIAS2[SEQCLIENTE]),
 			    DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
-			    REMOVEFILTERS(DimMes)
-			    
+			    TREATAS(
+			        VALUES(DCVV_META_VENDADEVOLUCAO[SEQCLIENTE]),
+			        DCVV_META_RVV_FERIAS2[SEQCLIENTE]
+			    )
+			)*/
+			
+			
+			
+			VAR AnoMesAtual =
+			    SELECTEDVALUE(DimMes[ANOMES])
+			
+			RETURN
+			CALCULATE(
+			    DISTINCTCOUNT(DCVV_META_RVV_FERIAS2[SEQCLIENTE]),
+			    DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
+			    DCVV_META_RVV_FERIAS2[ANOMES] = AnoMesAtual
 			)
+			
+			
 			```
 		formatString: 0
 		displayFolder: Resultado realizado
@@ -916,6 +931,21 @@ table Medidas
 			```
 		formatString: 0.00000
 		lineageTag: db84ab3d-af4d-4aec-9667-5e39ebb34b6d
+
+	measure 'Recorrencia Teste' = ```
+			
+			CALCULATE(
+			    DISTINCTCOUNT(DCVV_META_RVV_FERIAS2[SEQCLIENTE]),
+			    DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
+			    TREATAS(
+			        VALUES(DCVV_META_VENDADEVOLUCAO[SEQCLIENTE]),
+			        DCVV_META_RVV_FERIAS2[SEQCLIENTE]
+			    )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 605e9d3c-c813-42a3-8d74-edf2403facc9
 
 	column Column
 		isHidden
