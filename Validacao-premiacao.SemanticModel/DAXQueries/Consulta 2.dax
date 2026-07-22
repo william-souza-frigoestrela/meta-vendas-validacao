@@ -135,3 +135,27 @@ ROW(
 
 
 
+EVALUATE
+SUMMARIZE(
+    FILTER(
+        DCVV_META_RVV_FERIAS2,
+        DCVV_META_RVV_FERIAS2[ANOMES] = "202606"
+            && DCVV_META_RVV_FERIAS2[CONTAGEM] > 0
+            && DCVV_META_RVV_FERIAS2[VENDEDOROFC] IN {
+                "110797",
+                "119937",
+                "299054",
+                "209496",
+                "285639",
+                "277493",
+                "281553",
+                "298987",
+                "310862",
+                "305437",
+                "321122"
+            }
+    ),
+    DCVV_META_RVV_FERIAS2[VENDEDOROFC],
+    "Recorrencia",
+    DISTINCTCOUNT(DCVV_META_RVV_FERIAS2[SEQCLIENTE])
+)
