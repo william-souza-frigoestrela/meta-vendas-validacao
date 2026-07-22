@@ -79,7 +79,7 @@ table DCVV_META_RVV_FERIAS2
 		mode: import
 		source =
 				let
-				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true]),
+				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true, CommandTimeout=#duration(0, 0, 30, 0)]),
 				    DATAVALE = Fonte{[Schema="DATAVALE"]}[Data],
 				    DCVV_META_RVV_FERIAS1 = DATAVALE{[Name="DCVV_META_RVV_FERIAS2"]}[Data],
 				    #"Tipo Alterado" = Table.TransformColumnTypes(DCVV_META_RVV_FERIAS1,{{"SEQCLIENTE", type text}, {"VENDEDOROFC", type text},{"ANOMES", type text}})
@@ -88,5 +88,5 @@ table DCVV_META_RVV_FERIAS2
 
 	annotation PBI_NavigationStepName = Navegação
 
-	annotation PBI_ResultType = Exception
+	annotation PBI_ResultType = Table
 
