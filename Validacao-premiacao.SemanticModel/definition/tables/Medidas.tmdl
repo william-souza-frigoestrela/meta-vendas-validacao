@@ -497,20 +497,35 @@ table Medidas
 
 	measure 'Base calculo' = ```
 			
-			--SELECTEDVALUE(fTotvs[VLRSALARIO])
+			VAR FiltroVendedor = ISFILTERED ( DCV_VENDEDORHIERARQUIANIVEL[VENDEDOR] )
+			VAR FiltroSupervisor = ISFILTERED ( DCV_VENDEDORHIERARQUIANIVEL[SUPERVISOR] )
+			VAR FiltroGerente = ISFILTERED ( DCV_VENDEDORHIERARQUIANIVEL[GERENTEVENDA] )
 			
 			VAR VendedorSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[VENDEDOR] )
 			VAR SupervisorSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[SUPERVISOR] )
 			VAR GerenteSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[GERENTEVENDA] )
 			
-			VAR NomeAlvo = COALESCE ( VendedorSel, SupervisorSel, GerenteSel )
+			-- Identifica a seleção priorizando o nível explicitamente filtrado na interface
+			VAR NomeAlvo =
+			    SWITCH (
+			        TRUE (),
+			        FiltroVendedor, VendedorSel,
+			        FiltroSupervisor, SupervisorSel,
+			        FiltroGerente, GerenteSel,
+			        -- Fallback caso haja apenas 1 registro total sem filtro explícito
+			        COALESCE ( VendedorSel, SupervisorSel, GerenteSel ) 
+			    )
 			
 			VAR NivelAlvo =
 			    SWITCH (
 			        TRUE (),
-			        NOT ISBLANK ( VendedorSel ), "Vendedor",
-			        NOT ISBLANK ( SupervisorSel ), "Supervisor",
-			        NOT ISBLANK ( GerenteSel ), "Gerente",
+			        FiltroVendedor, "Vendedor",
+			        FiltroSupervisor, "Supervisor",
+			        FiltroGerente, "Gerente",
+			        -- Fallback para determinar o nível com base no NomeAlvo
+			        NOT ISBLANK ( VendedorSel ) && NomeAlvo = VendedorSel, "Vendedor",
+			        NOT ISBLANK ( SupervisorSel ) && NomeAlvo = SupervisorSel, "Supervisor",
+			        NOT ISBLANK ( GerenteSel ) && NomeAlvo = GerenteSel, "Gerente",
 			        BLANK ()
 			    )
 			
@@ -522,12 +537,11 @@ table Medidas
 			        dPessoaHierarquia[NIVEL] = NivelAlvo
 			    )
 			
-			
 			VAR SalarioBase =
-			    CALCULATE(
-			        SELECTEDVALUE(fTotvs[VLRSALARIO]),
-			        REMOVEFILTERS(DCV_VENDEDORHIERARQUIANIVEL),
-			        REMOVEFILTERS(dPessoaHierarquia),
+			    CALCULATE (
+			        SELECTEDVALUE ( fTotvs[VLRSALARIO] ),
+			        REMOVEFILTERS ( DCV_VENDEDORHIERARQUIANIVEL ),
+			        REMOVEFILTERS ( dPessoaHierarquia ),
 			        fTotvs[SEQPESSOADTV] = SeqPessoaAlvo
 			    )
 			
@@ -949,18 +963,35 @@ table Medidas
 
 	measure Salario = ```
 			
+			VAR FiltroVendedor = ISFILTERED ( DCV_VENDEDORHIERARQUIANIVEL[VENDEDOR] )
+			VAR FiltroSupervisor = ISFILTERED ( DCV_VENDEDORHIERARQUIANIVEL[SUPERVISOR] )
+			VAR FiltroGerente = ISFILTERED ( DCV_VENDEDORHIERARQUIANIVEL[GERENTEVENDA] )
+			
 			VAR VendedorSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[VENDEDOR] )
 			VAR SupervisorSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[SUPERVISOR] )
 			VAR GerenteSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[GERENTEVENDA] )
 			
-			VAR NomeAlvo = COALESCE ( VendedorSel, SupervisorSel, GerenteSel )
+			-- Identifica a seleção priorizando o nível explicitamente filtrado na interface
+			VAR NomeAlvo =
+			    SWITCH (
+			        TRUE (),
+			        FiltroVendedor, VendedorSel,
+			        FiltroSupervisor, SupervisorSel,
+			        FiltroGerente, GerenteSel,
+			        -- Fallback caso haja apenas 1 registro total sem filtro explícito
+			        COALESCE ( VendedorSel, SupervisorSel, GerenteSel ) 
+			    )
 			
 			VAR NivelAlvo =
 			    SWITCH (
 			        TRUE (),
-			        NOT ISBLANK ( VendedorSel ), "Vendedor",
-			        NOT ISBLANK ( SupervisorSel ), "Supervisor",
-			        NOT ISBLANK ( GerenteSel ), "Gerente",
+			        FiltroVendedor, "Vendedor",
+			        FiltroSupervisor, "Supervisor",
+			        FiltroGerente, "Gerente",
+			        -- Fallback para determinar o nível com base no NomeAlvo
+			        NOT ISBLANK ( VendedorSel ) && NomeAlvo = VendedorSel, "Vendedor",
+			        NOT ISBLANK ( SupervisorSel ) && NomeAlvo = SupervisorSel, "Supervisor",
+			        NOT ISBLANK ( GerenteSel ) && NomeAlvo = GerenteSel, "Gerente",
 			        BLANK ()
 			    )
 			
@@ -972,23 +1003,22 @@ table Medidas
 			        dPessoaHierarquia[NIVEL] = NivelAlvo
 			    )
 			
-			
 			VAR SalarioBase =
-			    CALCULATE(
-			        SELECTEDVALUE(fTotvs[VLRSALARIO]),
-			        REMOVEFILTERS(DCV_VENDEDORHIERARQUIANIVEL),
-			        REMOVEFILTERS(dPessoaHierarquia),
+			    CALCULATE (
+			        SELECTEDVALUE ( fTotvs[VLRSALARIO] ),
+			        REMOVEFILTERS ( DCV_VENDEDORHIERARQUIANIVEL ),
+			        REMOVEFILTERS ( dPessoaHierarquia ),
 			        fTotvs[SEQPESSOADTV] = SeqPessoaAlvo
 			    )
 			
-			
 			RETURN
-			 SalarioBase 
+			    SalarioBase
+			
+			
 			```
-		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		lineageTag: b3b4a62a-b0df-4003-8868-03a289b7dc94
 
-		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Column
 		isHidden
