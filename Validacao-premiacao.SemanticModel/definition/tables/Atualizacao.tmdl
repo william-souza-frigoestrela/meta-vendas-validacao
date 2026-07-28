@@ -1,0 +1,31 @@
+table Atualizacao
+	lineageTag: 78be8f55-a1a3-4789-a211-9bbb600465b1
+
+	column 'Data e hora certa'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c89bd4ff-1144-4bdb-a46d-fecb78cd7cdc
+		summarizeBy: none
+		sourceColumn: Data e hora certa
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Atualizacao = m
+		mode: import
+		source =
+				let
+				    Fonte = DateTime.LocalNow(),
+				    #"Convertido para Tabela" = #table(1, {{Fonte}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Convertido para Tabela",{{"Column1", "Data e Hora"}}),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Colunas Renomeadas",{{"Data e Hora", type datetime}}),
+				    #"Tipo Alterado2" = Table.TransformColumnTypes(#"Tipo Alterado",{{"Data e Hora", type datetimezone}}),
+				    #"Personalização Adicionada" = Table.AddColumn(#"Tipo Alterado2", "Data e hora certa", each DateTimeZone.SwitchZone(DateTimeZone.LocalNow (),-3)),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Personalização Adicionada",{"Data e Hora"}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Colunas Removidas",{{"Data e hora certa", type datetimezone}})
+				in
+				    #"Tipo Alterado1"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
