@@ -985,9 +985,10 @@ table Medidas
 			RETURN
 			 SalarioBase 
 			```
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
 		lineageTag: b3b4a62a-b0df-4003-8868-03a289b7dc94
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
 	column Column
 		isHidden
