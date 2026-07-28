@@ -4896,7 +4896,7 @@ cultureInfo pt-BR
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Medidas",
-			          "ConceptualProperty": "Salario vendedor"
+			          "ConceptualProperty": "Base calculo"
 			        }
 			      },
 			      "State": "Generated",

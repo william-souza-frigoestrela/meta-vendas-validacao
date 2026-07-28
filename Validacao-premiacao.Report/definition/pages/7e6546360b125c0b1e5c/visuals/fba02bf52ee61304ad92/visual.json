@@ -1,9 +1,9 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "fba02bf52ee61304ad92",
   "position": {
-    "x": 270.88372093023258,
-    "y": 57.550387596899228,
+    "x": 606.94283423072568,
+    "y": 57.55038759689922,
     "z": 3000,
     "height": 112.12403100775194,
     "width": 188.52713178294573,
@@ -23,11 +23,11 @@
                       "Entity": "Medidas"
                     }
                   },
-                  "Property": "Salario vendedor"
+                  "Property": "Base calculo"
                 }
               },
               "queryRef": "Medidas.Salario vendedor",
-              "nativeQueryRef": "Salario vendedor"
+              "nativeQueryRef": "Base calculo"
             }
           ]
         }
@@ -42,7 +42,7 @@
                     "Entity": "Medidas"
                   }
                 },
-                "Property": "Salario vendedor"
+                "Property": "Base calculo"
               }
             },
             "direction": "Descending"
