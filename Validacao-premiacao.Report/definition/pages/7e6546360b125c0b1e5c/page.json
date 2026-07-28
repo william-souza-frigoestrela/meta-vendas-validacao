@@ -27,7 +27,7 @@
               "name": {
                 "expr": {
                   "Literal": {
-                    "Value": "'Meta Vendas - Auditoria (2).svg'"
+                    "Value": "'Meta Vendas - Auditoria.svg'"
                   }
                 }
               },
@@ -36,7 +36,7 @@
                   "ResourcePackageItem": {
                     "PackageName": "RegisteredResources",
                     "PackageType": 1,
-                    "ItemName": "Meta_Vendas_-_Auditoria_(2)703764198783639.svg"
+                    "ItemName": "Meta_Vendas_-_Auditoria24597509630547798.svg"
                   }
                 }
               },

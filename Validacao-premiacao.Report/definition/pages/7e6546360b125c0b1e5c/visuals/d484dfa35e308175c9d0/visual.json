@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "d484dfa35e308175c9d0",
   "position": {
     "x": 11.906976744186046,
@@ -68,44 +68,6 @@
                     }
                   }
                 }
-              }
-            },
-            "selfFilter": {
-              "filter": {
-                "Version": 2,
-                "From": [
-                  {
-                    "Name": "d",
-                    "Entity": "DCV_VENDEDORHIERARQUIANIVEL",
-                    "Type": 0
-                  }
-                ],
-                "Where": [
-                  {
-                    "Condition": {
-                      "Contains": {
-                        "Left": {
-                          "Column": {
-                            "Expression": {
-                              "SourceRef": {
-                                "Source": "d"
-                              }
-                            },
-                            "Property": "GERENTEVENDA"
-                          }
-                        },
-                        "Right": {
-                          "Literal": {
-                            "Value": "'carlos'"
-                          }
-                        }
-                      }
-                    },
-                    "Annotations": {
-                      "PowerBI.MParameterBehavior": 1
-                    }
-                  }
-                ]
               }
             }
           }

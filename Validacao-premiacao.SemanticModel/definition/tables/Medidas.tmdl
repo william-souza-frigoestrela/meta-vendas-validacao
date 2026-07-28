@@ -495,7 +495,7 @@ table Medidas
 		displayFolder: % Realizado
 		lineageTag: c1dbd111-a5d0-4e0d-86b1-4f8cd4119146
 
-	measure 'Salario vendedor' = ```
+	measure 'Base calculo' = ```
 			
 			--SELECTEDVALUE(fTotvs[VLRSALARIO])
 			
@@ -556,28 +556,28 @@ table Medidas
 			var varejo_sul = SELECTEDVALUE(DCV_VENDEDORHIERARQUIANIVEL[SEQNIVEL]) in {"31","37"}
 			
 			var base_percent_devolucao =  
-			    IF(varejo_sul,[Salario vendedor]*0.01,[Salario vendedor]*0.04)
+			    IF(varejo_sul,[Base calculo]*0.01,[Base calculo]*0.04)
 			
 			var base_percent_peso_total=
-			    IF(varejo_sul,[Salario vendedor]*0.04,[Salario vendedor]*0.03)
+			    IF(varejo_sul,[Base calculo]*0.04,[Base calculo]*0.03)
 			
 			var base_percent_faturmanto_total = 
-			    IF(varejo_sul,[Salario vendedor]*0.04,[Salario vendedor]*0.03)
+			    IF(varejo_sul,[Base calculo]*0.04,[Base calculo]*0.03)
 			
 			var base_percent_peso_suino = 
-			    IF(varejo_sul,[Salario vendedor]*0.08,[Salario vendedor]*0.05)
+			    IF(varejo_sul,[Base calculo]*0.08,[Base calculo]*0.05)
 			
 			var base_percent_peso_industrializados = 
-			    IF(varejo_sul,[Salario vendedor]*0.15,[Salario vendedor]*0.1)
+			    IF(varejo_sul,[Base calculo]*0.15,[Base calculo]*0.1)
 			
 			var base_percent_faturamento_suino = 
-			    IF(varejo_sul,[Salario vendedor]*0.06,[Salario vendedor]*0.05)
+			    IF(varejo_sul,[Base calculo]*0.06,[Base calculo]*0.05)
 			
 			var base_percent_mix_suino = 
-			    if(varejo_sul,[Salario vendedor]*0.025,[Salario vendedor]*0.02)
+			    if(varejo_sul,[Base calculo]*0.025,[Base calculo]*0.02)
 			
 			var base_percent_recorrecnia_positivacao = 
-			    if(varejo_sul,[Salario vendedor]*0.1,[Salario vendedor]*0.05)
+			    if(varejo_sul,[Base calculo]*0.1,[Base calculo]*0.05)
 			
 			RETURN
 			
@@ -588,14 +588,14 @@ table Medidas
 			            SWITCH(
 			                TRUE(),
 			                [% Realizado peso bovino] <0.70 ,0,
-			                [% Realizado peso bovino] >=0.70 && [% Realizado peso bovino] < 0.80, ([Salario vendedor]*0.05)*0.2,
-			                [% Realizado peso bovino] >=0.80 && [% Realizado peso bovino] < 0.90, ([Salario vendedor]*0.05)*0.4,
-			                [% Realizado peso bovino] >=0.90 && [% Realizado peso bovino] < 1, ([Salario vendedor]*0.05)*0.75,
-			                [% Realizado peso bovino] >=1 && [% Realizado peso bovino] < 1.05, ([Salario vendedor]*0.05)*1,
-			                [% Realizado peso bovino] >=1 && [% Realizado peso bovino] < 1.05, ([Salario vendedor]*0.05)*1,
-			                [% Realizado peso bovino] >=1.05 && [% Realizado peso bovino] < 1.10, ([Salario vendedor]*0.05)*1.10,
-			                [% Realizado peso bovino] >=1.10 && [% Realizado peso bovino] < 1.15, ([Salario vendedor]*0.05)*1.15,
-			                ([Salario vendedor]*0.05)*1.20
+			                [% Realizado peso bovino] >=0.70 && [% Realizado peso bovino] < 0.80, ([Base calculo]*0.05)*0.2,
+			                [% Realizado peso bovino] >=0.80 && [% Realizado peso bovino] < 0.90, ([Base calculo]*0.05)*0.4,
+			                [% Realizado peso bovino] >=0.90 && [% Realizado peso bovino] < 1, ([Base calculo]*0.05)*0.75,
+			                [% Realizado peso bovino] >=1 && [% Realizado peso bovino] < 1.05, ([Base calculo]*0.05)*1,
+			                [% Realizado peso bovino] >=1 && [% Realizado peso bovino] < 1.05, ([Base calculo]*0.05)*1,
+			                [% Realizado peso bovino] >=1.05 && [% Realizado peso bovino] < 1.10, ([Base calculo]*0.05)*1.10,
+			                [% Realizado peso bovino] >=1.10 && [% Realizado peso bovino] < 1.15, ([Base calculo]*0.05)*1.15,
+			                ([Base calculo]*0.05)*1.20
 			            ),
 			
 			        "Peso suinos",
@@ -654,26 +654,26 @@ table Medidas
 			            SWITCH(
 			                TRUE(),
 			                [% Realizado faturamento bovinos] <0.70 ,0,
-			                [% Realizado faturamento bovinos] >=0.70 && [% Realizado faturamento bovinos] < 0.80, ([Salario vendedor]*0.05)*0.2,
-			                [% Realizado faturamento bovinos] >=0.80 && [% Realizado faturamento bovinos] < 0.90, ([Salario vendedor]*0.05)*0.4,
-			                [% Realizado faturamento bovinos] >=0.90 && [% Realizado faturamento bovinos] < 1, ([Salario vendedor]*0.05)*0.75,
-			                [% Realizado faturamento bovinos] >=1 && [% Realizado faturamento bovinos] < 1.05, ([Salario vendedor]*0.05)*1,
-			                [% Realizado faturamento bovinos] >=1.05 && [% Realizado faturamento bovinos] < 1.10, ([Salario vendedor]*0.05)*1.10,
-			                [% Realizado faturamento bovinos] >=1.10 && [% Realizado faturamento bovinos] < 1.15, ([Salario vendedor]*0.05)*1.15,
-			                ([Salario vendedor]*0.05)*1.20
+			                [% Realizado faturamento bovinos] >=0.70 && [% Realizado faturamento bovinos] < 0.80, ([Base calculo]*0.05)*0.2,
+			                [% Realizado faturamento bovinos] >=0.80 && [% Realizado faturamento bovinos] < 0.90, ([Base calculo]*0.05)*0.4,
+			                [% Realizado faturamento bovinos] >=0.90 && [% Realizado faturamento bovinos] < 1, ([Base calculo]*0.05)*0.75,
+			                [% Realizado faturamento bovinos] >=1 && [% Realizado faturamento bovinos] < 1.05, ([Base calculo]*0.05)*1,
+			                [% Realizado faturamento bovinos] >=1.05 && [% Realizado faturamento bovinos] < 1.10, ([Base calculo]*0.05)*1.10,
+			                [% Realizado faturamento bovinos] >=1.10 && [% Realizado faturamento bovinos] < 1.15, ([Base calculo]*0.05)*1.15,
+			                ([Base calculo]*0.05)*1.20
 			            ),
 			
 			        "Faturamento industrializados",
 			            SWITCH(
 			                TRUE(),
 			                [% Realizado faturamento industrializados] <0.70 ,0,
-			                [% Realizado faturamento industrializados] >=0.70 && [% Realizado faturamento industrializados] < 0.80, ([Salario vendedor]*0.12)*0.2,
-			                [% Realizado faturamento industrializados] >=0.80 && [% Realizado faturamento industrializados] < 0.90, ([Salario vendedor]*0.12)*0.4,
-			                [% Realizado faturamento industrializados] >=0.90 && [% Realizado faturamento industrializados] < 1, ([Salario vendedor]*0.12)*0.75,
-			                [% Realizado faturamento industrializados] >=1 && [% Realizado faturamento industrializados] < 1.05, ([Salario vendedor]*0.12)*1,
-			                [% Realizado faturamento industrializados] >=1.05 && [% Realizado faturamento industrializados] < 1.10, ([Salario vendedor]*0.12)*1.10,
-			                [% Realizado faturamento industrializados] >=1.10 && [% Realizado faturamento industrializados] < 1.15, ([Salario vendedor]*0.12)*1.15,
-			                ([Salario vendedor]*0.12)*1.20
+			                [% Realizado faturamento industrializados] >=0.70 && [% Realizado faturamento industrializados] < 0.80, ([Base calculo]*0.12)*0.2,
+			                [% Realizado faturamento industrializados] >=0.80 && [% Realizado faturamento industrializados] < 0.90, ([Base calculo]*0.12)*0.4,
+			                [% Realizado faturamento industrializados] >=0.90 && [% Realizado faturamento industrializados] < 1, ([Base calculo]*0.12)*0.75,
+			                [% Realizado faturamento industrializados] >=1 && [% Realizado faturamento industrializados] < 1.05, ([Base calculo]*0.12)*1,
+			                [% Realizado faturamento industrializados] >=1.05 && [% Realizado faturamento industrializados] < 1.10, ([Base calculo]*0.12)*1.10,
+			                [% Realizado faturamento industrializados] >=1.10 && [% Realizado faturamento industrializados] < 1.15, ([Base calculo]*0.12)*1.15,
+			                ([Base calculo]*0.12)*1.20
 			            ),
 			
 			        "FATURAMENTO TOTAL",
@@ -693,13 +693,13 @@ table Medidas
 			            SWITCH(
 			                TRUE(),
 			                [% Realizado itens totais] <0.70 ,0,
-			                [% Realizado itens totais] >=0.70 && [% Realizado itens totais] < 0.80, ([Salario vendedor]*0.08)*0.2,
-			                [% Realizado itens totais] >=0.80 && [% Realizado itens totais] < 0.90, ([Salario vendedor]*0.08)*0.4,
-			                [% Realizado itens totais] >=0.90 && [% Realizado itens totais] < 1, ([Salario vendedor]*0.08)*0.75,
-			                [% Realizado itens totais] >=1 && [% Realizado itens totais] < 1.05, ([Salario vendedor]*0.08)*1,
-			                [% Realizado itens totais] >=1.05 && [% Realizado itens totais] < 1.10, ([Salario vendedor]*0.08)*1.10,
-			                [% Realizado itens totais] >=1.10 && [% Realizado itens totais] < 1.15, ([Salario vendedor]*0.08)*1.15,
-			                ([Salario vendedor]*0.08)*1.20
+			                [% Realizado itens totais] >=0.70 && [% Realizado itens totais] < 0.80, ([Base calculo]*0.08)*0.2,
+			                [% Realizado itens totais] >=0.80 && [% Realizado itens totais] < 0.90, ([Base calculo]*0.08)*0.4,
+			                [% Realizado itens totais] >=0.90 && [% Realizado itens totais] < 1, ([Base calculo]*0.08)*0.75,
+			                [% Realizado itens totais] >=1 && [% Realizado itens totais] < 1.05, ([Base calculo]*0.08)*1,
+			                [% Realizado itens totais] >=1.05 && [% Realizado itens totais] < 1.10, ([Base calculo]*0.08)*1.10,
+			                [% Realizado itens totais] >=1.10 && [% Realizado itens totais] < 1.15, ([Base calculo]*0.08)*1.15,
+			                ([Base calculo]*0.08)*1.20
 			            ),
 			
 			
@@ -720,13 +720,13 @@ table Medidas
 			            SWITCH(
 			                TRUE(),
 			                [% Realizado mix] <0.70 ,0,
-			                [% Realizado mix] >=0.70 && [% Realizado mix] < 0.80, ([Salario vendedor]*0.02)*0.2,
-			                [% Realizado mix] >=0.80 && [% Realizado mix] < 0.90, ([Salario vendedor]*0.02)*0.4,
-			                [% Realizado mix] >=0.90 && [% Realizado mix] < 1, ([Salario vendedor]*0.02)*0.75,
-			                [% Realizado mix] >=1 && [% Realizado mix] < 1.05, ([Salario vendedor]*0.02)*1,
-			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.10, ([Salario vendedor]*0.02)*1.10,
-			                [% Realizado mix] >=1.10 && [% Realizado mix] < 1.15, ([Salario vendedor]*0.02)*1.15,
-			                ([Salario vendedor]*0.02)*1.20
+			                [% Realizado mix] >=0.70 && [% Realizado mix] < 0.80, ([Base calculo]*0.02)*0.2,
+			                [% Realizado mix] >=0.80 && [% Realizado mix] < 0.90, ([Base calculo]*0.02)*0.4,
+			                [% Realizado mix] >=0.90 && [% Realizado mix] < 1, ([Base calculo]*0.02)*0.75,
+			                [% Realizado mix] >=1 && [% Realizado mix] < 1.05, ([Base calculo]*0.02)*1,
+			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.10, ([Base calculo]*0.02)*1.10,
+			                [% Realizado mix] >=1.10 && [% Realizado mix] < 1.15, ([Base calculo]*0.02)*1.15,
+			                ([Base calculo]*0.02)*1.20
 			            ),
 			
 			        "MIX SUINO",
@@ -746,13 +746,13 @@ table Medidas
 			            SWITCH(
 			                TRUE(),
 			                [% Realizado mix] <0.70 ,0,
-			                [% Realizado mix] >=0.70 && [% Realizado mix] < 0.80, ([Salario vendedor]*0.05)*0.2,
-			                [% Realizado mix] >=0.80 && [% Realizado mix] < 0.90, ([Salario vendedor]*0.05)*0.4,
-			                [% Realizado mix] >=0.90 && [% Realizado mix] < 1, ([Salario vendedor]*0.05)*0.75,
-			                [% Realizado mix] >=1 && [% Realizado mix] < 1.05, ([Salario vendedor]*0.05)*1,
-			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.10, ([Salario vendedor]*0.05)*1.10,
-			                [% Realizado mix] >=1.10 && [% Realizado mix] < 1.15, ([Salario vendedor]*0.05)*1.15,
-			                ([Salario vendedor]*0.05)*1.20
+			                [% Realizado mix] >=0.70 && [% Realizado mix] < 0.80, ([Base calculo]*0.05)*0.2,
+			                [% Realizado mix] >=0.80 && [% Realizado mix] < 0.90, ([Base calculo]*0.05)*0.4,
+			                [% Realizado mix] >=0.90 && [% Realizado mix] < 1, ([Base calculo]*0.05)*0.75,
+			                [% Realizado mix] >=1 && [% Realizado mix] < 1.05, ([Base calculo]*0.05)*1,
+			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.10, ([Base calculo]*0.05)*1.10,
+			                [% Realizado mix] >=1.10 && [% Realizado mix] < 1.15, ([Base calculo]*0.05)*1.15,
+			                ([Base calculo]*0.05)*1.20
 			            ),
 			
 			        "RECORRÊNCIA POSITIVAÇÃO",
@@ -772,26 +772,26 @@ table Medidas
 			            SWITCH(
 			                TRUE(),
 			                [% Realizado positivacao] <0.70 ,0,
-			                [% Realizado positivacao] >=0.70 && [% Realizado positivacao] < 0.80, ([Salario vendedor]*0.12)*0.2,
-			                [% Realizado positivacao] >=0.80 && [% Realizado positivacao] < 0.90, ([Salario vendedor]*0.12)*0.4,
-			                [% Realizado positivacao] >=0.90 && [% Realizado positivacao] < 1, ([Salario vendedor]*0.12)*0.75,
-			                [% Realizado positivacao] >=1 && [% Realizado positivacao] < 1.05, ([Salario vendedor]*0.12)*1,
-			                [% Realizado positivacao] >=1.05 && [% Realizado positivacao] < 1.10, ([Salario vendedor]*0.12)*1.10,
-			                [% Realizado positivacao] >=1.10 && [% Realizado positivacao] < 1.15, ([Salario vendedor]*0.12)*1.15,
-			                ([Salario vendedor]*0.12)*1.20
+			                [% Realizado positivacao] >=0.70 && [% Realizado positivacao] < 0.80, ([Base calculo]*0.12)*0.2,
+			                [% Realizado positivacao] >=0.80 && [% Realizado positivacao] < 0.90, ([Base calculo]*0.12)*0.4,
+			                [% Realizado positivacao] >=0.90 && [% Realizado positivacao] < 1, ([Base calculo]*0.12)*0.75,
+			                [% Realizado positivacao] >=1 && [% Realizado positivacao] < 1.05, ([Base calculo]*0.12)*1,
+			                [% Realizado positivacao] >=1.05 && [% Realizado positivacao] < 1.10, ([Base calculo]*0.12)*1.10,
+			                [% Realizado positivacao] >=1.10 && [% Realizado positivacao] < 1.15, ([Base calculo]*0.12)*1.15,
+			                ([Base calculo]*0.12)*1.20
 			            ),
 			
 			        "MIX RENTÁVEL",
 			            SWITCH(
 			                TRUE(),
 			                [% Realizado mix rentavel] <0.70 ,0,
-			                [% Realizado mix rentavel] >=0.70 && [% Realizado mix rentavel] < 0.80, ([Salario vendedor]*0.05)*0.2,
-			                [% Realizado mix rentavel] >=0.80 && [% Realizado mix rentavel] < 0.90, ([Salario vendedor]*0.05)*0.4,
-			                [% Realizado mix rentavel] >=0.90 && [% Realizado mix rentavel] < 1, ([Salario vendedor]*0.05)*0.75,
-			                [% Realizado mix rentavel] >=1 && [% Realizado mix rentavel] < 1.05, ([Salario vendedor]*0.05)*1,
-			                [% Realizado mix rentavel] >=1.05 && [% Realizado mix rentavel] < 1.10, ([Salario vendedor]*0.05)*1.10,
-			                [% Realizado mix rentavel] >=1.10 && [% Realizado mix rentavel] < 1.15, ([Salario vendedor]*0.05)*1.15,
-			                ([Salario vendedor]*0.05)*1.20
+			                [% Realizado mix rentavel] >=0.70 && [% Realizado mix rentavel] < 0.80, ([Base calculo]*0.05)*0.2,
+			                [% Realizado mix rentavel] >=0.80 && [% Realizado mix rentavel] < 0.90, ([Base calculo]*0.05)*0.4,
+			                [% Realizado mix rentavel] >=0.90 && [% Realizado mix rentavel] < 1, ([Base calculo]*0.05)*0.75,
+			                [% Realizado mix rentavel] >=1 && [% Realizado mix rentavel] < 1.05, ([Base calculo]*0.05)*1,
+			                [% Realizado mix rentavel] >=1.05 && [% Realizado mix rentavel] < 1.10, ([Base calculo]*0.05)*1.10,
+			                [% Realizado mix rentavel] >=1.10 && [% Realizado mix rentavel] < 1.15, ([Base calculo]*0.05)*1.15,
+			                ([Base calculo]*0.05)*1.20
 			            ),
 			
 			
@@ -946,6 +946,48 @@ table Medidas
 			```
 		formatString: 0
 		lineageTag: 605e9d3c-c813-42a3-8d74-edf2403facc9
+
+	measure Salario = ```
+			
+			VAR VendedorSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[VENDEDOR] )
+			VAR SupervisorSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[SUPERVISOR] )
+			VAR GerenteSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[GERENTEVENDA] )
+			
+			VAR NomeAlvo = COALESCE ( VendedorSel, SupervisorSel, GerenteSel )
+			
+			VAR NivelAlvo =
+			    SWITCH (
+			        TRUE (),
+			        NOT ISBLANK ( VendedorSel ), "Vendedor",
+			        NOT ISBLANK ( SupervisorSel ), "Supervisor",
+			        NOT ISBLANK ( GerenteSel ), "Gerente",
+			        BLANK ()
+			    )
+			
+			VAR SeqPessoaAlvo =
+			    CALCULATE (
+			        SELECTEDVALUE ( dPessoaHierarquia[SEQPESSOA] ),
+			        REMOVEFILTERS ( dPessoaHierarquia ),
+			        dPessoaHierarquia[NOME] = NomeAlvo,
+			        dPessoaHierarquia[NIVEL] = NivelAlvo
+			    )
+			
+			
+			VAR SalarioBase =
+			    CALCULATE(
+			        SELECTEDVALUE(fTotvs[VLRSALARIO]),
+			        REMOVEFILTERS(DCV_VENDEDORHIERARQUIANIVEL),
+			        REMOVEFILTERS(dPessoaHierarquia),
+			        fTotvs[SEQPESSOADTV] = SeqPessoaAlvo
+			    )
+			
+			
+			RETURN
+			 SalarioBase 
+			```
+		lineageTag: b3b4a62a-b0df-4003-8868-03a289b7dc94
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Column
 		isHidden
