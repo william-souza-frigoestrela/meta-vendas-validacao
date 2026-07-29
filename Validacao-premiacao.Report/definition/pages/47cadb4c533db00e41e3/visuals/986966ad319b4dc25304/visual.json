@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "d484dfa35e308175c9d0",
+  "name": "986966ad319b4dc25304",
   "position": {
-    "x": 11.906976744186046,
-    "y": 179.26614987080103,
-    "z": 4000,
-    "height": 76.403100775193792,
-    "width": 247.06976744186048,
-    "tabOrder": 4000
+    "x": 12.89922480620155,
+    "y": 114.10852713178295,
+    "z": 2000,
+    "height": 57.550387596899228,
+    "width": 246.07751937984497,
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "slicer",
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "DCV_VENDEDORHIERARQUIANIVEL"
+                      "Entity": "DimMes"
                     }
                   },
-                  "Property": "GERENTEVENDA"
+                  "Property": "AnoMes"
                 }
               },
-              "queryRef": "DCV_VENDEDORHIERARQUIANIVEL.GERENTEVENDA",
-              "nativeQueryRef": "GERENTEVENDA",
+              "queryRef": "DimMes.AnoMes",
+              "nativeQueryRef": "AnoMes",
               "active": true
             }
           ]
@@ -51,32 +51,13 @@
       "general": [
         {
           "properties": {
-            "selfFilterEnabled": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "outlineColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": 0
-                    }
-                  }
-                }
-              }
-            },
             "filter": {
               "filter": {
                 "Version": 2,
                 "From": [
                   {
                     "Name": "d",
-                    "Entity": "DCV_VENDEDORHIERARQUIANIVEL",
+                    "Entity": "DimMes",
                     "Type": 0
                   }
                 ],
@@ -92,7 +73,7 @@
                                   "Source": "d"
                                 }
                               },
-                              "Property": "GERENTEVENDA"
+                              "Property": "AnoMes"
                             }
                           }
                         ],
@@ -100,7 +81,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'CARLOS EDUARDO BEGO'"
+                                "Value": "'202606'"
                               }
                             }
                           ]
@@ -134,7 +115,7 @@
             "strictSingleSelect": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }
@@ -159,32 +140,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Gerente'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "pendingChangesIcon": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": 0
-                    }
-                  }
+                  "Value": "'Ano/Mês'"
                 }
               }
             }
@@ -194,6 +150,13 @@
       "items": [
         {
           "properties": {
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            },
             "fontColor": {
               "solid": {
                 "color": {
@@ -262,23 +225,6 @@
               "expr": {
                 "Literal": {
                   "Value": "1D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "visualHeader": [
-        {
-          "properties": {
-            "foreground": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#0B1327'"
-                    }
-                  }
                 }
               }
             }

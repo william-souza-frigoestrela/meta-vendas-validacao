@@ -3,12 +3,14 @@ table DGEVQ_HIERARQUIAVENDANIVEL
 
 	column DTAFINAL
 		dataType: dateTime
-		formatString: General Date
+		formatString: Short Date
 		lineageTag: 67d6879c-d4ed-4f60-847c-4efcbcf9a3f5
 		summarizeBy: none
 		sourceColumn: DTAFINAL
 
 		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	column MESANO
 		dataType: string
@@ -206,10 +208,10 @@ table DGEVQ_HIERARQUIAVENDANIVEL
 		mode: import
 		source =
 				let
-				    Fonte = Oracle.Database("datavale", [HierarchicalNavigation=true]),
+				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true, CommandTimeout=#duration(0, 8, 20, 0)]),
 				    DATAVALE = Fonte{[Schema="DATAVALE"]}[Data],
 				    DGEVQ_HIERARQUIAVENDANIVEL1 = DATAVALE{[Name="DGEVQ_HIERARQUIAVENDANIVEL"]}[Data],
-				    #"Tipo Alterado" = Table.TransformColumnTypes(DGEVQ_HIERARQUIAVENDANIVEL1,{{"SEQVENDEDOR", type text}, {"SEQSUPERVISOR", type text}, {"SEQGERENTEVENDA", type text}})
+				    #"Tipo Alterado" = Table.TransformColumnTypes(DGEVQ_HIERARQUIAVENDANIVEL1,{{"SEQVENDEDOR", type text}, {"SEQSUPERVISOR", type text}, {"SEQGERENTEVENDA", type text}, {"DTAFINAL", type date}})
 				in
 				    #"Tipo Alterado"
 

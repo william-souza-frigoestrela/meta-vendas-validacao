@@ -105,7 +105,7 @@ table DCVV_META_VENDADEVOLUCAOMIXRENTAVEL
 		mode: import
 		source =
 				let
-				    Fonte = Oracle.Database("datavale", [HierarchicalNavigation=true]),
+				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true, CommandTimeout=#duration(0, 8, 20, 0)]),
 				    DATAVALE = Fonte{[Schema="DATAVALE"]}[Data],
 				    DCVV_META_VENDADEVOLUCAOMIXRENTAVEL1 = DATAVALE{[Name="DCVV_META_VENDADEVOLUCAOMIXRENTAVEL"]}[Data],
 				    #"Tipo Alterado" = Table.TransformColumnTypes(DCVV_META_VENDADEVOLUCAOMIXRENTAVEL1,{{"ANOMES", type text}, {"SEQCLIENTE", type text}, {"SEQVENDEDOR", type text}, {"SEQPRODUTO", type text}, {"GRUPOPROD", type text}})

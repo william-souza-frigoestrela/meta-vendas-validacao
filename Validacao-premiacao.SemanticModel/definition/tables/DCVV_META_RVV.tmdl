@@ -96,7 +96,7 @@ table DCVV_META_RVV
 		mode: import
 		source =
 				let
-				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true]),
+				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true, CommandTimeout=#duration(0, 8, 20, 0)]),
 				    DATAVALE = Fonte{[Schema="DATAVALE"]}[Data],
 				    DCVV_META_RVV1 = DATAVALE{[Name="DCVV_META_RVV"]}[Data],
 				    #"Tipo Alterado" = Table.TransformColumnTypes(DCVV_META_RVV1,{{"SEQCLIENTE", type text}, {"SEQVENDEDOR", type text}, {"ANOMES", type text}})
@@ -105,5 +105,5 @@ table DCVV_META_RVV
 
 	annotation PBI_NavigationStepName = Navegação
 
-	annotation PBI_ResultType = Table
+	annotation PBI_ResultType = Exception
 

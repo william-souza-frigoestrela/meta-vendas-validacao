@@ -1,0 +1,93 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "a244edc3621e9b51129a",
+  "position": {
+    "x": 284.4444444444444,
+    "y": 116.09977324263038,
+    "z": 9001,
+    "height": 535.99395313681021,
+    "width": 974.27059712773985
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DCV_VENDEDORHIERARQUIANIVEL"
+                    }
+                  },
+                  "Property": "VENDEDOR"
+                }
+              },
+              "queryRef": "DCV_VENDEDORHIERARQUIANIVEL.VENDEDOR",
+              "nativeQueryRef": "VENDEDOR"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DCV_VENDEDORHIERARQUIANIVEL"
+                    }
+                  },
+                  "Property": "GERENTEVENDA"
+                }
+              },
+              "queryRef": "DCV_VENDEDORHIERARQUIANIVEL.GERENTEVENDA",
+              "nativeQueryRef": "GERENTEVENDA"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DGEVQ_HIERARQUIAVENDANIVEL"
+                    }
+                  },
+                  "Property": "VENDEDOR"
+                }
+              },
+              "queryRef": "DGEVQ_HIERARQUIAVENDANIVEL.VENDEDOR",
+              "nativeQueryRef": "VENDEDOR1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DGEVQ_HIERARQUIAVENDANIVEL"
+                    }
+                  },
+                  "Property": "SUPERVISOR"
+                }
+              },
+              "queryRef": "DGEVQ_HIERARQUIAVENDANIVEL.SUPERVISOR",
+              "nativeQueryRef": "SUPERVISOR"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DGEVQ_HIERARQUIAVENDANIVEL"
+                    }
+                  },
+                  "Property": "GERENTEVENDA"
+                }
+              },
+              "queryRef": "DGEVQ_HIERARQUIAVENDANIVEL.GERENTEVENDA",
+              "nativeQueryRef": "GERENTEVENDA1"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

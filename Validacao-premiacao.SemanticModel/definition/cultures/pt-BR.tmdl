@@ -4944,7 +4944,7 @@ cultureInfo pt-BR
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Medidas",
-			          "ConceptualProperty": "'Recorrencia positivacao'"
+			          "ConceptualProperty": "Recorrencia positivacao"
 			        }
 			      },
 			      "State": "Generated",
