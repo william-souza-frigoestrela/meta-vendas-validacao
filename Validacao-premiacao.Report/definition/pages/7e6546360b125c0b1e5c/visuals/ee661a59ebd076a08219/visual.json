@@ -90,20 +90,6 @@
               },
               "queryRef": "Medidas.Bonificação",
               "nativeQueryRef": "Bonificação"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Medidas"
-                    }
-                  },
-                  "Property": "_TESTE_1_QtdSupervisores"
-                }
-              },
-              "queryRef": "Medidas._TESTE_1_QtdSupervisores",
-              "nativeQueryRef": "_TESTE_1_QtdSupervisores"
             }
           ]
         }
@@ -526,5 +512,79 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "8099d8345ce637c4b502",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FPBI_ESTRELA_METAS"
+              }
+            },
+            "Property": "Meta Display"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "088dab44d34a5bb0de30",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Medidas"
+              }
+            },
+            "Property": "Meta valor"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "4c5218e911760dede289",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Medidas"
+              }
+            },
+            "Property": "Resultado"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "6a8f854d878c7d91bba0",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Medidas"
+              }
+            },
+            "Property": "% Realizado"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "00921ad691d2d80b69e3",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Medidas"
+              }
+            },
+            "Property": "Bonificação"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

@@ -836,7 +836,7 @@ table Medidas
 		displayFolder: Resultado realizado
 		lineageTag: a423648d-c244-4382-b738-a85a8dc6e2d6
 
-	measure 'Recorrencia positivacao' = ```
+	measure 'Recorrencia positivacao' =
 			
 			VAR AnoMesAtual = SELECTEDVALUE ( DimMes[ANOMES] )
 			
@@ -857,25 +857,25 @@ table Medidas
 			        BLANK ()
 			    )
 			
-			
-			
-			-- 1. Tabela ÚNICA de Supervisores do Gerente
 			VAR MesAnoAlvo =
 			    MID ( FORMAT ( AnoMesAtual, "0" ), 5, 2 ) & "/" & LEFT ( FORMAT ( AnoMesAtual, "0" ), 4 )
-			    -- converte 202606 -> "06/2026", no mesmo formato de DGEVQ_HIERARQUIAVENDANIVEL[MESANO]
 			
-			VAR TabelaSupervisoresDoGerente =
-			    SELECTCOLUMNS (
-			        CALCULATETABLE (
-			            VALUES ( DGEVQ_HIERARQUIAVENDANIVEL[SEQSUPERVISOR] ),
-			            REMOVEFILTERS ( DGEVQ_HIERARQUIAVENDANIVEL ),
-			            DGEVQ_HIERARQUIAVENDANIVEL[GERENTEVENDA] = GerenteSel,
-			            DGEVQ_HIERARQUIAVENDANIVEL[MESANO] = MesAnoAlvo
-			        ),
-			        "SeqSupervisorNum", VALUE ( DGEVQ_HIERARQUIAVENDANIVEL[SEQSUPERVISOR] )
+			-- 1. Tabela ÚNICA de VENDEDORES do Gerente no mês de fechamento
+			VAR TabelaVendedoresDoGerente =
+			    DISTINCT (
+			        SELECTCOLUMNS (
+			            CALCULATETABLE (
+			                VALUES ( DGEVQ_HIERARQUIAVENDANIVEL[SEQVENDEDOR] ),
+			                REMOVEFILTERS ( DGEVQ_HIERARQUIAVENDANIVEL ),
+			                DGEVQ_HIERARQUIAVENDANIVEL[GERENTEVENDA] = GerenteSel,
+			                DGEVQ_HIERARQUIAVENDANIVEL[MESANO] = MesAnoAlvo,
+			                NOT ISBLANK ( DGEVQ_HIERARQUIAVENDANIVEL[SEQVENDEDOR] )
+			            ),
+			            "SeqVendedorNum", VALUE ( DGEVQ_HIERARQUIAVENDANIVEL[SEQVENDEDOR] )
+			        )
 			    )
 			
-			-- 2. Tabela ÚNICA de Vendedores do Supervisor (Caso a Fato seja filtrada por Vendedor no nível de Supervisor)
+			-- 2. Tabela ÚNICA de Vendedores do Supervisor no mês
 			VAR TabelaVendedoresDoSupervisor =
 			    DISTINCT (
 			        SELECTCOLUMNS (
@@ -883,6 +883,7 @@ table Medidas
 			                VALUES ( DGEVQ_HIERARQUIAVENDANIVEL[SEQVENDEDOR] ),
 			                REMOVEFILTERS ( DGEVQ_HIERARQUIAVENDANIVEL ),
 			                DGEVQ_HIERARQUIAVENDANIVEL[SUPERVISOR] = SupervisorSel,
+			                DGEVQ_HIERARQUIAVENDANIVEL[MESANO] = MesAnoAlvo,
 			                NOT ISBLANK ( DGEVQ_HIERARQUIAVENDANIVEL[SEQVENDEDOR] )
 			            ),
 			            "SeqPESSOANum", VALUE ( DGEVQ_HIERARQUIAVENDANIVEL[SEQVENDEDOR] )
@@ -913,28 +914,24 @@ table Medidas
 			            DCVV_META_RVV_FERIAS2[VENDEDOROFC] = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[SEQPESSOA] )
 			        ),
 			
-			    -- Nível Supervisor: Garante a deduplicação de clientes mesmo que tenham comprado com múltiplos vendedores do mesmo supervisor
+			    -- Nível Supervisor
 			    NivelAlvo = "Supervisor",
 			        CALCULATE (
 			            DISTINCTCOUNT ( DCVV_META_RVV_FERIAS2[SEQCLIENTE] ),
 			            KEEPFILTERS ( DCVV_META_RVV_FERIAS2[CONTAGEM] > 0 ),
 			            KEEPFILTERS ( DCVV_META_RVV_FERIAS2[ANOMES] = AnoMesAtual ),
 			            REMOVEFILTERS ( DCV_VENDEDORHIERARQUIANIVEL ),
-			            -- Opção A: Se a fato tem a FK do Supervisor preenchida
 			            DCVV_META_RVV_FERIAS2[SEQSUPERVISOR] = SeqSupervisorSel
-			            
-			            -- Opção B: Se a fato só tem a FK do Vendedor (Descomente se for o caso):
-			            -- TREATAS ( TabelaVendedoresDoSupervisor, DCVV_META_RVV_FERIAS2[VENDEDOROFC] )
 			        ),
 			
-			    -- Nível Gerente: Garante a deduplicação de clientes entre todos os supervisores/vendedores do gerente
+			    -- Nível Gerente: Passa a lista de VENDEDORES do Gerente para a coluna VENDEDOROFC
 			    NivelAlvo = "Gerente",
 			        CALCULATE (
 			            DISTINCTCOUNT ( DCVV_META_RVV_FERIAS2[SEQCLIENTE] ),
 			            KEEPFILTERS ( DCVV_META_RVV_FERIAS2[CONTAGEM] > 0 ),
 			            KEEPFILTERS ( DCVV_META_RVV_FERIAS2[ANOMES] = AnoMesAtual ),
 			            REMOVEFILTERS ( DCV_VENDEDORHIERARQUIANIVEL ),
-			            TREATAS ( TabelaSupervisoresDoGerente, DCVV_META_RVV_FERIAS2[SEQSUPERVISOR] )
+			            TREATAS ( TabelaVendedoresDoGerente, DCVV_META_RVV_FERIAS2[VENDEDOROFC] )
 			        ),
 			
 			    -- Total Geral (Card / Totalizador da Matriz)
@@ -945,7 +942,6 @@ table Medidas
 			        REMOVEFILTERS ( DCV_VENDEDORHIERARQUIANIVEL )
 			    )
 			)
-			```
 		formatString: 0
 		displayFolder: Resultado realizado
 		lineageTag: d888adb6-3588-489f-8a81-572f187d3322
@@ -1103,26 +1099,29 @@ table Medidas
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure _TESTE_1_QtdSupervisores =
+	measure 'Diagnostico Venda Direta Supervisor' =
 			
-			VAR GerenteSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[GERENTEVENDA] )
-			RETURN
-			    COUNTROWS (
-			        CALCULATETABLE (
-			            VALUES ( DGEVQ_HIERARQUIAVENDANIVEL[SEQSUPERVISOR] ),
-			            REMOVEFILTERS ( DGEVQ_HIERARQUIAVENDANIVEL ),
-			            DGEVQ_HIERARQUIAVENDANIVEL[GERENTEVENDA] = GerenteSel
-			        )
+			VAR MesAnoAlvo = "06/2026" -- ajuste pro mês que está testando
+			VAR SupervisoresDoGerente =
+			    CALCULATETABLE (
+			        VALUES ( DGEVQ_HIERARQUIAVENDANIVEL[SEQSUPERVISOR] ),
+			        REMOVEFILTERS ( DGEVQ_HIERARQUIAVENDANIVEL ),
+			        DGEVQ_HIERARQUIAVENDANIVEL[GERENTEVENDA] = "277770",
+			        DGEVQ_HIERARQUIAVENDANIVEL[MESANO] = MesAnoAlvo
 			    )
+			RETURN
+			CALCULATE (
+			    DISTINCTCOUNT ( DCVV_META_RVV_FERIAS2[SEQCLIENTE] ),
+			    DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
+			    DCVV_META_RVV_FERIAS2[ANOMES] = "202606",
+			    TREATAS ( SupervisoresDoGerente, DCVV_META_RVV_FERIAS2[SEQSUPERVISOR] ),
+			    FILTER (
+			        DCVV_META_RVV_FERIAS2,
+			        VALUE ( DCVV_META_RVV_FERIAS2[VENDEDOROFC] ) = DCVV_META_RVV_FERIAS2[SEQSUPERVISOR]
+			    )
+			)
 		formatString: 0
-		lineageTag: 27ecba58-2d87-4f0f-a053-fea2c397f887
-
-	measure '_teste cont vendedor' =
-			
-			
-			DISTINCTCOUNT(DCV_VENDEDORHIERARQUIANIVEL[VENDEDOR])
-		formatString: 0
-		lineageTag: 4b92f31e-61e3-4c5b-8339-e7838e967dc6
+		lineageTag: 00e9e95d-b1cc-4a91-b340-e3503c169c6e
 
 	column Column
 		isHidden
