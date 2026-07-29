@@ -89,7 +89,7 @@ table Medidas
 			        [Positivação],
 			
 			    "RECORRÊNCIA POSITIVAÇÃO",
-			        [Recorrencia positivacao],
+			        ['Recorrencia positivacao'],
 			
 			    "MIX RENTÁVEL",
 			        [Peso Mix Rentável],
@@ -836,38 +836,93 @@ table Medidas
 		displayFolder: Resultado realizado
 		lineageTag: a423648d-c244-4382-b738-a85a8dc6e2d6
 
-	measure 'Recorrencia positivacao' = ```
+	measure '''Recorrencia positivacao''' =
 			
-			/*CALCULATE(
-			    DISTINCTCOUNT(DCVV_META_RVV_FERIAS2[SEQCLIENTE]),
-			    DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
-			    TREATAS(
-			        VALUES(DCVV_META_VENDADEVOLUCAO[SEQCLIENTE]),
-			        DCVV_META_RVV_FERIAS2[SEQCLIENTE]
+			VAR AnoMesAtual = SELECTEDVALUE ( DimMes[ANOMES] )
+			
+			VAR FiltroVendedor   = ISFILTERED ( DCV_VENDEDORHIERARQUIANIVEL[VENDEDOR] )
+			VAR FiltroSupervisor = ISFILTERED ( DCV_VENDEDORHIERARQUIANIVEL[SUPERVISOR] )
+			VAR FiltroGerente    = ISFILTERED ( DCV_VENDEDORHIERARQUIANIVEL[GERENTEVENDA] )
+			
+			VAR VendedorSel   = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[VENDEDOR] )
+			VAR SupervisorSel = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[SUPERVISOR] )
+			VAR GerenteSel    = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[GERENTEVENDA] )
+			
+			VAR NivelAlvo =
+			    SWITCH (
+			        TRUE (),
+			        FiltroVendedor, "Vendedor",
+			        FiltroSupervisor, "Supervisor",
+			        FiltroGerente, "Gerente",
+			        BLANK ()
 			    )
-			)*/
 			
+			-- Converte pra número, pois DCVV_META_RVV_FERIAS2[SEQSUPERVISOR] é numérico
+			VAR SeqSupervisorSel =
+			    VALUE (
+			        CALCULATE (
+			            SELECTEDVALUE ( DGEVQ_HIERARQUIAVENDANIVEL[SEQSUPERVISOR] ),
+			            REMOVEFILTERS ( DGEVQ_HIERARQUIAVENDANIVEL ),
+			            DGEVQ_HIERARQUIAVENDANIVEL[SUPERVISOR] = SupervisorSel
+			        )
+			    )
 			
-			
-			VAR AnoMesAtual =
-			    SELECTEDVALUE(DimMes[ANOMES])
+			-- Mesma conversão aplicada linha a linha na tabela usada pelo TREATAS
+			VAR TabelaSupervisoresDoGerente =
+			    SELECTCOLUMNS (
+			        CALCULATETABLE (
+			            VALUES ( DGEVQ_HIERARQUIAVENDANIVEL[SEQSUPERVISOR] ),
+			            REMOVEFILTERS ( DGEVQ_HIERARQUIAVENDANIVEL ),
+			            DGEVQ_HIERARQUIAVENDANIVEL[GERENTEVENDA] = GerenteSel
+			        ),
+			        "SeqSupervisorNum", VALUE ( DGEVQ_HIERARQUIAVENDANIVEL[SEQSUPERVISOR] )
+			    )
 			
 			RETURN
-			CALCULATE(
-			    DISTINCTCOUNT(DCVV_META_RVV_FERIAS2[SEQCLIENTE]),
-			    DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
-			    DCVV_META_RVV_FERIAS2[ANOMES] = AnoMesAtual
+			SWITCH (
+			    TRUE (),
+			
+			    NivelAlvo = "Vendedor",
+			        CALCULATE (
+			            DISTINCTCOUNT ( DCVV_META_RVV_FERIAS2[SEQCLIENTE] ),
+			            DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
+			            DCVV_META_RVV_FERIAS2[ANOMES] = AnoMesAtual,
+			            REMOVEFILTERS ( DCV_VENDEDORHIERARQUIANIVEL ),
+			            DCVV_META_RVV_FERIAS2[VENDEDOROFC] = SELECTEDVALUE ( DCV_VENDEDORHIERARQUIANIVEL[SEQPESSOA] )
+			        ),
+			
+			    NivelAlvo = "Supervisor",
+			        CALCULATE (
+			            DISTINCTCOUNT ( DCVV_META_RVV_FERIAS2[SEQCLIENTE] ),
+			            DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
+			            DCVV_META_RVV_FERIAS2[ANOMES] = AnoMesAtual,
+			            REMOVEFILTERS ( DCV_VENDEDORHIERARQUIANIVEL ),
+			            DCVV_META_RVV_FERIAS2[SEQSUPERVISOR] = SeqSupervisorSel
+			        ),
+			
+			    NivelAlvo = "Gerente",
+			        CALCULATE (
+			            DISTINCTCOUNT ( DCVV_META_RVV_FERIAS2[SEQCLIENTE] ),
+			            DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
+			            DCVV_META_RVV_FERIAS2[ANOMES] = AnoMesAtual,
+			            REMOVEFILTERS ( DCV_VENDEDORHIERARQUIANIVEL ),
+			            TREATAS ( TabelaSupervisoresDoGerente, DCVV_META_RVV_FERIAS2[SEQSUPERVISOR] )
+			        ),
+			
+			    CALCULATE (
+			        DISTINCTCOUNT ( DCVV_META_RVV_FERIAS2[SEQCLIENTE] ),
+			        DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
+			        DCVV_META_RVV_FERIAS2[ANOMES] = AnoMesAtual,
+			        REMOVEFILTERS ( DCV_VENDEDORHIERARQUIANIVEL )
+			    )
 			)
-			
-			
-			```
 		formatString: 0
 		displayFolder: Resultado realizado
 		lineageTag: d888adb6-3588-489f-8a81-572f187d3322
 
 	measure '% Realizado recorrecnia positivacao' =
 			
-			DIVIDE([Recorrencia positivacao],[Meta valor],0)
+			DIVIDE(['Recorrencia positivacao'],[Meta valor],0)
 		displayFolder: % Realizado
 		lineageTag: a97f528a-eb55-4224-84b4-5666a1d8f06f
 
@@ -1013,8 +1068,6 @@ table Medidas
 			
 			RETURN
 			    SalarioBase
-			
-			
 			```
 		lineageTag: b3b4a62a-b0df-4003-8868-03a289b7dc94
 
