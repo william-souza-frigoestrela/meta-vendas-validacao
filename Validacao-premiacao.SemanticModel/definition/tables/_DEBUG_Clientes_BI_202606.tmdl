@@ -1,0 +1,71 @@
+table _DEBUG_Clientes_BI_202606
+	lineageTag: 83c0158b-424b-4033-9f98-9885a8e76e26
+
+	column SEQCLIENTE
+		lineageTag: 80aaf540-4098-4473-a3fb-0d740bb46d8f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: DCVV_META_RVV_FERIAS2[SEQCLIENTE]
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEQSUPERVISOR
+		lineageTag: 9d935ae2-2dc8-4ab4-b03b-65263f472aa3
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: DCVV_META_RVV_FERIAS2[SEQSUPERVISOR]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VENDEDOROFC
+		lineageTag: 25f304ba-86e8-4989-ad2d-c7f62ea97822
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: DCVV_META_RVV_FERIAS2[VENDEDOROFC]
+
+		annotation SummarizationSetBy = Automatic
+
+	column CONTAGEM
+		lineageTag: c709f0f4-cdc3-49d7-b647-db4426d27bff
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: DCVV_META_RVV_FERIAS2[CONTAGEM]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition _DEBUG_Clientes_BI_202606 = calculated
+		mode: import
+		source = ```
+				
+				VAR GerenteSel = "CARLOS EDUARDO BEGO"
+				VAR AnoMesFiltro = "2026/06"
+				
+				-- 3 Supervisores oficiais do gerente em 202606
+				VAR SupervisoresValidos = 
+				    CALCULATETABLE (
+				        VALUES ( DGEVQ_HIERARQUIAVENDANIVEL[SEQSUPERVISOR] ),
+				        DGEVQ_HIERARQUIAVENDANIVEL[GERENTEVENDA] = GerenteSel,
+				        DGEVQ_HIERARQUIAVENDANIVEL[MESANO] = AnoMesFiltro
+				    )
+				
+				RETURN
+				CALCULATETABLE (
+				    SUMMARIZE (
+				        DCVV_META_RVV_FERIAS2,
+				        DCVV_META_RVV_FERIAS2[SEQCLIENTE],
+				        DCVV_META_RVV_FERIAS2[SEQSUPERVISOR],
+				        DCVV_META_RVV_FERIAS2[VENDEDOROFC],
+				        DCVV_META_RVV_FERIAS2[CONTAGEM]
+				    ),
+				    DCVV_META_RVV_FERIAS2[ANOMES] = AnoMesFiltro,
+				    DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
+				    TREATAS ( SupervisoresValidos, DCVV_META_RVV_FERIAS2[SEQSUPERVISOR] )
+				)
+				```
+
+	annotation PBI_Id = 381ff90f8cf4465587374909e493a3a1
+

@@ -30,6 +30,7 @@ ref table FPBI_RESULTADOMETA
 ref table DCVV_META_RVV_FERIAS2
 ref table dPessoaHierarquia
 ref table Atualizacao
+ref table _DEBUG_Clientes_BI_202606
 
 ref cultureInfo pt-BR
 

@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "2e19828bcee7a9b0c637",
+  "name": "1554527292aa2d009a8b",
   "position": {
-    "x": 939.01477832512319,
-    "y": 57.635467980295566,
-    "z": 6000,
+    "x": 940.78817733990149,
+    "y": 60.295566502463053,
+    "z": 8000,
     "height": 112.12403100775194,
-    "width": 197.45736434108528,
-    "tabOrder": 6000
+    "width": 188.52713178294573,
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -92,27 +92,6 @@
         },
         {
           "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "14D"
-                }
-              }
-            },
-            "labelDisplayUnits": {
-              "expr": {
-                "Literal": {
-                  "Value": "1D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Medidas.Salario vendedor"
-          }
-        },
-        {
-          "properties": {
             "labelDisplayUnits": {
               "expr": {
                 "Literal": {
@@ -165,48 +144,6 @@
           },
           "selector": {
             "id": "default"
-          }
-        },
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Base de Calculo'"
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "12D"
-                }
-              }
-            },
-            "bold": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "position": {
-              "expr": {
-                "Literal": {
-                  "Value": "'aboveValue'"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Medidas.Salario vendedor"
           }
         },
         {
@@ -558,7 +495,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
@@ -592,6 +529,13 @@
               "expr": {
                 "Literal": {
                   "Value": "12D"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "''"
                 }
               }
             }
