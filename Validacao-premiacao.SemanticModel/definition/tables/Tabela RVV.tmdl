@@ -1,0 +1,93 @@
+table 'Tabela RVV'
+	lineageTag: 2adaeeb8-c9e5-46e3-8040-921f620183d3
+
+	column SEQCLIENTE
+		dataType: double
+		lineageTag: d4b1447e-69ca-4e19-ab7e-d37e6adaa2a2
+		summarizeBy: sum
+		sourceColumn: SEQCLIENTE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SEQVENDEDOR_FINAL
+		dataType: double
+		lineageTag: 48976c8e-9438-447d-bf36-ef175ae4e08a
+		summarizeBy: sum
+		sourceColumn: SEQVENDEDOR_FINAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ANOMES_REGISTRO
+		dataType: double
+		lineageTag: 84a4fe28-7929-41c3-8f02-8d29c7e47a74
+		summarizeBy: sum
+		sourceColumn: ANOMES_REGISTRO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MES_ATIVACAO
+		dataType: string
+		lineageTag: 9fb2e15a-0427-4d87-97f1-30d8defb0e8a
+		summarizeBy: none
+		sourceColumn: MES_ATIVACAO
+
+		annotation SummarizationSetBy = Automatic
+
+	column SALDO_MES_2
+		dataType: double
+		lineageTag: a0493737-3e10-43dd-b3d2-ee0769f02445
+		summarizeBy: sum
+		sourceColumn: SALDO_MES_2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SALDO_MES_1
+		dataType: double
+		lineageTag: 112621ea-08d9-478c-9ee0-298f09c1805a
+		summarizeBy: sum
+		sourceColumn: SALDO_MES_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SALDO_MES_ATUAL
+		dataType: double
+		lineageTag: 955a8b90-281d-4bf0-8dad-65910a3d5007
+		summarizeBy: sum
+		sourceColumn: SALDO_MES_ATUAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CONTAGEM
+		dataType: double
+		lineageTag: 0150d04e-62a9-4d45-8ccb-2f732c987870
+		summarizeBy: sum
+		sourceColumn: CONTAGEM
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Tabela RVV' = m
+		mode: import
+		source =
+				let
+				    Fonte = Oracle.Database("DATAVALE", [HierarchicalNavigation=true, Query="SELECT #(lf)    X.SeqCliente,#(lf)    X.SEQVENDEDOR_FINAL,#(lf)    X.ANOMES_REGISTRO,#(lf)    X.MES_ATIVACAO,#(lf)    X.SALDO_MES_2,#(lf)    X.SALDO_MES_1,#(lf)    X.SALDO_MES_ATUAL,#(lf)    CASE#(lf)        -- ATIVADO NO MES ATUAL#(lf)        WHEN X.MES_ATIVACAO = TO_CHAR(X.ANOMES_REGISTRO) AND NVL(X.SALDO_MES_ATUAL, 0) > 0 THEN 1#(lf)        #(lf)        -- ATIVADO NO MES ANTERIOR (M-1)#(lf)        WHEN X.MES_ATIVACAO = TO_CHAR(ADD_MONTHS(TO_DATE(X.ANOMES_REGISTRO || '01', 'YYYYMMDD'), -1), 'YYYYMM') #(lf)             AND NVL(X.SALDO_MES_1, 0) > 0 AND NVL(X.SALDO_MES_ATUAL, 0) > 0 THEN 1#(lf)        #(lf)        -- CLIENTE ANTIGO (Ativo nos 3 meses: M-2, M-1 e M)#(lf)        WHEN NVL(X.SALDO_MES_2, 0) > 0 AND NVL(X.SALDO_MES_1, 0) > 0 AND NVL(X.SALDO_MES_ATUAL, 0) > 0 THEN 1#(lf)        #(lf)        ELSE 0#(lf)    END AS CONTAGEM#(lf)FROM (#(lf)    SELECT #(lf)        base.SeqCliente,#(lf)        HV.SEQVENDEDOR_FINAL,#(lf)        base.AnoMes AS ANOMES_REGISTRO,#(lf)        TO_CHAR(MAX(base.dtaativacao), 'YYYYMM') AS MES_ATIVACAO,#(lf)        #(lf)        -- SALDO MÊS ATUAL (AnoMes = ANOMES_REGISTRO)#(lf)        SUM(CASE #(lf)                WHEN hist.AnoMes = base.AnoMes #(lf)                THEN (hist.VlrVenda - hist.VlrDevolucao) #(lf)                ELSE 0 #(lf)            END) AS SALDO_MES_ATUAL,#(lf)            #(lf)        -- SALDO MÊS 1 (Mês imediatamente anterior: M-1)#(lf)        SUM(CASE #(lf)                WHEN hist.AnoMes = TO_NUMBER(TO_CHAR(ADD_MONTHS(TO_DATE(base.AnoMes || '01', 'YYYYMMDD'), -1), 'YYYYMM')) #(lf)                THEN (hist.VlrVenda - hist.VlrDevolucao) #(lf)                ELSE 0 #(lf)            END) AS SALDO_MES_1,#(lf)            #(lf)        -- SALDO MÊS 2 (Dois meses anteriores: M-2)#(lf)        SUM(CASE #(lf)                WHEN hist.AnoMes = TO_NUMBER(TO_CHAR(ADD_MONTHS(TO_DATE(base.AnoMes || '01', 'YYYYMMDD'), -2), 'YYYYMM')) #(lf)                THEN (hist.VlrVenda - hist.VlrDevolucao) #(lf)                ELSE 0 #(lf)            END) AS SALDO_MES_2#(lf)#(lf)    FROM DCVV_META_VENDADEVOLUCAO_BKP base#(lf)    #(lf)    -- Busca os históricos dos últimos 2 meses até o mês atual do registro#(lf)    JOIN DCVV_META_VENDADEVOLUCAO_BKP hist #(lf)      ON hist.SeqCliente = base.SeqCliente#(lf)     AND hist.AnoMes BETWEEN TO_NUMBER(TO_CHAR(ADD_MONTHS(TO_DATE(base.AnoMes || '01', 'YYYYMMDD'), -2), 'YYYYMM'))#(lf)                         AND base.AnoMes#(lf)#(lf)    -- Vendedor responsável pelo cliente#(lf)    JOIN DCVV_HISTORICOCLIENTEVENDEDOR HV #(lf)      ON HV.SEQCLIENTE = base.SeqCLIENTE#(lf)#(lf)    WHERE base.AnoMes >= 202601 -- Filtro para as safra de análise a partir de 01/2026#(lf)#(lf)    GROUP BY #(lf)        base.SeqCliente,#(lf)        HV.SEQVENDEDOR_FINAL,#(lf)        base.AnoMes#(lf)) X", CommandTimeout=#duration(0, 8, 20, 0)])
+				in
+				    Fonte
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

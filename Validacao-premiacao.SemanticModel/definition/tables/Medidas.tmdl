@@ -89,7 +89,7 @@ table Medidas
 			        [Positivação],
 			
 			    "RECORRÊNCIA POSITIVAÇÃO",
-			        [Recorrencia positivacao],
+			        [Recorrencia Teste],
 			
 			    "MIX RENTÁVEL",
 			        [Peso Mix Rentável],
@@ -1030,11 +1030,11 @@ table Medidas
 	measure 'Recorrencia Teste' = ```
 			
 			CALCULATE(
-			    DISTINCTCOUNT(DCVV_META_RVV_FERIAS2[SEQCLIENTE]),
-			    DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
+			    DISTINCTCOUNT('Tabela RVV'[SEQCLIENTE]),
+			    'Tabela RVV'[CONTAGEM] > 0,
 			    TREATAS(
 			        VALUES(DCVV_META_VENDADEVOLUCAO[SEQCLIENTE]),
-			        DCVV_META_RVV_FERIAS2[SEQCLIENTE]
+			        'Tabela RVV'[SEQCLIENTE]
 			    )
 			)
 			

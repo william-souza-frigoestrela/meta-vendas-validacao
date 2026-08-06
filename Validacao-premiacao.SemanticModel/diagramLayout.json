@@ -4,7 +4,7 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 49.655497997657186,
+        "x": 0,
         "y": 0
       },
       "nodes": [
@@ -19,7 +19,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 14,
+          "zIndex": 19,
           "expandedHeight": 200
         },
         {
@@ -33,7 +33,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 4,
+          "zIndex": 8,
           "expandedHeight": 300
         },
         {
@@ -47,7 +47,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 6,
+          "zIndex": 9,
           "expandedHeight": 300
         },
         {
@@ -61,7 +61,7 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 11,
+          "zIndex": 14,
           "expandedHeight": 300
         },
         {
@@ -75,7 +75,7 @@
             "height": 128,
             "width": 319.03492800000004
           },
-          "zIndex": 12,
+          "zIndex": 15,
           "expandedHeight": 300
         },
         {
@@ -89,7 +89,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 7,
+          "zIndex": 10,
           "expandedHeight": 300
         },
         {
@@ -103,7 +103,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 9,
+          "zIndex": 12,
           "expandedHeight": 300
         },
         {
@@ -117,7 +117,7 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 13,
+          "zIndex": 16,
           "expandedHeight": 224
         },
         {
@@ -131,7 +131,7 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 15,
+          "zIndex": 17,
           "expandedHeight": 272
         },
         {
@@ -145,7 +145,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 8,
+          "zIndex": 11,
           "expandedHeight": 224
         },
         {
@@ -159,7 +159,7 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 10,
+          "zIndex": 13,
           "expandedHeight": 200
         },
         {
@@ -172,7 +172,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 3,
+          "zIndex": 7,
           "expandedHeight": 152
         },
         {
@@ -186,7 +186,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 2,
+          "zIndex": 18,
           "expandedHeight": 200
         },
         {
@@ -200,7 +200,7 @@
             "height": 200,
             "width": 234
           },
-          "zIndex": 1
+          "zIndex": 6
         },
         {
           "location": {
@@ -213,7 +213,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 1
         },
         {
           "location": {
@@ -226,7 +226,7 @@
             "height": 224,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 2
         },
         {
           "location": {
@@ -239,7 +239,7 @@
             "height": 224,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 3
         },
         {
           "location": {
@@ -252,19 +252,19 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 4
         },
         {
           "location": {
             "x": 2352.1496439999996,
             "y": 606.8390323051467
           },
-          "nodeIndex": "_DEBUG_Clientes_BI_202606",
+          "nodeIndex": "_DEBUG_Clientes_Com_Mais_De_Um_Vendedor",
           "size": {
             "height": 200,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 5
         }
       ],
       "name": "Todas as tabelas",
