@@ -948,7 +948,7 @@ table Medidas
 
 	measure '% Realizado recorrecnia positivacao' =
 			
-			DIVIDE([Recorrencia positivacao],[Meta valor],0)
+			DIVIDE([Recorrencia Teste],[Meta valor],0)
 		displayFolder: % Realizado
 		lineageTag: a97f528a-eb55-4224-84b4-5666a1d8f06f
 
