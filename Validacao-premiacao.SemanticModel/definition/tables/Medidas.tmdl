@@ -1031,11 +1031,11 @@ table Medidas
 			
 			CALCULATE(
 			    DISTINCTCOUNT('Tabela RVV'[SEQCLIENTE]),
-			    'Tabela RVV'[CONTAGEM] > 0,
-			    TREATAS(
+			    'Tabela RVV'[CONTAGEM] /* > 0,
+			   TREATAS(
 			        VALUES(DCVV_META_VENDADEVOLUCAO[SEQCLIENTE]),
 			        'Tabela RVV'[SEQCLIENTE]
-			    )
+			    )*/
 			)
 			
 			```
