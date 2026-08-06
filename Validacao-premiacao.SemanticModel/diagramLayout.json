@@ -265,6 +265,19 @@
             "width": 234
           },
           "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 701.92954701896167
+          },
+          "nodeIndex": "Tabela RVV",
+          "nodeLineageTag": "2adaeeb8-c9e5-46e3-8040-921f620183d3",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "Todas as tabelas",
