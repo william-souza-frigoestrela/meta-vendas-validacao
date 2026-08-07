@@ -1,0 +1,44 @@
+table _DEBUG_Clientes_Com_Mais_De_Um_Vendedor
+	lineageTag: 83c0158b-424b-4033-9f98-9885a8e76e26
+
+	column SEQCLIENTE
+		lineageTag: 80aaf540-4098-4473-a3fb-0d740bb46d8f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: DCVV_META_RVV_FERIAS2[SEQCLIENTE]
+
+		annotation SummarizationSetBy = Automatic
+
+	column QtdVendedoresDiferentes
+		formatString: 0
+		lineageTag: c9ead86f-582d-40e6-974e-89b49d815812
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [QtdVendedoresDiferentes]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _DEBUG_Clientes_Com_Mais_De_Um_Vendedor = calculated
+		mode: import
+		source =
+				
+				VAR SupervisorAlvo = 307494
+				VAR AnoMesFiltro = "202606"
+				
+				RETURN
+				FILTER (
+				    SUMMARIZE (
+				        CALCULATETABLE (
+				            DCVV_META_RVV_FERIAS2,
+				            DCVV_META_RVV_FERIAS2[ANOMES] = AnoMesFiltro,
+				            DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
+				            DCVV_META_RVV_FERIAS2[SEQSUPERVISOR] = SupervisorAlvo
+				        ),
+				        DCVV_META_RVV_FERIAS2[SEQCLIENTE],
+				        "QtdVendedoresDiferentes", DISTINCTCOUNT ( DCVV_META_RVV_FERIAS2[VENDEDOROFC] )
+				    ),
+				    [QtdVendedoresDiferentes] > 1
+				)
+
+	annotation PBI_Id = 381ff90f8cf4465587374909e493a3a1
+

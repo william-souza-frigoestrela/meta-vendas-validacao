@@ -89,7 +89,7 @@ table Medidas
 			        [Positivação],
 			
 			    "RECORRÊNCIA POSITIVAÇÃO",
-			        [Recorrencia positivacao],
+			        [Recorrencia Teste],
 			
 			    "MIX RENTÁVEL",
 			        [Peso Mix Rentável],
@@ -550,7 +550,7 @@ table Medidas
 			        NivelAlvo,
 			        "Vendedor", 1,
 			        "Supervisor", 0.8,
-			        "Gerente", 0.6,
+			        "Gerente", 0.8,
 			        0
 			    )
 			
@@ -948,7 +948,7 @@ table Medidas
 
 	measure '% Realizado recorrecnia positivacao' =
 			
-			DIVIDE([Recorrencia positivacao],[Meta valor],0)
+			DIVIDE([Recorrencia Teste],[Meta valor],0)
 		displayFolder: % Realizado
 		lineageTag: a97f528a-eb55-4224-84b4-5666a1d8f06f
 
@@ -1030,12 +1030,12 @@ table Medidas
 	measure 'Recorrencia Teste' = ```
 			
 			CALCULATE(
-			    DISTINCTCOUNT(DCVV_META_RVV_FERIAS2[SEQCLIENTE]),
-			    DCVV_META_RVV_FERIAS2[CONTAGEM] > 0,
-			    TREATAS(
+			    DISTINCTCOUNT('Tabela RVV'[SEQCLIENTE]),
+			    'Tabela RVV'[CONTAGEM] /* > 0,
+			   TREATAS(
 			        VALUES(DCVV_META_VENDADEVOLUCAO[SEQCLIENTE]),
-			        DCVV_META_RVV_FERIAS2[SEQCLIENTE]
-			    )
+			        'Tabela RVV'[SEQCLIENTE]
+			    )*/
 			)
 			
 			```
