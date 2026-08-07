@@ -550,7 +550,7 @@ table Medidas
 			        NivelAlvo,
 			        "Vendedor", 1,
 			        "Supervisor", 0.8,
-			        "Gerente", 0.6,
+			        "Gerente", 0.8,
 			        0
 			    )
 			
