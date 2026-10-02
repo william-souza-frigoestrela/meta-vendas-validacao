@@ -303,27 +303,36 @@ table Medidas
 		displayFolder: Resultado realizado
 		lineageTag: b642657c-6eea-4d01-81a4-8f75adc98a8b
 
-	measure 'Peso Mix' =
+	measure 'Peso Mix' = ```
 			
 			VAR MetaAtual      = SELECTEDVALUE(FPBI_ESTRELA_METAS[META])
 			VAR DtaFimPeriodo  = SELECTEDVALUE(FPBI_ESTRELA_METAS[DTAVALIDADE])
 			
-			-- Calcula início da quinzena a partir da DTAVALIDADE da meta
+			-- Identifica se o período da meta é Mensal especificamente para Agosto/2026
+			-- ou se a data fim do período coincide com o último dia do mês
+			VAR EhMetaMensal = 
+			    (MONTH(DtaFimPeriodo) = 8 && YEAR(DtaFimPeriodo) = 2026) || 
+			    DtaFimPeriodo = EOMONTH(DtaFimPeriodo, 0)
+			
+			-- Calcula início do período a partir da DTAVALIDADE
 			VAR DtaInicioPeriodo =
 			    IF(
-			        DAY(DtaFimPeriodo) <= 15,
-			        DATE(YEAR(DtaFimPeriodo), MONTH(DtaFimPeriodo), 1),   -- 1ª quinzena: dia 1
-			        DATE(YEAR(DtaFimPeriodo), MONTH(DtaFimPeriodo), 16)   -- 2ª quinzena: dia 16
+			        EhMetaMensal,
+			        DATE(YEAR(DtaFimPeriodo), MONTH(DtaFimPeriodo), 1), -- Mês cheio: Inicia dia 1
+			        IF(
+			            DAY(DtaFimPeriodo) <= 15,
+			            DATE(YEAR(DtaFimPeriodo), MONTH(DtaFimPeriodo), 1), -- 1ª Quinzena: Dia 1
+			            DATE(YEAR(DtaFimPeriodo), MONTH(DtaFimPeriodo), 16) -- 2ª Quinzena: Dia 16
+			        )
 			    )
 			
-			-- Produtos válidos para esta meta + vendedor + quinzena exata
-			-- (filtro de vendedor já propagado via relacionamento mixDiversos → DCV_VENDEDORHIERARQUIANIVEL)
+			-- Produtos válidos para esta meta + vendedor + período
 			VAR ProdutosMix =
 			    SELECTCOLUMNS(
 			        FILTER(
 			            mixDiversos,
-			            mixDiversos[META]        = MetaAtual      &&   -- MIX BOVINO / SUINO / etc
-			            mixDiversos[DTAVALIDADE] = DtaFimPeriodo        -- quinzena exata
+			            mixDiversos[META]        = MetaAtual      && 
+			            mixDiversos[DTAVALIDADE] = DtaFimPeriodo
 			        ),
 			        "PROD", mixDiversos[SEQPRODUTO]
 			    )
@@ -337,13 +346,14 @@ table Medidas
 			            DCVV_META_VENDADEVOLUCAOMIX[PESOVENDA] -
 			            DCVV_META_VENDADEVOLUCAOMIX[PESODEVOLUCAO]
 			        ),
-			        -- Filtra pelo período exato da quinzena
+			        -- Filtra pelo período ajustado (Quinzenal ou Mensal)
 			        DCVV_META_VENDADEVOLUCAOMIX[DTAEMISSAO] >= DtaInicioPeriodo,
 			        DCVV_META_VENDADEVOLUCAOMIX[DTAEMISSAO] <= DtaFimPeriodo,
-			        -- Filtra pelos produtos do mix desta quinzena
+			        -- Filtra pelos produtos do mix do período
 			        TREATAS(ProdutosMix, DCVV_META_VENDADEVOLUCAOMIX[SEQPRODUTO])
 			    )
 			)
+			```
 		displayFolder: Resultado realizado
 		lineageTag: cacbc86f-9b33-4c6c-b1ee-3ddb28677956
 
