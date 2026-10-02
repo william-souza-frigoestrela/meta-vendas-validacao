@@ -577,31 +577,43 @@ table Medidas
 	measure Bonificação = ```
 			
 			
-			var varejo_sul = SELECTEDVALUE(DCV_VENDEDORHIERARQUIANIVEL[SEQNIVEL]) in {"31","37"}
+			VAR varejo_sul = SELECTEDVALUE(DCV_VENDEDORHIERARQUIANIVEL[SEQNIVEL]) IN {"31","37"}
 			
-			var base_percent_devolucao =  
-			    IF(varejo_sul,[Base calculo]*0.01,[Base calculo]*0.04)
+			-- Condição para validar se a data/mês selecionado é Agosto/2026
+			VAR e_agosto_2026 = 
+			    SELECTEDVALUE(dCalendario[Ano2]) = 2026 && SELECTEDVALUE(dCalendario[Mês num]) = 8
+			    -- Ajuste 'dCalendario[Ano]' e 'dCalendario[NumeroMes]' conforme o nome real dos campos da sua tabela dCalendario/Tempo
 			
-			var base_percent_peso_total=
-			    IF(varejo_sul,[Base calculo]*0.04,[Base calculo]*0.03)
+			VAR base_percent_devolucao =  
+			    IF(varejo_sul, [Base calculo] * 0.01, [Base calculo] * 0.04)
 			
-			var base_percent_faturmanto_total = 
-			    IF(varejo_sul,[Base calculo]*0.04,[Base calculo]*0.03)
+			VAR base_percent_peso_total =
+			    IF(varejo_sul, [Base calculo] * 0.04, [Base calculo] * 0.03)
 			
-			var base_percent_peso_suino = 
-			    IF(varejo_sul,[Base calculo]*0.08,[Base calculo]*0.05)
+			VAR base_percent_faturmanto_total = 
+			    IF(varejo_sul, [Base calculo] * 0.04, [Base calculo] * 0.03)
 			
-			var base_percent_peso_industrializados = 
-			    IF(varejo_sul,[Base calculo]*0.15,[Base calculo]*0.1)
+			VAR base_percent_peso_suino = 
+			    IF(varejo_sul, [Base calculo] * 0.08, [Base calculo] * 0.05)
 			
-			var base_percent_faturamento_suino = 
-			    IF(varejo_sul,[Base calculo]*0.06,[Base calculo]*0.05)
+			VAR base_percent_peso_industrializados = 
+			    IF(varejo_sul, [Base calculo] * 0.15, [Base calculo] * 0.10)
 			
-			var base_percent_mix_suino = 
-			    if(varejo_sul,[Base calculo]*0.025,[Base calculo]*0.02)
+			VAR base_percent_faturamento_suino = 
+			    IF(varejo_sul, [Base calculo] * 0.06, [Base calculo] * 0.05)
 			
-			var base_percent_recorrecnia_positivacao = 
-			    if(varejo_sul,[Base calculo]*0.1,[Base calculo]*0.05)
+			VAR base_percent_mix_suino = 
+			    IF(varejo_sul, [Base calculo] * 0.025, [Base calculo] * 0.02)
+			
+			VAR base_percent_recorrecnia_positivacao = 
+			    IF(varejo_sul, [Base calculo] * 0.10, [Base calculo] * 0.05)
+			
+			-- Percentuais base para Mix Bovino e Mix Industrializados (Agosto/2026 vs Padrão)
+			VAR base_mix_bovino = 
+			    IF(e_agosto_2026, [Base calculo] * 0.04, [Base calculo] * 0.02)
+			
+			VAR base_mix_industrializados = 
+			    IF(e_agosto_2026, [Base calculo] * 0.10, [Base calculo] * 0.05)
 			
 			RETURN
 			
@@ -611,213 +623,210 @@ table Medidas
 			        "Peso bovino",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado peso bovino] <0.70 ,0,
-			                [% Realizado peso bovino] >=0.70 && [% Realizado peso bovino] < 0.80, ([Base calculo]*0.05)*0.2,
-			                [% Realizado peso bovino] >=0.80 && [% Realizado peso bovino] < 0.90, ([Base calculo]*0.05)*0.4,
-			                [% Realizado peso bovino] >=0.90 && [% Realizado peso bovino] < 1, ([Base calculo]*0.05)*0.75,
-			                [% Realizado peso bovino] >=1 && [% Realizado peso bovino] < 1.05, ([Base calculo]*0.05)*1,
-			                [% Realizado peso bovino] >=1 && [% Realizado peso bovino] < 1.05, ([Base calculo]*0.05)*1,
-			                [% Realizado peso bovino] >=1.05 && [% Realizado peso bovino] < 1.10, ([Base calculo]*0.05)*1.10,
-			                [% Realizado peso bovino] >=1.10 && [% Realizado peso bovino] < 1.15, ([Base calculo]*0.05)*1.15,
-			                ([Base calculo]*0.05)*1.20
+			                [% Realizado peso bovino] < 0.70, 0,
+			                [% Realizado peso bovino] >= 0.70 && [% Realizado peso bovino] < 0.80, ([Base calculo] * 0.05) * 0.2,
+			                [% Realizado peso bovino] >= 0.80 && [% Realizado peso bovino] < 0.90, ([Base calculo] * 0.05) * 0.4,
+			                [% Realizado peso bovino] >= 0.90 && [% Realizado peso bovino] < 1.00, ([Base calculo] * 0.05) * 0.75,
+			                [% Realizado peso bovino] >= 1.00 && [% Realizado peso bovino] < 1.05, ([Base calculo] * 0.05) * 1.00,
+			                [% Realizado peso bovino] >= 1.05 && [% Realizado peso bovino] < 1.10, ([Base calculo] * 0.05) * 1.10,
+			                [% Realizado peso bovino] >= 1.10 && [% Realizado peso bovino] < 1.15, ([Base calculo] * 0.05) * 1.15,
+			                ([Base calculo] * 0.05) * 1.20
 			            ),
 			
 			        "Peso suinos",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado peso suino] <0.70 ,0,
-			                [% Realizado peso suino] >=0.70 && [% Realizado peso suino] < 0.80, (base_percent_peso_suino)*0.2,
-			                [% Realizado peso suino] >=0.80 && [% Realizado peso suino] < 0.90, (base_percent_peso_suino)*0.4,
-			                [% Realizado peso suino] >=0.90 && [% Realizado peso suino] < 1, (base_percent_peso_suino)*0.75,
-			                [% Realizado peso suino] >=1 && [% Realizado peso suino] < 1.05, (base_percent_peso_suino)*1,
-			                [% Realizado peso suino] >=1.05 && [% Realizado peso suino] < 1.10, (base_percent_peso_suino*0.05)*1.10,
-			                [% Realizado peso suino] >=1.10 && [% Realizado peso suino] < 1.15, (base_percent_peso_suino*0.05)*1.15,
-			                (base_percent_peso_suino)*1.20
+			                [% Realizado peso suino] < 0.70, 0,
+			                [% Realizado peso suino] >= 0.70 && [% Realizado peso suino] < 0.80, (base_percent_peso_suino) * 0.2,
+			                [% Realizado peso suino] >= 0.80 && [% Realizado peso suino] < 0.90, (base_percent_peso_suino) * 0.4,
+			                [% Realizado peso suino] >= 0.90 && [% Realizado peso suino] < 1.00, (base_percent_peso_suino) * 0.75,
+			                [% Realizado peso suino] >= 1.00 && [% Realizado peso suino] < 1.05, (base_percent_peso_suino) * 1.00,
+			                [% Realizado peso suino] >= 1.05 && [% Realizado peso suino] < 1.10, (base_percent_peso_suino * 0.05) * 1.10,
+			                [% Realizado peso suino] >= 1.10 && [% Realizado peso suino] < 1.15, (base_percent_peso_suino * 0.05) * 1.15,
+			                (base_percent_peso_suino) * 1.20
 			            ),
 			
 			        "Peso industrializados",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado peso industrializados] <0.70 ,0,
-			                [% Realizado peso industrializados] >=0.70 && [% Realizado peso industrializados] < 0.80, (base_percent_peso_industrializados)*0.2,
-			                [% Realizado peso industrializados] >=0.80 && [% Realizado peso industrializados] < 0.90, (base_percent_peso_industrializados)*0.4,
-			                [% Realizado peso industrializados] >=0.90 && [% Realizado peso industrializados] < 1, (base_percent_peso_industrializados)*0.75,
-			                [% Realizado peso industrializados] >=1 && [% Realizado peso industrializados] < 1.05, (base_percent_peso_industrializados)*1,
-			                [% Realizado peso industrializados] >=1.05 && [% Realizado peso industrializados] < 1.10, (base_percent_peso_industrializados)*1.10,
-			                [% Realizado peso industrializados] >=1.10 && [% Realizado peso industrializados] < 1.15, (base_percent_peso_industrializados)*1.15,
-			                (base_percent_peso_industrializados)*1.20
+			                [% Realizado peso industrializados] < 0.70, 0,
+			                [% Realizado peso industrializados] >= 0.70 && [% Realizado peso industrializados] < 0.80, (base_percent_peso_industrializados) * 0.2,
+			                [% Realizado peso industrializados] >= 0.80 && [% Realizado peso industrializados] < 0.90, (base_percent_peso_industrializados) * 0.4,
+			                [% Realizado peso industrializados] >= 0.90 && [% Realizado peso industrializados] < 1.00, (base_percent_peso_industrializados) * 0.75,
+			                [% Realizado peso industrializados] >= 1.00 && [% Realizado peso industrializados] < 1.05, (base_percent_peso_industrializados) * 1.00,
+			                [% Realizado peso industrializados] >= 1.05 && [% Realizado peso industrializados] < 1.10, (base_percent_peso_industrializados) * 1.10,
+			                [% Realizado peso industrializados] >= 1.10 && [% Realizado peso industrializados] < 1.15, (base_percent_peso_industrializados) * 1.15,
+			                (base_percent_peso_industrializados) * 1.20
 			            ),
 			
 			        "Peso total",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado peso total] <0.70 ,0,
-			                [% Realizado peso total] >=0.70 && [% Realizado peso total] < 0.80, (base_percent_peso_total)*0.2,
-			                [% Realizado peso total] >=0.80 && [% Realizado peso total] < 0.90, (base_percent_peso_total)*0.4,
-			                [% Realizado peso total] >=0.90 && [% Realizado peso total] < 1, (base_percent_peso_total)*0.75,
-			                [% Realizado peso total] >=1 && [% Realizado peso total] < 1.05, (base_percent_peso_total)*1,
-			                [% Realizado peso total] >=1.05 && [% Realizado peso total] < 1.10, (base_percent_peso_total)*1.10,
-			                [% Realizado peso total] >=1.10 && [% Realizado peso total] < 1.15, (base_percent_peso_total)*1.15,
-			                (base_percent_peso_total)*1.20
+			                [% Realizado peso total] < 0.70, 0,
+			                [% Realizado peso total] >= 0.70 && [% Realizado peso total] < 0.80, (base_percent_peso_total) * 0.2,
+			                [% Realizado peso total] >= 0.80 && [% Realizado peso total] < 0.90, (base_percent_peso_total) * 0.4,
+			                [% Realizado peso total] >= 0.90 && [% Realizado peso total] < 1.00, (base_percent_peso_total) * 0.75,
+			                [% Realizado peso total] >= 1.00 && [% Realizado peso total] < 1.05, (base_percent_peso_total) * 1.00,
+			                [% Realizado peso total] >= 1.05 && [% Realizado peso total] < 1.10, (base_percent_peso_total) * 1.10,
+			                [% Realizado peso total] >= 1.10 && [% Realizado peso total] < 1.15, (base_percent_peso_total) * 1.15,
+			                (base_percent_peso_total) * 1.20
 			            ),
 			
 			        "Faturamento Suinos",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado faturamento suinos] <0.70 ,0,
-			                [% Realizado faturamento suinos] >=0.70 && [% Realizado faturamento suinos] < 0.80, (base_percent_faturamento_suino)*0.2,
-			                [% Realizado faturamento suinos] >=0.80 && [% Realizado faturamento suinos] < 0.90, (base_percent_faturamento_suino)*0.4,
-			                [% Realizado faturamento suinos] >=0.90 && [% Realizado faturamento suinos] < 1, (base_percent_faturamento_suino)*0.75,
-			                [% Realizado faturamento suinos] >=1 && [% Realizado faturamento suinos] < 1.05, (base_percent_faturamento_suino)*1,
-			                [% Realizado faturamento suinos] >=1.05 && [% Realizado faturamento suinos] < 1.10, (base_percent_faturamento_suino)*1.10,
-			                [% Realizado faturamento suinos] >=1.10 && [% Realizado faturamento suinos] < 1.15, (base_percent_faturamento_suino)*1.15,
-			                (base_percent_faturamento_suino)*1.20
+			                [% Realizado faturamento suinos] < 0.70, 0,
+			                [% Realizado faturamento suinos] >= 0.70 && [% Realizado faturamento suinos] < 0.80, (base_percent_faturamento_suino) * 0.2,
+			                [% Realizado faturamento suinos] >= 0.80 && [% Realizado faturamento suinos] < 0.90, (base_percent_faturamento_suino) * 0.4,
+			                [% Realizado faturamento suinos] >= 0.90 && [% Realizado faturamento suinos] < 1.00, (base_percent_faturamento_suino) * 0.75,
+			                [% Realizado faturamento suinos] >= 1.00 && [% Realizado faturamento suinos] < 1.05, (base_percent_faturamento_suino) * 1.00,
+			                [% Realizado faturamento suinos] >= 1.05 && [% Realizado faturamento suinos] < 1.10, (base_percent_faturamento_suino) * 1.10,
+			                [% Realizado faturamento suinos] >= 1.10 && [% Realizado faturamento suinos] < 1.15, (base_percent_faturamento_suino) * 1.15,
+			                (base_percent_faturamento_suino) * 1.20
 			            ),
 			
 			        "Faturamento bovinos",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado faturamento bovinos] <0.70 ,0,
-			                [% Realizado faturamento bovinos] >=0.70 && [% Realizado faturamento bovinos] < 0.80, ([Base calculo]*0.05)*0.2,
-			                [% Realizado faturamento bovinos] >=0.80 && [% Realizado faturamento bovinos] < 0.90, ([Base calculo]*0.05)*0.4,
-			                [% Realizado faturamento bovinos] >=0.90 && [% Realizado faturamento bovinos] < 1, ([Base calculo]*0.05)*0.75,
-			                [% Realizado faturamento bovinos] >=1 && [% Realizado faturamento bovinos] < 1.05, ([Base calculo]*0.05)*1,
-			                [% Realizado faturamento bovinos] >=1.05 && [% Realizado faturamento bovinos] < 1.10, ([Base calculo]*0.05)*1.10,
-			                [% Realizado faturamento bovinos] >=1.10 && [% Realizado faturamento bovinos] < 1.15, ([Base calculo]*0.05)*1.15,
-			                ([Base calculo]*0.05)*1.20
+			                [% Realizado faturamento bovinos] < 0.70, 0,
+			                [% Realizado faturamento bovinos] >= 0.70 && [% Realizado faturamento bovinos] < 0.80, ([Base calculo] * 0.05) * 0.2,
+			                [% Realizado faturamento bovinos] >= 0.80 && [% Realizado faturamento bovinos] < 0.90, ([Base calculo] * 0.05) * 0.4,
+			                [% Realizado faturamento bovinos] >= 0.90 && [% Realizado faturamento bovinos] < 1.00, ([Base calculo] * 0.05) * 0.75,
+			                [% Realizado faturamento bovinos] >= 1.00 && [% Realizado faturamento bovinos] < 1.05, ([Base calculo] * 0.05) * 1.00,
+			                [% Realizado faturamento bovinos] >= 1.05 && [% Realizado faturamento bovinos] < 1.10, ([Base calculo] * 0.05) * 1.10,
+			                [% Realizado faturamento bovinos] >= 1.10 && [% Realizado faturamento bovinos] < 1.15, ([Base calculo] * 0.05) * 1.15,
+			                ([Base calculo] * 0.05) * 1.20
 			            ),
 			
 			        "Faturamento industrializados",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado faturamento industrializados] <0.70 ,0,
-			                [% Realizado faturamento industrializados] >=0.70 && [% Realizado faturamento industrializados] < 0.80, ([Base calculo]*0.12)*0.2,
-			                [% Realizado faturamento industrializados] >=0.80 && [% Realizado faturamento industrializados] < 0.90, ([Base calculo]*0.12)*0.4,
-			                [% Realizado faturamento industrializados] >=0.90 && [% Realizado faturamento industrializados] < 1, ([Base calculo]*0.12)*0.75,
-			                [% Realizado faturamento industrializados] >=1 && [% Realizado faturamento industrializados] < 1.05, ([Base calculo]*0.12)*1,
-			                [% Realizado faturamento industrializados] >=1.05 && [% Realizado faturamento industrializados] < 1.10, ([Base calculo]*0.12)*1.10,
-			                [% Realizado faturamento industrializados] >=1.10 && [% Realizado faturamento industrializados] < 1.15, ([Base calculo]*0.12)*1.15,
-			                ([Base calculo]*0.12)*1.20
+			                [% Realizado faturamento industrializados] < 0.70, 0,
+			                [% Realizado faturamento industrializados] >= 0.70 && [% Realizado faturamento industrializados] < 0.80, ([Base calculo] * 0.12) * 0.2,
+			                [% Realizado faturamento industrializados] >= 0.80 && [% Realizado faturamento industrializados] < 0.90, ([Base calculo] * 0.12) * 0.4,
+			                [% Realizado faturamento industrializados] >= 0.90 && [% Realizado faturamento industrializados] < 1.00, ([Base calculo] * 0.12) * 0.75,
+			                [% Realizado faturamento industrializados] >= 1.00 && [% Realizado faturamento industrializados] < 1.05, ([Base calculo] * 0.12) * 1.00,
+			                [% Realizado faturamento industrializados] >= 1.05 && [% Realizado faturamento industrializados] < 1.10, ([Base calculo] * 0.12) * 1.10,
+			                [% Realizado faturamento industrializados] >= 1.10 && [% Realizado faturamento industrializados] < 1.15, ([Base calculo] * 0.12) * 1.15,
+			                ([Base calculo] * 0.12) * 1.20
 			            ),
 			
 			        "FATURAMENTO TOTAL",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado faturamento total] <0.70 ,0,
-			                [% Realizado faturamento total] >=0.70 && [% Realizado faturamento total] < 0.80, (base_percent_faturmanto_total)*0.2,
-			                [% Realizado faturamento total] >=0.80 && [% Realizado faturamento total] < 0.90, (base_percent_faturmanto_total)*0.4,
-			                [% Realizado faturamento total] >=0.90 && [% Realizado faturamento total] < 1, (base_percent_faturmanto_total)*0.75,
-			                [% Realizado faturamento total] >=1 && [% Realizado faturamento total] < 1.05, (base_percent_faturmanto_total)*1,
-			                [% Realizado faturamento total] >=1.05 && [% Realizado faturamento total] < 1.10, (base_percent_faturmanto_total)*1.10,
-			                [% Realizado faturamento total] >=1.10 && [% Realizado faturamento total] < 1.15, (base_percent_faturmanto_total)*1.15,
-			                (base_percent_faturmanto_total)*1.20
+			                [% Realizado faturamento total] < 0.70, 0,
+			                [% Realizado faturamento total] >= 0.70 && [% Realizado faturamento total] < 0.80, (base_percent_faturmanto_total) * 0.2,
+			                [% Realizado faturamento total] >= 0.80 && [% Realizado faturamento total] < 0.90, (base_percent_faturmanto_total) * 0.4,
+			                [% Realizado faturamento total] >= 0.90 && [% Realizado faturamento total] < 1.00, (base_percent_faturmanto_total) * 0.75,
+			                [% Realizado faturamento total] >= 1.00 && [% Realizado faturamento total] < 1.05, (base_percent_faturmanto_total) * 1.00,
+			                [% Realizado faturamento total] >= 1.05 && [% Realizado faturamento total] < 1.10, (base_percent_faturmanto_total) * 1.10,
+			                [% Realizado faturamento total] >= 1.10 && [% Realizado faturamento total] < 1.15, (base_percent_faturmanto_total) * 1.15,
+			                (base_percent_faturmanto_total) * 1.20
 			            ),
 			
 			        "Itens totais",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado itens totais] <0.70 ,0,
-			                [% Realizado itens totais] >=0.70 && [% Realizado itens totais] < 0.80, ([Base calculo]*0.08)*0.2,
-			                [% Realizado itens totais] >=0.80 && [% Realizado itens totais] < 0.90, ([Base calculo]*0.08)*0.4,
-			                [% Realizado itens totais] >=0.90 && [% Realizado itens totais] < 1, ([Base calculo]*0.08)*0.75,
-			                [% Realizado itens totais] >=1 && [% Realizado itens totais] < 1.05, ([Base calculo]*0.08)*1,
-			                [% Realizado itens totais] >=1.05 && [% Realizado itens totais] < 1.10, ([Base calculo]*0.08)*1.10,
-			                [% Realizado itens totais] >=1.10 && [% Realizado itens totais] < 1.15, ([Base calculo]*0.08)*1.15,
-			                ([Base calculo]*0.08)*1.20
+			                [% Realizado itens totais] < 0.70, 0,
+			                [% Realizado itens totais] >= 0.70 && [% Realizado itens totais] < 0.80, ([Base calculo] * 0.08) * 0.2,
+			                [% Realizado itens totais] >= 0.80 && [% Realizado itens totais] < 0.90, ([Base calculo] * 0.08) * 0.4,
+			                [% Realizado itens totais] >= 0.90 && [% Realizado itens totais] < 1.00, ([Base calculo] * 0.08) * 0.75,
+			                [% Realizado itens totais] >= 1.00 && [% Realizado itens totais] < 1.05, ([Base calculo] * 0.08) * 1.00,
+			                [% Realizado itens totais] >= 1.05 && [% Realizado itens totais] < 1.10, ([Base calculo] * 0.08) * 1.10,
+			                [% Realizado itens totais] >= 1.10 && [% Realizado itens totais] < 1.15, ([Base calculo] * 0.08) * 1.15,
+			                ([Base calculo] * 0.08) * 1.20
 			            ),
-			
 			
 			        "% Devolução",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado devolucao] <0.70 ,0,
-			                [% Realizado devolucao] >=0.70 && [% Realizado devolucao]< 0.80, (base_percent_devolucao)*0.2,
-			                [% Realizado devolucao] >=0.80 && [% Realizado devolucao] < 0.90, (base_percent_devolucao)*0.4,
-			                [% Realizado devolucao] >=0.90 && [% Realizado devolucao] < 1, (base_percent_devolucao)*0.75,
-			                [% Realizado devolucao] >=1 && [% Realizado devolucao] < 1.05, (base_percent_devolucao)*1,
-			                [% Realizado devolucao] >=1.05 && [% Realizado devolucao] < 1.10, (base_percent_devolucao)*1.10,
-			                [% Realizado devolucao] >=1.10 && [% Realizado devolucao] < 1.15, (base_percent_devolucao)*1.15,
-			                (base_percent_devolucao)*1.20
+			                [% Realizado devolucao] < 0.70, 0,
+			                [% Realizado devolucao] >= 0.70 && [% Realizado devolucao] < 0.80, (base_percent_devolucao) * 0.2,
+			                [% Realizado devolucao] >= 0.80 && [% Realizado devolucao] < 0.90, (base_percent_devolucao) * 0.4,
+			                [% Realizado devolucao] >= 0.90 && [% Realizado devolucao] < 1.00, (base_percent_devolucao) * 0.75,
+			                [% Realizado devolucao] >= 1.00 && [% Realizado devolucao] < 1.05, (base_percent_devolucao) * 1.00,
+			                [% Realizado devolucao] >= 1.05 && [% Realizado devolucao] < 1.10, (base_percent_devolucao) * 1.10,
+			                [% Realizado devolucao] >= 1.10 && [% Realizado devolucao] < 1.15, (base_percent_devolucao) * 1.15,
+			                (base_percent_devolucao) * 1.20
 			            ),
 			
 			        "MIX BOVINO",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado mix] <0.70 ,0,
-			                [% Realizado mix] >=0.70 && [% Realizado mix] < 0.80, ([Base calculo]*0.02)*0.2,
-			                [% Realizado mix] >=0.80 && [% Realizado mix] < 0.90, ([Base calculo]*0.02)*0.4,
-			                [% Realizado mix] >=0.90 && [% Realizado mix] < 1, ([Base calculo]*0.02)*0.75,
-			                [% Realizado mix] >=1 && [% Realizado mix] < 1.05, ([Base calculo]*0.02)*1,
-			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.10, ([Base calculo]*0.02)*1.10,
-			                [% Realizado mix] >=1.10 && [% Realizado mix] < 1.15, ([Base calculo]*0.02)*1.15,
-			                ([Base calculo]*0.02)*1.20
+			                [% Realizado mix] < 0.70, 0,
+			                [% Realizado mix] >= 0.70 && [% Realizado mix] < 0.80, (base_mix_bovino) * 0.2,
+			                [% Realizado mix] >= 0.80 && [% Realizado mix] < 0.90, (base_mix_bovino) * 0.4,
+			                [% Realizado mix] >= 0.90 && [% Realizado mix] < 1.00, (base_mix_bovino) * 0.75,
+			                [% Realizado mix] >= 1.00 && [% Realizado mix] < 1.05, (base_mix_bovino) * 1.00,
+			                [% Realizado mix] >= 1.05 && [% Realizado mix] < 1.10, (base_mix_bovino) * 1.10,
+			                [% Realizado mix] >= 1.10 && [% Realizado mix] < 1.15, (base_mix_bovino) * 1.15,
+			                (base_mix_bovino) * 1.20
 			            ),
 			
 			        "MIX SUINO",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado mix] <0.70 ,0,
-			                [% Realizado mix] >=0.70 && [% Realizado mix] < 0.80, (base_percent_mix_suino)*0.2,
-			                [% Realizado mix] >=0.80 && [% Realizado mix] < 0.90, (base_percent_mix_suino)*0.4,
-			                [% Realizado mix] >=0.90 && [% Realizado mix] < 1, (base_percent_mix_suino)*0.75,
-			                [% Realizado mix] >=1 && [% Realizado mix] < 1.05, (base_percent_mix_suino)*1,
-			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.10, (base_percent_mix_suino)*1.10,
-			                [% Realizado mix] >=1.10 && [% Realizado mix] < 1.15, (base_percent_mix_suino)*1.15,
-			                (base_percent_mix_suino)*1.20
+			                [% Realizado mix] < 0.70, 0,
+			                [% Realizado mix] >= 0.70 && [% Realizado mix] < 0.80, (base_percent_mix_suino) * 0.2,
+			                [% Realizado mix] >= 0.80 && [% Realizado mix] < 0.90, (base_percent_mix_suino) * 0.4,
+			                [% Realizado mix] >= 0.90 && [% Realizado mix] < 1.00, (base_percent_mix_suino) * 0.75,
+			                [% Realizado mix] >= 1.00 && [% Realizado mix] < 1.05, (base_percent_mix_suino) * 1.00,
+			                [% Realizado mix] >= 1.05 && [% Realizado mix] < 1.10, (base_percent_mix_suino) * 1.10,
+			                [% Realizado mix] >= 1.10 && [% Realizado mix] < 1.15, (base_percent_mix_suino) * 1.15,
+			                (base_percent_mix_suino) * 1.20
 			            ),
 			
 			        "MIX INDUSTRIALIZADOS",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado mix] <0.70 ,0,
-			                [% Realizado mix] >=0.70 && [% Realizado mix] < 0.80, ([Base calculo]*0.05)*0.2,
-			                [% Realizado mix] >=0.80 && [% Realizado mix] < 0.90, ([Base calculo]*0.05)*0.4,
-			                [% Realizado mix] >=0.90 && [% Realizado mix] < 1, ([Base calculo]*0.05)*0.75,
-			                [% Realizado mix] >=1 && [% Realizado mix] < 1.05, ([Base calculo]*0.05)*1,
-			                [% Realizado mix] >=1.05 && [% Realizado mix] < 1.10, ([Base calculo]*0.05)*1.10,
-			                [% Realizado mix] >=1.10 && [% Realizado mix] < 1.15, ([Base calculo]*0.05)*1.15,
-			                ([Base calculo]*0.05)*1.20
+			                [% Realizado mix] < 0.70, 0,
+			                [% Realizado mix] >= 0.70 && [% Realizado mix] < 0.80, (base_mix_industrializados) * 0.2,
+			                [% Realizado mix] >= 0.80 && [% Realizado mix] < 0.90, (base_mix_industrializados) * 0.4,
+			                [% Realizado mix] >= 0.90 && [% Realizado mix] < 1.00, (base_mix_industrializados) * 0.75,
+			                [% Realizado mix] >= 1.00 && [% Realizado mix] < 1.05, (base_mix_industrializados) * 1.00,
+			                [% Realizado mix] >= 1.05 && [% Realizado mix] < 1.10, (base_mix_industrializados) * 1.10,
+			                [% Realizado mix] >= 1.10 && [% Realizado mix] < 1.15, (base_mix_industrializados) * 1.15,
+			                (base_mix_industrializados) * 1.20
 			            ),
 			
 			        "RECORRÊNCIA POSITIVAÇÃO",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado recorrecnia positivacao] <0.70 ,0,
-			                [% Realizado recorrecnia positivacao] >=0.70 && [% Realizado recorrecnia positivacao] < 0.80, (base_percent_recorrecnia_positivacao)*0.2,
-			                [% Realizado recorrecnia positivacao] >=0.80 && [% Realizado recorrecnia positivacao] < 0.90, (base_percent_recorrecnia_positivacao)*0.4,
-			                [% Realizado recorrecnia positivacao] >=0.90 && [% Realizado recorrecnia positivacao] < 1, (base_percent_recorrecnia_positivacao)*0.75,
-			                [% Realizado recorrecnia positivacao] >=1 && [% Realizado recorrecnia positivacao] < 1.05, (base_percent_recorrecnia_positivacao)*1,
-			                [% Realizado recorrecnia positivacao] >=1.05 && [% Realizado recorrecnia positivacao] < 1.10, (base_percent_recorrecnia_positivacao)*1.10,
-			                [% Realizado recorrecnia positivacao] >=1.10 && [% Realizado recorrecnia positivacao] < 1.15, (base_percent_recorrecnia_positivacao)*1.15,
-			                (base_percent_recorrecnia_positivacao)*1.20
+			                [% Realizado recorrecnia positivacao] < 0.70, 0,
+			                [% Realizado recorrecnia positivacao] >= 0.70 && [% Realizado recorrecnia positivacao] < 0.80, (base_percent_recorrecnia_positivacao) * 0.2,
+			                [% Realizado recorrecnia positivacao] >= 0.80 && [% Realizado recorrecnia positivacao] < 0.90, (base_percent_recorrecnia_positivacao) * 0.4,
+			                [% Realizado recorrecnia positivacao] >= 0.90 && [% Realizado recorrecnia positivacao] < 1.00, (base_percent_recorrecnia_positivacao) * 0.75,
+			                [% Realizado recorrecnia positivacao] >= 1.00 && [% Realizado recorrecnia positivacao] < 1.05, (base_percent_recorrecnia_positivacao) * 1.00,
+			                [% Realizado recorrecnia positivacao] >= 1.05 && [% Realizado recorrecnia positivacao] < 1.10, (base_percent_recorrecnia_positivacao) * 1.10,
+			                [% Realizado recorrecnia positivacao] >= 1.10 && [% Realizado recorrecnia positivacao] < 1.15, (base_percent_recorrecnia_positivacao) * 1.15,
+			                (base_percent_recorrecnia_positivacao) * 1.20
 			            ),
 			
 			        "POSITIVAÇÃO",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado positivacao] <0.70 ,0,
-			                [% Realizado positivacao] >=0.70 && [% Realizado positivacao] < 0.80, ([Base calculo]*0.12)*0.2,
-			                [% Realizado positivacao] >=0.80 && [% Realizado positivacao] < 0.90, ([Base calculo]*0.12)*0.4,
-			                [% Realizado positivacao] >=0.90 && [% Realizado positivacao] < 1, ([Base calculo]*0.12)*0.75,
-			                [% Realizado positivacao] >=1 && [% Realizado positivacao] < 1.05, ([Base calculo]*0.12)*1,
-			                [% Realizado positivacao] >=1.05 && [% Realizado positivacao] < 1.10, ([Base calculo]*0.12)*1.10,
-			                [% Realizado positivacao] >=1.10 && [% Realizado positivacao] < 1.15, ([Base calculo]*0.12)*1.15,
-			                ([Base calculo]*0.12)*1.20
+			                [% Realizado positivacao] < 0.70, 0,
+			                [% Realizado positivacao] >= 0.70 && [% Realizado positivacao] < 0.80, ([Base calculo] * 0.12) * 0.2,
+			                [% Realizado positivacao] >= 0.80 && [% Realizado positivacao] < 0.90, ([Base calculo] * 0.12) * 0.4,
+			                [% Realizado positivacao] >= 0.90 && [% Realizado positivacao] < 1.00, ([Base calculo] * 0.12) * 0.75,
+			                [% Realizado positivacao] >= 1.00 && [% Realizado positivacao] < 1.05, ([Base calculo] * 0.12) * 1.00,
+			                [% Realizado positivacao] >= 1.05 && [% Realizado positivacao] < 1.10, ([Base calculo] * 0.12) * 1.10,
+			                [% Realizado positivacao] >= 1.10 && [% Realizado positivacao] < 1.15, ([Base calculo] * 0.12) * 1.15,
+			                ([Base calculo] * 0.12) * 1.20
 			            ),
 			
 			        "MIX RENTÁVEL",
 			            SWITCH(
 			                TRUE(),
-			                [% Realizado mix rentavel] <0.70 ,0,
-			                [% Realizado mix rentavel] >=0.70 && [% Realizado mix rentavel] < 0.80, ([Base calculo]*0.05)*0.2,
-			                [% Realizado mix rentavel] >=0.80 && [% Realizado mix rentavel] < 0.90, ([Base calculo]*0.05)*0.4,
-			                [% Realizado mix rentavel] >=0.90 && [% Realizado mix rentavel] < 1, ([Base calculo]*0.05)*0.75,
-			                [% Realizado mix rentavel] >=1 && [% Realizado mix rentavel] < 1.05, ([Base calculo]*0.05)*1,
-			                [% Realizado mix rentavel] >=1.05 && [% Realizado mix rentavel] < 1.10, ([Base calculo]*0.05)*1.10,
-			                [% Realizado mix rentavel] >=1.10 && [% Realizado mix rentavel] < 1.15, ([Base calculo]*0.05)*1.15,
-			                ([Base calculo]*0.05)*1.20
+			                [% Realizado mix rentavel] < 0.70, 0,
+			                [% Realizado mix rentavel] >= 0.70 && [% Realizado mix rentavel] < 0.80, ([Base calculo] * 0.05) * 0.2,
+			                [% Realizado mix rentavel] >= 0.80 && [% Realizado mix rentavel] < 0.90, ([Base calculo] * 0.05) * 0.4,
+			                [% Realizado mix rentavel] >= 0.90 && [% Realizado mix rentavel] < 1.00, ([Base calculo] * 0.05) * 0.75,
+			                [% Realizado mix rentavel] >= 1.00 && [% Realizado mix rentavel] < 1.05, ([Base calculo] * 0.05) * 1.00,
+			                [% Realizado mix rentavel] >= 1.05 && [% Realizado mix rentavel] < 1.10, ([Base calculo] * 0.05) * 1.10,
+			                [% Realizado mix rentavel] >= 1.10 && [% Realizado mix rentavel] < 1.15, ([Base calculo] * 0.05) * 1.15,
+			                ([Base calculo] * 0.05) * 1.20
 			            ),
-			
 			
 			        BLANK()
 			)
